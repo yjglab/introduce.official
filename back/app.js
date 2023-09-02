@@ -65,7 +65,7 @@ app.use(
     cookie: {
       httpOnly: true,
       secure: PRODUCTION,
-      domain: PRODUCTION && ".hulter.com",
+      domain: PRODUCTION && ".hoolter.com",
     },
   })
 );

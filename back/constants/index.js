@@ -1,5 +1,5 @@
 const PRODUCTION = process.env.NODE_ENV === "production";
-const SERVICE_NAME = "Hulter";
+const SERVICE_NAME = "Hoolter";
 const SERVER_PORT = 1001;
 const SERVER_URL = PRODUCTION ? "https://" : `http://localhost:${SERVER_PORT}`;
 
