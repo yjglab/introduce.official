@@ -80,6 +80,7 @@ Author: Jaekyeong Yuk
         "id": "100자 이내 string",
         "name": "20자 이내 string",
     },
+    "class": "normal", // normal, pro
     "Posts": {
         "project": [
             {
@@ -145,7 +146,7 @@ Author: Jaekyeong Yuk
                         ]
                     }
                 ],
-                "deadline": "10자 이내 string",
+                "deadline": "10자 이내 string", // 2020.09.04 형식의 문자열
                 "markers": [
                     {
                         "name": "10자 이내 string(user name)",

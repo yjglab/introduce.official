@@ -6,18 +6,27 @@ module.exports = class User extends Model {
     return super.init(
       {
         email: {
-          type: DataTypes.STRING(100),
-          allowNull: false,
-          unique: "email",
-        },
-        username: {
           type: DataTypes.STRING(30),
+          unique: true,
           allowNull: false,
-          unique: "username",
+        },
+        name: {
+          type: DataTypes.STRING(10),
+          allowNull: false,
         },
         password: {
-          type: DataTypes.STRING(100),
+          type: DataTypes.STRING(300),
           allowNull: false,
+        },
+        socialId: {
+          type: DataTypes.STRING(100),
+        },
+        socialName: {
+          type: DataTypes.STRING(20),
+        },
+        class: {
+          type: DataTypes.ENUM("normal", "pro"),
+          defaultValue: "normal",
         },
       },
       {
@@ -29,5 +38,15 @@ module.exports = class User extends Model {
       }
     );
   }
-  static associate(db) {}
+  static associate(db) {
+    db.User.hasMany(db.Post);
+    db.User.belongsToMany(db.Post, {
+      through: "PostLike",
+      as: "Liked",
+    });
+    db.User.belongsToMany(db.Post, {
+      through: "PostMark",
+      as: "Marked",
+    });
+  }
 };
