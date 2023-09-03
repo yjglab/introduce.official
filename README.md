@@ -159,9 +159,4 @@ Author: Jaekyeong Yuk
 -
 ```
 
-Associations
-
-- (1:다) 사용자:구인 포스트
-- (다:다) 사용자:프로젝트 포스트
-
 ![image](https://github.com/yjglab/nebaram/assets/70316567/5bc77120-ce07-4052-9db3-460c082852b1)

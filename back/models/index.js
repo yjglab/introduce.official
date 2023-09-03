@@ -2,7 +2,8 @@ const { PRODUCTION } = require("../constants");
 const env = PRODUCTION || "development";
 const Sequelize = require("sequelize");
 const user = require("./user");
-const post = require("./post");
+const projectPost = require("./projectPost");
+const findingPost = require("./findingPost");
 const section = require("./section");
 const skill = require("./skill");
 
@@ -15,7 +16,8 @@ const sequelize = new Sequelize(
 );
 const db = {};
 db.User = user;
-db.Post = post;
+db.ProjectPost = projectPost;
+db.FindingPost = findingPost;
 db.Section = section;
 db.Skill = skill;
 

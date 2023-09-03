@@ -19,6 +19,7 @@ module.exports = class Skill extends Model {
     );
   }
   static associate(db) {
-    db.Skill.belongsToMany(db.Post, { through: "PostSkill" });
+    db.Skill.belongsToMany(db.ProjectPost, { through: "ProjectPostSkill" });
+    db.Skill.belongsToMany(db.FindingPost, { through: "FindingPostSkill" });
   }
 };

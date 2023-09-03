@@ -28,6 +28,10 @@ module.exports = class User extends Model {
           type: DataTypes.ENUM("normal", "pro"),
           defaultValue: "normal",
         },
+        admin: {
+          type: DataTypes.BOOLEAN,
+          defaultValue: false,
+        },
       },
       {
         modelName: "User",
@@ -39,14 +43,23 @@ module.exports = class User extends Model {
     );
   }
   static associate(db) {
-    db.User.hasMany(db.Post);
-    db.User.belongsToMany(db.Post, {
-      through: "PostLike",
-      as: "Liked",
+    db.User.hasMany(db.ProjectPost);
+    db.User.hasMany(db.FindingPost);
+    db.User.belongsToMany(db.ProjectPost, {
+      through: "ProjectPostLike",
+      as: "ProjectLiked",
     });
-    db.User.belongsToMany(db.Post, {
-      through: "PostMark",
-      as: "Marked",
+    db.User.belongsToMany(db.ProjectPost, {
+      through: "ProjectPostMark",
+      as: "ProjectMarked",
+    });
+    db.User.belongsToMany(db.FindingPost, {
+      through: "FindingPostLike",
+      as: "FindingLiked",
+    });
+    db.User.belongsToMany(db.FindingPost, {
+      through: "FindingPostMark",
+      as: "FindingMarked",
     });
   }
 };

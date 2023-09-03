@@ -1,25 +1,21 @@
 const DataTypes = require("sequelize");
 const { Model } = DataTypes;
 
-module.exports = class Post extends Model {
+module.exports = class ProjectPost extends Model {
   static init(sequelize) {
     return super.init(
       {
-        type: {
-          type: DataTypes.STRING(10),
-          allowNull: false,
-          //   validate: {
-          //     isIn: [["project", "finding"]],
-          //   },
-        },
         category: {
           type: DataTypes.STRING(20),
+          allowNull: false,
         },
         title: {
           type: DataTypes.STRING(20),
+          allowNull: false,
         },
         description: {
           type: DataTypes.STRING(500),
+          allowNull: false,
         },
         sourceName: {
           type: DataTypes.STRING(20),
@@ -32,14 +28,12 @@ module.exports = class Post extends Model {
         },
         grades: {
           type: DataTypes.FLOAT,
-        },
-        deadline: {
-          type: DataTypes.STRING(10),
+          defaultValue: 0,
         },
       },
       {
-        modelName: "Post",
-        tableName: "posts",
+        modelName: "ProjectPost",
+        tableName: "projectPosts",
         charset: "utf8mb4",
         collate: "utf8mb4_general_ci",
         sequelize,
@@ -47,16 +41,16 @@ module.exports = class Post extends Model {
     );
   }
   static associate(db) {
-    db.Post.belongsTo(db.User);
-    db.Post.hasMany(db.Section);
-    db.Post.belongsToMany(db.Skill, { through: "PostSkill" });
-    db.Post.belongsToMany(db.User, {
-      through: "PostLike",
-      as: "Likers",
+    db.ProjectPost.belongsTo(db.User);
+    db.ProjectPost.hasMany(db.Section);
+    db.ProjectPost.belongsToMany(db.Skill, { through: "ProjectPostSkill" });
+    db.ProjectPost.belongsToMany(db.User, {
+      through: "ProjectPostLike",
+      as: "ProjectLikers",
     });
-    db.Post.belongsToMany(db.User, {
-      through: "PostMark",
-      as: "Markers",
+    db.ProjectPost.belongsToMany(db.User, {
+      through: "ProjectPostMark",
+      as: "ProjectMarkers",
     });
   }
 };

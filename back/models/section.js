@@ -22,6 +22,7 @@ module.exports = class Section extends Model {
     );
   }
   static associate(db) {
-    db.Section.belongsTo(db.Post);
+    db.Section.belongsTo(db.ProjectPost);
+    db.Section.belongsTo(db.FindingPost);
   }
 };
