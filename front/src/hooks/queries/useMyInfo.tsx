@@ -1,11 +1,11 @@
-import { loadMyInfo } from "@/api/user";
+import { loadMyData } from "@/api/user";
 import { useQuery } from "@tanstack/react-query";
 
 interface User {
   email: "myemail";
 }
 const useMyInfoQuery = () => {
-  return useQuery<User>(["user"], loadMyInfo, {
+  return useQuery<User>(["user"], loadMyData, {
     staleTime: Infinity,
     cacheTime: Infinity,
   });

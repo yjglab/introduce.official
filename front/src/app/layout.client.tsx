@@ -1,6 +1,7 @@
 "use client";
 
 import useMyInfoQuery from "@/hooks/queries/useMyInfo";
+import Navigation from "@components/Common/Navigation";
 import classNames from "classnames";
 import { Noto_Sans } from "next/font/google";
 
@@ -13,5 +14,12 @@ const font = Noto_Sans({
 export default function RootClientLayout({ children }: { children: React.ReactNode }) {
   const { data: me } = useMyInfoQuery();
 
-  return <main className={classNames(font.className)}>{children}</main>;
+  return (
+    <>
+      <Navigation />
+      <div id='layout' className={classNames(font.className)}>
+        {children}
+      </div>
+    </>
+  );
 }

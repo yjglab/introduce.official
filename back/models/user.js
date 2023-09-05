@@ -24,6 +24,10 @@ module.exports = class User extends Model {
         socialName: {
           type: DataTypes.STRING(20),
         },
+        position: {
+          type: DataTypes.STRING(20),
+          allowNull: false,
+        },
         class: {
           type: DataTypes.ENUM("normal", "pro"),
           defaultValue: "normal",

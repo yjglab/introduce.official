@@ -7,25 +7,25 @@ import { Metadata } from "next";
 
 export async function generateMetadata() {
   return {
-    title: "내 프로필",
-    description: "반응형 웹 서비스 개발자, 육재경입니다.",
+    title: "회원가입",
+    description: "훌터에 회원가입하고 프로젝트를 업로드해보세요!",
     openGraph: {
-      title: "내 프로필",
-      description: "반응형 웹 서비스 개발자, 육재경입니다.",
+      title: "회원가입",
+      description: "훌터에 회원가입하고 프로젝트를 업로드해보세요!",
     },
   } as Metadata;
 }
 
-const ProfilePage = async () => {
+const SignUpPage = async () => {
   const header = headers();
   const cookie = header.get("Cookie");
-  const data = await loadMyData({
+  const myData = await loadMyData({
     headers: cookie ? { cookie } : undefined,
   });
-  if (!data) {
+  if (!myData) {
     redirect("/");
   }
   return <ClientPage />;
 };
 
-export default ProfilePage;
+export default SignUpPage;

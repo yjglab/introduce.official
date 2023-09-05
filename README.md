@@ -81,6 +81,8 @@ Author: Jaekyeong Yuk
         "name": "20자 이내 string",
     },
     "class": "normal", // normal, pro
+    "position": "20자 이내 string", // developer, designer, general
+    "admin": "boolean",
     "Posts": {
         "project": [
             {
