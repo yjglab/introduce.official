@@ -12,6 +12,7 @@ const passportConfig = require("./passport");
 const passport = require("passport");
 
 const userRouter = require("./routes/user");
+const authRouter = require("./routes/auth");
 const { SERVER_PORT, PRODUCTION } = require("./constants");
 
 dotenv.config();
@@ -74,6 +75,7 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 app.use("/user", userRouter);
+app.use("/auth", authRouter);
 
 app.listen(SERVER_PORT, () => {
   console.log("🌐 Server Connected");

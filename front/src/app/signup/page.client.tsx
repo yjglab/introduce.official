@@ -12,7 +12,7 @@ const SignUpClientPage = () => {
     if (!myData) router.push("/");
   }, [myData, router]);
   return (
-    <main className='mt-40'>
+    <main className='mt-40 flex justify-center'>
       <FormSection />
     </main>
   );
