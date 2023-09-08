@@ -1,15 +1,18 @@
 import { signUpAPI } from "@api/auth";
 import { toastConfig } from "@constants/chores";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
+import axios from "axios";
 import { toast } from "react-toastify";
 
 const useSignUp = () => {
   const mutation = useMutation(signUpAPI, {
-    onSuccess: () => {
-      toast.success("회원가입 성공", toastConfig);
+    onSuccess: (data) => {
+      toast.success(data, toastConfig);
     },
-    onError: () => {
-      toast.error("회원가입 실패", toastConfig);
+    onError: (error) => {
+      if (axios.isAxiosError(error)) {
+        toast.error(error.response?.data, toastConfig);
+      }
     },
   });
 

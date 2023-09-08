@@ -14,8 +14,17 @@ interface Form {
 }
 const SignUpForm = () => {
   const { mutateAsync: signUpMutate, isLoading: isSignUpLoading } = useSignUp();
-  const { mutateAsync: emailDuplicationMutate, isLoading: isEmailDuplicationLoading } = useEmailDuplication();
-  const { mutateAsync: emailConfirmationMutate, isLoading: isEmailConfirmLoading } = useEmailConfirmation();
+  const {
+    data: assignedConfirmationCode,
+    mutateAsync: emailDuplicationMutate,
+    isLoading: isEmailDuplicationLoading,
+    isSuccess: isEamilDuplicationSuccess,
+  } = useEmailDuplication();
+  const {
+    mutateAsync: emailConfirmationMutate,
+    isLoading: isEmailConfirmationLoading,
+    isSuccess: isEmailConfirmationSuccess,
+  } = useEmailConfirmation();
 
   const {
     register,
@@ -28,13 +37,12 @@ const SignUpForm = () => {
 
   const handleEmailDuplication = async () => {
     const email = getValues("email");
-    console.log(email);
     await emailDuplicationMutate({ email });
   };
   const handleEmailConfirmation = async () => {
     const email = getValues("email");
     const emailConfirmationCode = getValues("emailConfirmationCode");
-    await emailConfirmationMutate({ email, emailConfirmationCode });
+    await emailConfirmationMutate({ email, emailConfirmationCode, assignedConfirmationCode });
   };
   const handleSignUpSubmit = handleSubmit(async (data) => {
     const { email, name, password, passwordConfirm, position } = data;
@@ -82,39 +90,41 @@ const SignUpForm = () => {
         {errors.email?.message && <p className='m-1 text-sm text-red-500'>{errors.email.message}</p>}
       </div>
 
-      <div>
-        <div className='flex gap-y-4'>
-          <label htmlFor='emailConfirmationCode' className='sr-only'>
-            emailConfirmationCode
-          </label>
-          <span>코드</span>
-          <input
-            {...register("emailConfirmationCode", {
-              required: true,
-              maxLength: 20,
-            })}
-            id='emailConfirmationCode'
-            required
-            className='border border-black'
-            placeholder='코드'
-            size={6}
-            type='text'
-            autoComplete='emailConfirmationCode'
-            disabled={isEmailConfirmLoading}
-          />
-          <button
-            type='button'
-            onClick={handleEmailConfirmation}
-            className='disabled:opacity-50 bg-white'
-            disabled={isEmailConfirmLoading || !!errors.emailConfirmationCode?.message}
-          >
-            인증확인
-          </button>
+      {isEamilDuplicationSuccess && (
+        <div>
+          <div className='flex gap-y-4'>
+            <label htmlFor='emailConfirmationCode' className='sr-only'>
+              emailConfirmationCode
+            </label>
+            <span>코드</span>
+            <input
+              {...register("emailConfirmationCode", {
+                required: true,
+                maxLength: 20,
+              })}
+              id='emailConfirmationCode'
+              required
+              className='border border-black'
+              placeholder='코드'
+              size={6}
+              type='text'
+              autoComplete='emailConfirmationCode'
+              disabled={isEmailConfirmationLoading}
+            />
+            <button
+              type='button'
+              onClick={handleEmailConfirmation}
+              className='disabled:opacity-50 bg-white'
+              disabled={isEmailConfirmationLoading || isEmailConfirmationSuccess}
+            >
+              {isEmailConfirmationSuccess ? "인증완료" : "인증확인"}
+            </button>
+          </div>
+          {errors.emailConfirmationCode?.message && (
+            <p className='m-1 text-sm text-red-500'>{errors.emailConfirmationCode.message}</p>
+          )}
         </div>
-        {errors.emailConfirmationCode?.message && (
-          <p className='m-1 text-sm text-red-500'>{errors.emailConfirmationCode.message}</p>
-        )}
-      </div>
+      )}
 
       <div>
         <div className='flex gap-y-4'>
