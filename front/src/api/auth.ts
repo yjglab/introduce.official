@@ -3,7 +3,7 @@ import { api } from ".";
 
 export function signUpAPI(data: {
   email: string;
-  name: string;
+  username: string;
   password: string;
   passwordConfirm: string;
   position: string;
