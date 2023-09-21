@@ -1,23 +1,33 @@
 import useSignOut from "@hooks/mutations/useSignOut";
+import useMyInfoQuery from "@hooks/queries/useMyInfo";
 import Link from "next/link";
-import { useCallback } from "react";
+import { memo, useCallback, useEffect } from "react";
 
-const Navigation = () => {
+const Navigation = memo(() => {
   const { mutate: signOutMutate } = useSignOut();
-
+  const { data: myInfo } = useMyInfoQuery();
   const handleSignOut = useCallback(() => {
     signOutMutate();
   }, [signOutMutate]);
+  useEffect(() => {
+    console.log(myInfo);
+  }, [myInfo]);
   return (
     <nav>
       <Link href='/'>홈 </Link>
-      <Link href='/signin'>로그인 </Link>
-      <Link href='/signup'>가입 </Link>
+
       <Link href='/profile'>프로필 </Link>
 
-      <button onClick={handleSignOut}>로그아웃</button>
+      {myInfo ? (
+        <button onClick={handleSignOut}>로그아웃</button>
+      ) : (
+        <>
+          <Link href='/signup'>가입 </Link>
+          <Link href='/signin'>로그인 </Link>
+        </>
+      )}
     </nav>
   );
-};
+});
 
 export default Navigation;

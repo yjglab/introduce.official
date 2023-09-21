@@ -27,7 +27,6 @@ const SignInForm = () => {
 
   const handleSignInSubmit = handleSubmit(async (data) => {
     const { email, password } = data;
-    console.log(email, password);
     signInMutate({
       email,
       password,

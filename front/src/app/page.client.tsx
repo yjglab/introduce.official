@@ -1,14 +1,14 @@
 "use client";
 
 import React, { FC, useState } from "react";
-import Box from "@components/Root/Box";
+import ProjectsSection from "@components/Root/ProjectsSection";
 
 interface Props {
   initialData?: null;
 }
 
 const RootClientPage: FC<Props> = ({ initialData }) => {
-  return <Box />;
+  return <ProjectsSection />;
 };
 
 export default RootClientPage;

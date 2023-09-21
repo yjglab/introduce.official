@@ -32,9 +32,9 @@ module.exports = class User extends Model {
           type: DataTypes.ENUM("normal", "pro"),
           defaultValue: "normal",
         },
-        admin: {
-          type: DataTypes.BOOLEAN,
-          defaultValue: false,
+        role: {
+          type: DataTypes.ENUM("user", "admin"),
+          defaultValue: "user",
         },
       },
       {
