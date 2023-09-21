@@ -3,14 +3,14 @@
 import React, { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import useMyInfoQuery from "@/hooks/queries/useMyInfo";
-import FormSection from "@components/SignUp/FormSection";
+import FormSection from "@components/SignIn/FormSection";
 
-const SignUpClientPage = () => {
+const SignInClientPage = () => {
   const router = useRouter();
-  const { data: myData } = useMyInfoQuery();
+  const { data: myInfo } = useMyInfoQuery();
   useEffect(() => {
-    if (myData) router.push("/");
-  }, [myData, router]);
+    if (myInfo) router.push("/");
+  }, [myInfo, router]);
   return (
     <main className='mt-40 flex justify-center'>
       <FormSection />
@@ -18,4 +18,4 @@ const SignUpClientPage = () => {
   );
 };
 
-export default SignUpClientPage;
+export default SignInClientPage;

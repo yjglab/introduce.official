@@ -2,9 +2,35 @@ const express = require("express");
 const router = express.Router();
 const bcrypt = require("bcrypt");
 const User = require("../models/user");
-
+const passport = require("passport");
 const nodeMailer = require("nodemailer");
-const { isNotSignIn } = require("./middlewares");
+const { isNotSignIn, isSignIn } = require("./middlewares");
+
+router.post("/signin", isNotSignIn, async (req, res, next) => {
+  passport.authenticate("local", (err, user, info) => {
+    if (err) {
+      console.error(err);
+      return next(err);
+    }
+    if (info) {
+      return res.status(401).send(info.reason);
+    }
+    return req.login(user, async (loginError) => {
+      if (loginError) {
+        console.error(loginError);
+        return next(loginError);
+      }
+      const userInfo = await User.findOne({
+        where: { email: user.email },
+        attributes: {
+          exclude: ["password"],
+        },
+      });
+      console.log(userInfo);
+      return res.status(200).json(userInfo);
+    });
+  })(req, res, next);
+});
 
 router.post("/signup", isNotSignIn, async (req, res, next) => {
   try {
@@ -23,6 +49,12 @@ router.post("/signup", isNotSignIn, async (req, res, next) => {
     console.error(error);
     next(error);
   }
+});
+
+router.post("/signout", isSignIn, (req, res) => {
+  req.logout();
+  req.session.destroy();
+  res.send("로그아웃 되었습니다.");
 });
 
 router.post("/email-duplication", isNotSignIn, async (req, res, next) => {

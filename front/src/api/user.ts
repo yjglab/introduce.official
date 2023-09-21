@@ -1,6 +1,6 @@
 import { AxiosRequestConfig } from "axios";
 import { api } from ".";
 
-export function loadMyData(options?: AxiosRequestConfig) {
+export function loadMyInfoAPI(options?: AxiosRequestConfig) {
   return api.get("/user", options).then((response) => response.data);
 }

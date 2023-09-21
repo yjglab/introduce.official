@@ -18,7 +18,7 @@ interface Form {
 }
 const SignUpForm = () => {
   const router = useRouter();
-  const { mutateAsync: signUpMutate, isLoading: isSignUpLoading, isSuccess: isSignUpSuccess } = useSignUp();
+  const { mutate: signUpMutate, isLoading: isSignUpLoading, isSuccess: isSignUpSuccess } = useSignUp();
   const {
     data: { hashedCode: assignedConfirmationCode } = {},
     mutateAsync: emailDuplicationMutate,
@@ -60,7 +60,7 @@ const SignUpForm = () => {
     if (position === "default") {
       return toast.error("직무를 선택해주세요.", toastConfig);
     }
-    await signUpMutate({
+    signUpMutate({
       email,
       username,
       password,
@@ -173,7 +173,7 @@ const SignUpForm = () => {
 
       <div>
         <div className='flex gap-y-4'>
-          <label htmlFor='email-address' className='sr-only'>
+          <label htmlFor='password' className='sr-only'>
             password
           </label>
           <span>비밀번호</span>
@@ -199,7 +199,7 @@ const SignUpForm = () => {
 
       <div>
         <div className='flex gap-y-4'>
-          <label htmlFor='email-address' className='sr-only'>
+          <label htmlFor='password' className='sr-only'>
             password Confirm
           </label>
           <span>비밀번호 확인</span>

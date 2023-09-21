@@ -4,7 +4,7 @@ import { CLIENT_URL, SERVICE_NAME } from "@constants";
 import { cache } from "react";
 import { Hydrate, QueryClient, dehydrate } from "@tanstack/react-query";
 import { headers } from "next/headers";
-import { loadMyData } from "@/api/user";
+import { loadMyInfoAPI } from "@/api/user";
 import ClientLayout from "./layout.client";
 import Providers from "./providers.client";
 
@@ -45,7 +45,9 @@ export default async function RootLayout({ children }: { children: React.ReactNo
   const queryClient = getQueryClient();
   const header = headers();
   const cookie = header.get("Cookie");
-  await queryClient.prefetchQuery(["user"], () => loadMyData({ headers: cookie ? { cookie } : undefined }));
+  await queryClient.prefetchQuery(["user"], () =>
+    loadMyInfoAPI({ headers: cookie ? { cookie } : undefined }),
+  );
   const dehydratedState = dehydrate(queryClient);
   queryClient.clear();
   return (
