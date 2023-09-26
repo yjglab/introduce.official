@@ -8,17 +8,19 @@ datasource db {
 }
 
 model User {
-  id        Int       @id @default(autoincrement())
-  email     String    @unique
-  name      String    @unique
-  password  String
-  social    Social?
-  position  String
-  class     UserClass @default(normal)
-  role      UserRole  @default(user)
-  createdAt DateTime  @default(now())
-  updatedAt DateTime  @updatedAt
-  posts     Post[]
+  id         Int        @id @default(autoincrement())
+  email      String     @unique
+  name       String     @unique
+  password   String
+  social     Social?
+  position   String
+  class      UserClass  @default(normal)
+  role       UserRole   @default(user)
+  createdAt  DateTime   @default(now())
+  updatedAt  DateTime   @updatedAt
+  post       Post?
+  postId     Int
+  likedPosts PostLike[]
 }
 
 model Post {
@@ -33,34 +35,76 @@ model Social {
   id           Int    @id @default(autoincrement())
   connectionId String
   name         String
-  user         User   @relation(fields: [userId], references: [id])
+  user         User?  @relation(fields: [userId], references: [id])
   userId       Int    @unique
 }
 
 model ProjectPost {
-  id          Int      @id @default(autoincrement())
+  id          Int         @id @default(autoincrement())
   category    String
   title       String
   description String
   sourceName  String
   sourceLink  String
   sourceOwner String
-  grades      Float    @default(0)
-  createdAt   DateTime @default(now())
-
-  Post   Post? @relation(fields: [postId], references: [id])
-  postId Int?
+  grades      Float       @default(0)
+  createdAt   DateTime    @default(now())
+  skills      PostSkill[]
+  sections    Section[]
+  post        Post        @relation(fields: [postId], references: [id])
+  postId      Int
+  likes       PostLike[]
 }
 
 model FindingPost {
-  id          Int    @id @default(autoincrement())
+  id          Int         @id @default(autoincrement())
   category    String
   title       String
   description String
   deadline    String
+  skills      PostSkill[]
+  sections    Section[]
+  post        Post        @relation(fields: [postId], references: [id])
+  postId      Int
+  likes       PostLike[]
+}
 
-  Post   Post? @relation(fields: [postId], references: [id])
-  postId Int?
+model Section {
+  id            Int            @id @default(autoincrement())
+  header        String
+  description   String
+  images        SectionImage[]
+  ProjectPost   ProjectPost?   @relation(fields: [projectPostId], references: [id])
+  projectPostId Int?
+  FindingPost   FindingPost?   @relation(fields: [findingPostId], references: [id])
+  findingPostId Int?
+}
+
+model SectionImage {
+  id        Int      @id @default(autoincrement())
+  src       String
+  Section   Section? @relation(fields: [sectionId], references: [id])
+  sectionId Int?
+}
+
+model PostSkill {
+  id            Int          @id @default(autoincrement())
+  name          String
+  ProjectPost   ProjectPost? @relation(fields: [projectPostId], references: [id])
+  projectPostId Int?
+  FindingPost   FindingPost? @relation(fields: [findingPostId], references: [id])
+  findingPostId Int?
+}
+
+model PostLike {
+  id        Int          @id @default(autoincrement())
+  userId    Int
+  User      User         @relation(fields: [userId], references: [id])
+  projectId Int
+  project   ProjectPost? @relation(fields: [projectId], references: [id])
+  findingId Int
+  finding   FindingPost? @relation(fields: [findingId], references: [id])
+  createdAt DateTime     @default(now())
 }
 
 enum UserClass {
