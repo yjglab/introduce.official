@@ -35,17 +35,30 @@ model ProjectPost {
   category    String
   title       String
   description String
-  sourceName  String
-  sourceLink  String
-  sourceOwner String
+  source      ProjectPostSource?
   grades      Float                @default(0)
   createdAt   DateTime             @default(now())
   user        User                 @relation(fields: [userId], references: [id])
   userId      Int
-  skills      PostSkill[]          @relation("ProjectPostSkills")
+  skills      ProjectPostSkill[]
   likers      User[]               @relation("UserLikedProjectPosts")
   markers     User[]               @relation("UserMarkedProjectPosts")
   sections    ProjectPostSection[]
+}
+
+model ProjectPostSkill {
+  id    Int           @id @default(autoincrement())
+  name  String
+  posts ProjectPost[]
+}
+
+model ProjectPostSource {
+  id     Int         @id @default(autoincrement())
+  name   String
+  link   String
+  owner  String
+  post   ProjectPost @relation(fields: [postId], references: [id])
+  postId Int         @unique
 }
 
 model FindingPost {
@@ -56,10 +69,16 @@ model FindingPost {
   deadline    String
   user        User                 @relation(fields: [userId], references: [id])
   userId      Int
-  skills      PostSkill[]          @relation("FindingPostSkills")
+  skills      FindingPostSkill[]
   likers      User[]               @relation("UserLikedFindingPosts")
   markers     User[]               @relation("UserMarkedFindingPosts")
   sections    FindingPostSection[]
+}
+
+model FindingPostSkill {
+  id    Int           @id @default(autoincrement())
+  name  String
+  posts FindingPost[]
 }
 
 model Social {
@@ -100,13 +119,6 @@ model FindingPostSectionImage {
   src       String
   section   FindingPostSection @relation(fields: [sectionId], references: [id])
   sectionId Int
-}
-
-model PostSkill {
-  id           Int           @id @default(autoincrement())
-  name         String        @unique
-  projectPosts ProjectPost[] @relation("ProjectPostSkills")
-  findingPosts FindingPost[] @relation("FindingPostSkills")
 }
 
 enum UserClass {
