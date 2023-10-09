@@ -7,6 +7,22 @@ export class AuthResponseDTO {
   accessToken: string;
 }
 
+export class EmailDuplicationDTO {
+  @IsString()
+  @ApiProperty()
+  email: string;
+}
+
+export class EmailConfirmationDTO {
+  @IsString()
+  @ApiProperty()
+  userInputCode: string;
+
+  @IsString()
+  @ApiProperty()
+  confirmationCode: string;
+}
+
 export class SignupUserDTO {
   @IsString()
   @ApiProperty()

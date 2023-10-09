@@ -83,11 +83,8 @@ router.post("/email-duplication", isNotSignIn, async (req, res, next) => {
 
 router.post("/email-confirmation", isNotSignIn, async (req, res, next) => {
   try {
-    const { emailConfirmationCode, assignedConfirmationCode } = req.body;
-    const codeMatched = await bcrypt.compare(
-      emailConfirmationCode,
-      assignedConfirmationCode
-    );
+    const { userInputCode, confirmationCode } = req.body;
+    const codeMatched = await bcrypt.compare(userInputCode, confirmationCode);
     if (!codeMatched) {
       return res
         .status(403)

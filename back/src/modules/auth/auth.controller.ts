@@ -2,7 +2,13 @@ import { Body, Controller, Post, Response } from '@nestjs/common';
 import { ApiBody, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { User } from '@prisma/client';
 
-import { AuthResponseDTO, SigninUserDTO, SignupUserDTO } from './auth.dto';
+import {
+  AuthResponseDTO,
+  EmailConfirmationDTO,
+  EmailDuplicationDTO,
+  SigninUserDTO,
+  SignupUserDTO,
+} from './auth.dto';
 import { AuthService } from './auth.service';
 import { JWT_EXPIRY_SECONDS } from '@shared/constants/global.constants';
 
@@ -10,6 +16,23 @@ import { JWT_EXPIRY_SECONDS } from '@shared/constants/global.constants';
 @Controller('auth')
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
+
+  @Post('email-duplication')
+  @ApiOperation({ description: '이메일 중복 확인' })
+  @ApiBody({ type: EmailDuplicationDTO })
+  async emailDuplication(@Body() data: EmailDuplicationDTO, @Response() res) {
+    const { message, hashedCode } =
+      await this.authService.emailDuplication(data);
+    return res.status(200).send({ message, hashedCode });
+  }
+
+  @Post('email-confirmation')
+  @ApiOperation({ description: '이메일 인증 코드 확인' })
+  @ApiBody({ type: EmailConfirmationDTO })
+  async emailConfirmation(@Body() data: EmailConfirmationDTO, @Response() res) {
+    const { message } = await this.authService.emailConfirmation(data);
+    return res.status(200).send(message);
+  }
 
   @Post('signin')
   @ApiOperation({ description: '회원가입' })

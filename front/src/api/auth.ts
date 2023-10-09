@@ -19,8 +19,8 @@ export function emailDuplicationAPI(data: { email: string }) {
 
 export function emailConfirmationAPI(data: {
   email: string;
-  emailConfirmationCode: string; // user input code
-  assignedConfirmationCode: string;
+  userInputCode: string; // user input code
+  confirmationCode: string;
 }) {
   return api.post("/auth/email-confirmation", data).then((response) => response.data);
 }

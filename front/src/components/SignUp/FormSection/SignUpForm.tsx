@@ -11,7 +11,7 @@ import { toast } from "react-toastify";
 interface Form {
   email: string;
   emailConfirmationCode: string;
-  username: string;
+  name: string;
   password: string;
   passwordConfirm: string;
   position: string;
@@ -50,21 +50,18 @@ const SignUpForm = () => {
     await emailConfirmationMutate({ email, emailConfirmationCode, assignedConfirmationCode });
   };
   const handleSignUpSubmit = handleSubmit(async (data) => {
-    const { email, username, password, passwordConfirm, position } = data;
+    const { email, name, password, position } = data;
     if (!isEmailConfirmationSuccess) {
       return toast.error("이메일 인증이 필요합니다.", toastConfig);
     }
-    if (password !== passwordConfirm) {
-      return toast.error("비밀번호가 일치하지 않습니다.", toastConfig);
-    }
+
     if (position === "default") {
       return toast.error("직무를 선택해주세요.", toastConfig);
     }
     signUpMutate({
       email,
-      username,
+      name,
       password,
-      passwordConfirm,
       position,
     });
   });
@@ -147,25 +144,25 @@ const SignUpForm = () => {
 
       <div>
         <div className='flex gap-y-4'>
-          <label htmlFor='username' className='sr-only'>
-            user name
+          <label htmlFor='name' className='sr-only'>
+            name
           </label>
           <span>사용자명</span>
           <input
-            {...register("username", {
+            {...register("name", {
               required: true,
               maxLength: {
                 value: 10,
                 message: "사용자명 제한",
               },
             })}
-            id='username'
+            id='name'
             required
             className='border border-black'
             placeholder='작성해주세요'
             size={30}
             type='text'
-            autoComplete='username'
+            autoComplete='name'
             disabled={isSignUpLoading}
           />
         </div>
@@ -192,32 +189,6 @@ const SignUpForm = () => {
             size={30}
             type='password'
             autoComplete='password'
-            disabled={isSignUpLoading}
-          />
-        </div>
-      </div>
-
-      <div>
-        <div className='flex gap-y-4'>
-          <label htmlFor='password' className='sr-only'>
-            password Confirm
-          </label>
-          <span>비밀번호 확인</span>
-          <input
-            {...register("passwordConfirm", {
-              required: true,
-              maxLength: {
-                value: 12,
-                message: "비밀번호 제한",
-              },
-            })}
-            id='passwordConfirm'
-            required
-            className='border border-black'
-            placeholder='작성해주세요'
-            size={30}
-            type='password'
-            autoComplete='passwordConfirm'
             disabled={isSignUpLoading}
           />
         </div>
