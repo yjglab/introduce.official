@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { AuthHelpers } from 'src/shared/helpers/auth.helpers';
+import { AuthHelpers } from '@shared/helpers/auth.helpers';
 
 @Injectable()
 export class UserListener {

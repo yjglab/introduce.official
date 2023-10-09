@@ -3,7 +3,7 @@ import { User } from '@prisma/client';
 import { ApiTags } from '@nestjs/swagger';
 
 import { UserService } from './user.service';
-import { JwtAuthGuard } from '../auth/auth.jwt.guard';
+import { JwtAuthGuard } from '@modules/auth/auth.jwt.guard';
 
 @ApiTags('users')
 @Controller('/users')

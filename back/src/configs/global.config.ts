@@ -1,4 +1,4 @@
-import { SERVER_PORT } from '../shared/constants/global.constants';
+import { SERVER_PORT } from '@shared/constants/global.constants';
 import { Config } from './config.interface';
 
 export const GLOBAL_CONFIG: Config = {
