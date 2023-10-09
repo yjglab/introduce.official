@@ -1,13 +1,7 @@
 import { AxiosRequestConfig } from "axios";
 import { api } from ".";
 
-export function signUpAPI(data: {
-  email: string;
-  username: string;
-  password: string;
-  passwordConfirm: string;
-  position: string;
-}) {
+export function signUpAPI(data: { email: string; name: string; password: string; position: string }) {
   return api.post("/auth/signup", data).then((response) => response.data);
 }
 
