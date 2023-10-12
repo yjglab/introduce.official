@@ -65,26 +65,24 @@ export class AuthService {
     const userData = await this.userService.findOne({
       email: signinUserDTO.email,
     });
-    if (!userData) {
-      throw new UnauthorizedException();
-    }
-
     const passwordMatched = await AuthHelpers.verify(
       signinUserDTO.password,
       userData.password,
     );
     if (!passwordMatched) {
-      throw new UnauthorizedException();
+      throw new UnauthorizedException('잘못된 비밀번호입니다.');
     }
 
     const payload = {
       id: userData.id,
-      name: userData.name,
       email: userData.email,
-      position: userData.position,
+      name: userData.name,
       password: null,
+      position: userData.position,
       class: userData.class,
       role: userData.role,
+      projectPosts: userData.projectPosts,
+
       createdAt: userData.createdAt,
     };
 

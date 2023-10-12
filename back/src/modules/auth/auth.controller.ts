@@ -35,7 +35,7 @@ export class AuthController {
   }
 
   @Post('signin')
-  @ApiOperation({ description: '회원가입' })
+  @ApiOperation({ description: '로그인' })
   @ApiBody({ type: SigninUserDTO })
   @ApiResponse({ type: AuthResponseDTO })
   async signin(

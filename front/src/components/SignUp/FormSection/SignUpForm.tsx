@@ -10,7 +10,7 @@ import { toast } from "react-toastify";
 
 interface Form {
   email: string;
-  emailConfirmationCode: string;
+  userInputCode: string;
   name: string;
   password: string;
   passwordConfirm: string;
@@ -20,7 +20,7 @@ const SignUpForm = () => {
   const router = useRouter();
   const { mutate: signUpMutate, isLoading: isSignUpLoading, isSuccess: isSignUpSuccess } = useSignUp();
   const {
-    data: { hashedCode: assignedConfirmationCode } = {},
+    data: { hashedCode: confirmationCode } = {},
     mutateAsync: emailDuplicationMutate,
     isLoading: isEmailDuplicationLoading,
     isSuccess: isEamilDuplicationSuccess,
@@ -46,8 +46,8 @@ const SignUpForm = () => {
   };
   const handleEmailConfirmation = async () => {
     const email = getValues("email");
-    const emailConfirmationCode = getValues("emailConfirmationCode");
-    await emailConfirmationMutate({ email, emailConfirmationCode, assignedConfirmationCode });
+    const userInputCode = getValues("userInputCode");
+    await emailConfirmationMutate({ email, userInputCode, confirmationCode });
   };
   const handleSignUpSubmit = handleSubmit(async (data) => {
     const { email, name, password, position } = data;
@@ -112,22 +112,22 @@ const SignUpForm = () => {
       {isEamilDuplicationSuccess && (
         <div>
           <div className='flex gap-y-4'>
-            <label htmlFor='emailConfirmationCode' className='sr-only'>
-              emailConfirmationCode
+            <label htmlFor='userInputCode' className='sr-only'>
+              userInputCode
             </label>
             <span>코드</span>
             <input
-              {...register("emailConfirmationCode", {
+              {...register("userInputCode", {
                 required: true,
                 maxLength: 20,
               })}
-              id='emailConfirmationCode'
+              id='userInputCode'
               required
               className='disabled:opacity-50 border border-black'
               placeholder='코드'
               size={6}
               type='password'
-              autoComplete='emailConfirmationCode'
+              autoComplete='userInputCode'
               disabled={isEmailConfirmationLoading || isEmailConfirmationSuccess}
             />
             <button
