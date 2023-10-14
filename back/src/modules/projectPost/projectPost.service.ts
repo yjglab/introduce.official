@@ -30,9 +30,14 @@ export class ProjectPostService {
   }
 
   async create(data) {
-    return this.prisma.projectPost.create({
-      data,
+    // todo: data.email 해싱
+
+    const user = await this.prisma.user.findUnique({
+      where: {
+        email: data.userEmail,
+      },
     });
+    return this.prisma.projectPost.create({});
   }
 
   async update(params: {

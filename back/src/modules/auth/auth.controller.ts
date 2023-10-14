@@ -38,10 +38,7 @@ export class AuthController {
   @ApiOperation({ description: '로그인' })
   @ApiBody({ type: SigninUserDTO })
   @ApiResponse({ type: AuthResponseDTO })
-  async signin(
-    @Body() user: SigninUserDTO,
-    @Response() res,
-  ): Promise<AuthResponseDTO> {
+  async signin(@Body() user: SigninUserDTO, @Response() res) {
     const signinData = await this.authService.signin(user);
 
     res.cookie('accessToken', signinData.accessToken, {

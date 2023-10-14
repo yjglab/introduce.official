@@ -2,6 +2,7 @@ import { Body, Controller, Delete, Get, Param, Post } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { ProjectPostService } from './projectPost.service';
 import { ProjectPost } from '@prisma/client';
+import { RegisterProjectPostDTO } from './projectPost.dto';
 
 @ApiTags('project-posts')
 @Controller('/project-posts')
@@ -14,26 +15,35 @@ export class ProjectPostController {
   }
 
   @Get('project-post/:id')
-  async getPostById(@Param('id') id: string): Promise<ProjectPost> {
-    return this.projectPostService.findOne({ id: Number(id) });
+  async getPostById(@Param('id') id: number): Promise<ProjectPost> {
+    return this.projectPostService.findOne({ id });
   }
 
   @Post('register')
   async registerPost(
     @Body()
-    postData: {
-      category: string;
-      title: string;
-      description: string;
-      skills: string[];
-    },
+    data: RegisterProjectPostDTO,
   ): Promise<ProjectPost> {
-    const { title, description, category, skills } = postData;
-    return this.projectPostService.create({
+    const {
+      userEmail,
+      category,
       title,
       description,
-      category,
+      source,
       skills,
+      sections,
+    } = data;
+
+    return this.projectPostService.create({
+      data: {
+        category,
+        title,
+        description,
+        source,
+        skills,
+        sections,
+      },
+      userEmail,
     });
   }
 
