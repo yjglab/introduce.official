@@ -15,8 +15,8 @@ import {
 } from './auth.dto';
 import { UserService } from '@modules/user/user.service';
 import { PrismaService } from '@modules/prisma/prisma.service';
-import { AuthHelpers } from '@shared/helpers/auth.helpers';
 import { GLOBAL_CONFIG } from '@configs/global.config';
+import { AuthHelpers } from '@shared/helpers/auth.helpers';
 
 @Injectable()
 export class AuthService {
@@ -49,7 +49,7 @@ export class AuthService {
   public async emailConfirmation(
     emailConfirmationDTO: EmailConfirmationDTO,
   ): Promise<{ message: string }> {
-    const codeMatched = await AuthHelpers.verify(
+    const codeMatched = await AuthHelpers.hashVerify(
       emailConfirmationDTO.userInputCode,
       emailConfirmationDTO.confirmationCode,
     );
@@ -65,7 +65,7 @@ export class AuthService {
     const userData = await this.userService.findOne({
       email: signinUserDTO.email,
     });
-    const passwordMatched = await AuthHelpers.verify(
+    const passwordMatched = await AuthHelpers.hashVerify(
       signinUserDTO.password,
       userData.password,
     );
