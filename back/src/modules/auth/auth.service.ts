@@ -27,31 +27,31 @@ export class AuthService {
   ) {}
 
   public async emailDuplication(
-    emailDuplicationDTO: EmailDuplicationDTO,
+    data: EmailDuplicationDTO,
   ): Promise<{ message: string; hashedCode: string }> {
     const userData = await this.userService.findOne({
-      email: emailDuplicationDTO.email,
+      email: data.email,
     });
 
     if (userData) {
       throw new ForbiddenException('이미 사용중인 이메일입니다');
     }
     const code = '123';
-    const hashedCode = (await AuthHelpers.hash(code)) as string;
+    const hashedCode = await AuthHelpers.hash(code);
 
-    console.log(hashedCode);
+    console.log('email duplication hashed code', hashedCode);
     return {
-      message: `${emailDuplicationDTO.email}로 인증코드를 전송했습니다.`,
+      message: `${data.email}로 인증코드를 전송했습니다.`,
       hashedCode,
     };
   }
 
   public async emailConfirmation(
-    emailConfirmationDTO: EmailConfirmationDTO,
+    data: EmailConfirmationDTO,
   ): Promise<{ message: string }> {
     const codeMatched = await AuthHelpers.hashVerify(
-      emailConfirmationDTO.userInputCode,
-      emailConfirmationDTO.confirmationCode,
+      data.userInputCode,
+      data.confirmationCode,
     );
     if (!codeMatched) {
       throw new ForbiddenException(
@@ -61,21 +61,21 @@ export class AuthService {
     return { message: '인증되었습니다.' };
   }
 
-  public async signin(signinUserDTO: SigninUserDTO): Promise<AuthResponseDTO> {
+  public async signin(data: SigninUserDTO): Promise<AuthResponseDTO> {
     const userData = await this.userService.findOne({
-      email: signinUserDTO.email,
+      email: data.email,
     });
-    const passwordMatched = await AuthHelpers.hashVerify(
-      signinUserDTO.password,
+    const passwordVerified = await AuthHelpers.hashVerify(
+      data.password,
       userData.password,
     );
-    if (!passwordMatched) {
+    if (!passwordVerified) {
       throw new UnauthorizedException('잘못된 비밀번호입니다.');
     }
 
-    const payload = {
+    const userPayload = {
       id: userData.id,
-      email: userData.email,
+      email: AuthHelpers.decrypt(userData.email),
       name: userData.name,
       password: null,
       position: userData.position,
@@ -86,16 +86,19 @@ export class AuthService {
       createdAt: userData.createdAt,
     };
 
-    const accessToken = this.jwtService.sign(payload, {
+    const accessToken = this.jwtService.sign(userPayload, {
       expiresIn: GLOBAL_CONFIG.security.expiresIn,
     });
 
     return {
-      user: payload,
+      user: userPayload,
       accessToken: accessToken,
     };
   }
-  public async signup(user: SignupUserDTO): Promise<User> {
-    return this.userService.create(user);
+  public async signup(data: SignupUserDTO): Promise<User> {
+    data.email = await AuthHelpers.encrypt(data.email);
+    data.password = await AuthHelpers.hash(data.password);
+
+    return this.userService.create(data);
   }
 }

@@ -23,7 +23,7 @@ export class AuthController {
   async emailDuplication(@Body() data: EmailDuplicationDTO, @Response() res) {
     const { message, hashedCode } =
       await this.authService.emailDuplication(data);
-    return res.status(200).send({ message, hashedCode });
+    return res.status(200).json({ message, hashedCode });
   }
 
   @Post('email-confirmation')
@@ -38,8 +38,8 @@ export class AuthController {
   @ApiOperation({ description: '로그인' })
   @ApiBody({ type: SigninUserDTO })
   @ApiResponse({ type: AuthResponseDTO })
-  async signin(@Body() user: SigninUserDTO, @Response() res) {
-    const signinData = await this.authService.signin(user);
+  async signin(@Body() data: SigninUserDTO, @Response() res) {
+    const signinData = await this.authService.signin(data);
 
     res.cookie('accessToken', signinData.accessToken, {
       expires: new Date(new Date().getTime() + JWT_EXPIRY_SECONDS * 1000),
@@ -48,17 +48,22 @@ export class AuthController {
       httpOnly: true,
     });
 
-    return res.status(200).send(signinData);
+    return res.status(200).json(signinData);
   }
 
   @Post('signup')
-  async signup(@Body() user: SignupUserDTO): Promise<User> {
-    return this.authService.signup(user);
+  @ApiOperation({ description: '회원가입' })
+  @ApiBody({ type: SignupUserDTO })
+  async signup(@Body() data: SignupUserDTO, @Response() res): Promise<User> {
+    await this.authService.signup(data);
+    return res
+      .status(200)
+      .send('회원가입이 완료되었습니다! 가입된 정보로 로그인 해주세요.');
   }
 
   @Post('signout')
   signout(@Response() res): void {
     res.clearCookie('accessToken');
-    res.status(200).send({ success: true });
+    res.status(200).send('로그아웃 되었습니다.');
   }
 }
