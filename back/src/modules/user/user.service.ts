@@ -1,3 +1,4 @@
+import { SignupUserDTO } from '@modules/auth/auth.dto';
 import { PrismaService } from '@modules/prisma/prisma.service';
 import { Injectable } from '@nestjs/common';
 import { User } from '@prisma/client';
@@ -67,7 +68,7 @@ export class UserService {
     });
   }
 
-  async create(data): Promise<User> {
+  async create(data: SignupUserDTO): Promise<User> {
     return this.prisma.user.create({
       data,
     });

@@ -47,7 +47,10 @@ export class AuthController {
       secure: true,
       httpOnly: true,
     });
-
+    console.log(
+      'expire time: ',
+      new Date(new Date().getTime() + JWT_EXPIRY_SECONDS * 1000),
+    );
     return res.status(200).json(signinData);
   }
 

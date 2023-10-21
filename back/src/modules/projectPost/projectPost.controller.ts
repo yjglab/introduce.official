@@ -9,10 +9,10 @@ import { RegisterProjectPostDTO } from './projectPost.dto';
 export class ProjectPostController {
   constructor(private projectPostService: ProjectPostService) {}
 
-  @Get('/')
-  async getAllPosts(): Promise<ProjectPost[]> {
-    return this.projectPostService.findAll({});
-  }
+  // @Get('/')
+  // async getAllPosts(): Promise<ProjectPost[]> {
+  //   return this.projectPostService.findAll({});
+  // }
 
   @Get('project-post/:id')
   async getPostById(@Param('id') id: number): Promise<ProjectPost> {
@@ -35,15 +35,13 @@ export class ProjectPostController {
     } = data;
 
     return this.projectPostService.create({
-      data: {
-        category,
-        title,
-        description,
-        source,
-        skills,
-        sections,
-      },
       userEmail,
+      category,
+      title,
+      description,
+      source,
+      skills,
+      sections,
     });
   }
 

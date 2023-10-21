@@ -7,8 +7,9 @@ import { toast } from "react-toastify";
 const useSignIn = () => {
   const queryClient = useQueryClient();
   const mutation = useMutation(signInAPI, {
-    onSuccess: async () => {
+    onSuccess: (data) => {
       queryClient.refetchQueries(["user"]);
+      console.log(data);
     },
     onError: (error) => {
       if (axios.isAxiosError(error)) {

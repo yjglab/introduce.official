@@ -38,7 +38,7 @@ private
 
 
 # compiled output
-/dist
+dist
 
 
 # Logs

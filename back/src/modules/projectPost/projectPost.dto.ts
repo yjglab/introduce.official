@@ -1,8 +1,8 @@
-import { IsArray, IsNumber, IsObject, IsString } from 'class-validator';
+import { IsArray, IsEmail, IsObject, IsString } from 'class-validator';
 
 export class RegisterProjectPostDTO {
-  @IsNumber()
-  userEmail: number;
+  @IsEmail()
+  userEmail: string;
 
   @IsString()
   category: string;
