@@ -3,11 +3,13 @@ import { Injectable } from '@nestjs/common';
 import { Prisma, ProjectPost } from '@prisma/client';
 import { RegisterProjectPostDTO } from './projectPost.dto';
 import { UserService } from '@modules/user/user.service';
+import { ProjectSourceService } from '@modules/projectSource/projectSource.service';
 
 @Injectable()
 export class ProjectPostService {
   constructor(
     private userService: UserService,
+    private projectSourceService: ProjectSourceService,
     private prisma: PrismaService,
   ) {}
 
@@ -17,10 +19,11 @@ export class ProjectPostService {
     });
   }
 
-  async create(data: RegisterProjectPostDTO): Promise<ProjectPost> {
-    const userData = await this.userService.findOne({
+  async createPost(data: RegisterProjectPostDTO): Promise<ProjectPost> {
+    const user = await this.userService.findUserByEmail({
       email: data.userEmail,
     });
+
     return this.prisma.projectPost.create({
       data: {
         category: data.category,
@@ -28,15 +31,21 @@ export class ProjectPostService {
         description: data.description,
         user: {
           connect: {
-            id: userData.id,
+            id: user.id,
           },
         },
-        // todo: source controller
+        source: {
+          create: {
+            link: data.source.link,
+            name: data.source.name,
+            owner: data.source.owner,
+          },
+        },
       },
     });
   }
 
-  async update(params: {
+  async updatePost(params: {
     where: Prisma.ProjectPostWhereUniqueInput;
     data: Prisma.ProjectPostUpdateInput;
   }) {
@@ -47,7 +56,7 @@ export class ProjectPostService {
     });
   }
 
-  async delete(where: Prisma.ProjectPostWhereUniqueInput) {
+  async deletePost(where: Prisma.ProjectPostWhereUniqueInput) {
     return this.prisma.projectPost.delete({
       where,
     });

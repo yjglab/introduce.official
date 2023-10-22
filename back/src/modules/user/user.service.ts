@@ -7,7 +7,7 @@ import { User } from '@prisma/client';
 export class UserService {
   constructor(private prisma: PrismaService) {}
 
-  async findOne(where: { email: string }) {
+  async findUserByEmail(where: { email: string }) {
     return this.prisma.user.findUnique({
       where,
       include: {
@@ -34,11 +34,7 @@ export class UserService {
                 name: true,
               },
             },
-            skills: {
-              select: {
-                name: true,
-              },
-            },
+            skills: true,
             likers: {
               select: {
                 name: true,
@@ -53,11 +49,7 @@ export class UserService {
               select: {
                 header: true,
                 description: true,
-                images: {
-                  select: {
-                    src: true,
-                  },
-                },
+                images: true,
               },
             },
             createdAt: true,
@@ -68,13 +60,13 @@ export class UserService {
     });
   }
 
-  async create(data: SignupUserDTO): Promise<User> {
+  async createUser(data: SignupUserDTO): Promise<User> {
     return this.prisma.user.create({
       data,
     });
   }
 
-  async update(params: { where: { email: string }; data }): Promise<User> {
+  async updateUser(params: { where: { email: string }; data }): Promise<User> {
     const { where, data } = params;
     return this.prisma.user.update({
       data,
@@ -82,7 +74,7 @@ export class UserService {
     });
   }
 
-  async delete(where: { email: string }): Promise<User> {
+  async deleteUser(where: { email: string }): Promise<User> {
     return this.prisma.user.delete({
       where,
     });

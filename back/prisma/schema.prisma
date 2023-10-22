@@ -34,11 +34,11 @@ model ProjectPost {
   category    String
   title       String
   description String
-  source      ProjectPostSource?
+  source      ProjectSource?
   grades      Float                @default(0)
   user        User                 @relation(fields: [userId], references: [id])
   userId      Int
-  skills      ProjectPostSkill[]   @relation("ProjectPostSkills")
+  skills      String[]
   likers      User[]               @relation("UserLikedProjectPosts")
   markers     User[]               @relation("UserMarkedProjectPosts")
   sections    ProjectPostSection[]
@@ -47,13 +47,7 @@ model ProjectPost {
   updatedAt DateTime @updatedAt
 }
 
-model ProjectPostSkill {
-  id    Int           @id @default(autoincrement())
-  name  String
-  posts ProjectPost[] @relation("ProjectPostSkills")
-}
-
-model ProjectPostSource {
+model ProjectSource {
   id     Int         @id @default(autoincrement())
   name   String
   link   String
@@ -70,19 +64,13 @@ model FindingPost {
   deadline    String
   user        User                 @relation(fields: [userId], references: [id])
   userId      Int
-  skills      FindingPostSkill[]   @relation("FindingPostSkills")
+  skills      String[]
   likers      User[]               @relation("UserLikedFindingPosts")
   markers     User[]               @relation("UserMarkedFindingPosts")
   sections    FindingPostSection[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-}
-
-model FindingPostSkill {
-  id    Int           @id @default(autoincrement())
-  name  String
-  posts FindingPost[] @relation("FindingPostSkills")
 }
 
 model Social {
@@ -94,35 +82,21 @@ model Social {
 }
 
 model ProjectPostSection {
-  id          Int                       @id @default(autoincrement())
+  id          Int         @id @default(autoincrement())
   header      String
   description String
-  images      ProjectPostSectionImage[]
-  post        ProjectPost               @relation(fields: [postId], references: [id])
+  images      String[]
+  post        ProjectPost @relation(fields: [postId], references: [id])
   postId      Int
 }
 
 model FindingPostSection {
-  id          Int                       @id @default(autoincrement())
+  id          Int         @id @default(autoincrement())
   header      String
   description String
-  images      FindingPostSectionImage[]
-  post        FindingPost               @relation(fields: [postId], references: [id])
+  images      String[]
+  post        FindingPost @relation(fields: [postId], references: [id])
   postId      Int
-}
-
-model ProjectPostSectionImage {
-  id        Int                @id @default(autoincrement())
-  src       String
-  section   ProjectPostSection @relation(fields: [sectionId], references: [id])
-  sectionId Int
-}
-
-model FindingPostSectionImage {
-  id        Int                @id @default(autoincrement())
-  src       String
-  section   FindingPostSection @relation(fields: [sectionId], references: [id])
-  sectionId Int
 }
 
 enum UserClass {

@@ -34,7 +34,7 @@ export class ProjectPostController {
       sections,
     } = data;
 
-    return this.projectPostService.create({
+    return this.projectPostService.createPost({
       userEmail,
       category,
       title,
@@ -47,6 +47,6 @@ export class ProjectPostController {
 
   @Delete('project-post/:id')
   async deletePost(@Param('id') id: string): Promise<ProjectPost> {
-    return this.projectPostService.delete({ id: Number(id) });
+    return this.projectPostService.deletePost({ id: Number(id) });
   }
 }

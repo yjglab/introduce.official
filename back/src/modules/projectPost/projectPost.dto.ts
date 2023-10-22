@@ -23,7 +23,7 @@ export class RegisterProjectPostDTO {
   @IsArray()
   skills: string[];
 
-  @IsArray()
+  @IsObject()
   sections: {
     header: string;
     description: string;
