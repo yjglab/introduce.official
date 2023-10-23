@@ -7,10 +7,10 @@ import FormSection from "@components/SignUp/FormSection";
 
 const SignUpClientPage = () => {
   const router = useRouter();
-  const { data: myData } = useMyInfoQuery();
-  useEffect(() => {
-    if (myData) router.push("/");
-  }, [myData, router]);
+  // const { data: myData } = useMyInfoQuery();
+  // useEffect(() => {
+  //   if (myData) router.push("/");
+  // }, [myData, router]);
   return (
     <main className='mt-40 flex justify-center'>
       <FormSection />

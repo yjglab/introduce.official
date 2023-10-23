@@ -3,13 +3,11 @@ import { Injectable } from '@nestjs/common';
 import { Prisma, ProjectPost } from '@prisma/client';
 import { RegisterProjectPostDTO } from './projectPost.dto';
 import { UserService } from '@modules/user/user.service';
-import { ProjectSourceService } from '@modules/projectSource/projectSource.service';
 
 @Injectable()
 export class ProjectPostService {
   constructor(
     private userService: UserService,
-    private projectSourceService: ProjectSourceService,
     private prisma: PrismaService,
   ) {}
 
@@ -40,6 +38,9 @@ export class ProjectPostService {
             name: data.source.name,
             owner: data.source.owner,
           },
+        },
+        sections: {
+          create: data.sections,
         },
       },
     });

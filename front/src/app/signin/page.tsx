@@ -18,13 +18,12 @@ export async function generateMetadata() {
 const SignInPage = async () => {
   const header = headers();
   const cookie = header.get("Cookie");
-  const myInfo = await loadMyInfoAPI({
-    headers: cookie ? { cookie } : undefined,
-  });
-  console.log(myInfo);
-  if (myInfo) {
-    redirect("/");
-  }
+  // const myInfo = await loadMyInfoAPI({
+  //   headers: cookie ? { cookie } : undefined,
+  // });
+  // if (myInfo) {
+  //   redirect("/");
+  // }
   return <ClientPage />;
 };
 

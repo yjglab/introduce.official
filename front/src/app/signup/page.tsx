@@ -17,14 +17,14 @@ export async function generateMetadata() {
 }
 
 const SignUpPage = async () => {
-  const header = headers();
-  const cookie = header.get("Cookie");
-  const myData = await loadMyInfoAPI({
-    headers: cookie ? { cookie } : undefined,
-  });
-  if (myData) {
-    redirect("/");
-  }
+  // const header = headers();
+  // const cookie = header.get("Cookie");
+  // const myData = await loadMyInfoAPI({
+  //   headers: cookie ? { cookie } : undefined,
+  // });
+  // if (myData) {
+  //   redirect("/");
+  // }
   return <ClientPage />;
 };
 

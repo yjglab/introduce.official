@@ -19,12 +19,12 @@ export async function generateMetadata() {
 const ProfilePage = async () => {
   const header = headers();
   const cookie = header.get("Cookie");
-  const data = await loadMyInfoAPI({
-    headers: cookie ? { cookie } : undefined,
-  });
-  if (!data) {
-    redirect("/");
-  }
+  // const data = await loadMyInfoAPI({
+  //   headers: cookie ? { cookie } : undefined,
+  // });
+  // if (!data) {
+  //   redirect("/");
+  // }
   return <ClientPage />;
 };
 

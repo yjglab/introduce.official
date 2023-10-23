@@ -1,4 +1,4 @@
-import { Body, Controller, Post, Response } from '@nestjs/common';
+import { Body, Controller, Logger, Post, Response } from '@nestjs/common';
 import { ApiBody, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { User } from '@prisma/client';
 
@@ -15,12 +15,14 @@ import { JWT_EXPIRY_SECONDS } from '@shared/constants/global.constants';
 @ApiTags('auth')
 @Controller('auth')
 export class AuthController {
+  private readonly logger = new Logger(AuthController.name);
   constructor(private readonly authService: AuthService) {}
 
   @Post('email-duplication')
   @ApiOperation({ description: '이메일 중복 확인' })
   @ApiBody({ type: EmailDuplicationDTO })
   async emailDuplication(@Body() data: EmailDuplicationDTO, @Response() res) {
+    this.logger.debug('duplication data', data);
     const { message, hashedCode } =
       await this.authService.emailDuplication(data);
     return res.status(200).json({ message, hashedCode });

@@ -43,11 +43,11 @@ const getQueryClient = cache(() => new QueryClient());
 
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
   const queryClient = getQueryClient();
-  const header = headers();
-  const cookie = header.get("Cookie");
-  await queryClient.prefetchQuery(["user"], () =>
-    loadMyInfoAPI({ headers: cookie ? { cookie } : undefined }),
-  );
+  // const header = headers();
+  // const cookie = header.get("Cookie");
+  // await queryClient.prefetchQuery(["user"], () =>
+  //   loadMyInfoAPI({ headers: cookie ? { cookie } : undefined }),
+  // );
   const dehydratedState = dehydrate(queryClient);
   queryClient.clear();
   return (

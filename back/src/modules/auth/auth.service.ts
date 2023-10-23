@@ -29,7 +29,7 @@ export class AuthService {
   public async emailDuplication(
     data: EmailDuplicationDTO,
   ): Promise<{ message: string; hashedCode: string }> {
-    const userData = await this.userService.findOne({
+    const userData = await this.userService.findUserByEmail({
       email: data.email,
     });
 
@@ -62,7 +62,7 @@ export class AuthService {
   }
 
   public async signin(data: SigninUserDTO): Promise<AuthResponseDTO> {
-    const userData = await this.userService.findOne({
+    const userData = await this.userService.findUserByEmail({
       email: data.email,
     });
     const passwordVerified = await AuthHelpers.hashVerify(
@@ -99,6 +99,6 @@ export class AuthService {
     data.email = await AuthHelpers.encrypt(data.email);
     data.password = await AuthHelpers.hash(data.password);
 
-    return this.userService.create(data);
+    return this.userService.createUser(data);
   }
 }
