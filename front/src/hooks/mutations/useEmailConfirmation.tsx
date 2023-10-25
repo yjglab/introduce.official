@@ -7,11 +7,11 @@ import { toast } from "react-toastify";
 const useEmailConfirmation = () => {
   const mutation = useMutation(emailConfirmationAPI, {
     onSuccess: (data) => {
-      toast.success(data, toastConfig);
+      toast.success(data.message, toastConfig);
     },
     onError: (error) => {
       if (axios.isAxiosError(error)) {
-        toast.error(error.response?.data, toastConfig);
+        toast.error(error.response?.data.message, toastConfig);
       }
     },
   });

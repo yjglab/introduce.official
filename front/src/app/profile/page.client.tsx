@@ -6,10 +6,10 @@ import useMyInfoQuery from "@/hooks/queries/useMyInfo";
 
 const ProfileClientPage = () => {
   const router = useRouter();
-  const { data: me } = useMyInfoQuery();
-  useEffect(() => {
-    if (!me) router.push("/");
-  }, [me, router]);
+  // const { data: me } = useMyInfoQuery();
+  // useEffect(() => {
+  //   if (!me) router.push("/");
+  // }, [me, router]);
   return <>profile</>;
 };
 

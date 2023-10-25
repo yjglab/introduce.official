@@ -7,10 +7,10 @@ import FormSection from "@components/SignIn/FormSection";
 
 const SignInClientPage = () => {
   const router = useRouter();
-  const { data: myInfo } = useMyInfoQuery();
-  useEffect(() => {
-    if (myInfo) router.push("/");
-  }, [myInfo, router]);
+  // const { data: myInfo } = useMyInfoQuery();
+  // useEffect(() => {
+  //   if (myInfo) router.push("/");
+  // }, [myInfo, router]);
   return (
     <main className='mt-40 flex justify-center'>
       <FormSection />

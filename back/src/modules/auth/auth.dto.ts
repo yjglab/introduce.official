@@ -2,9 +2,14 @@ import { User } from '@prisma/client';
 import { IsEmail, IsNotEmpty, IsString } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 
-export class AuthResponseDTO {
-  user: User;
-  accessToken: string;
+export class JwtAccessDTO {
+  @IsEmail()
+  email: string;
+}
+export class SigninResponseDTO {
+  user?: User;
+  accessToken?: string;
+  message: string;
 }
 
 export class EmailDuplicationDTO {

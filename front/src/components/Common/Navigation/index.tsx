@@ -5,19 +5,21 @@ import { memo, useCallback, useEffect } from "react";
 
 const Navigation = memo(() => {
   const { mutate: signOutMutate } = useSignOut();
-  const { data: myInfo } = useMyInfoQuery();
+  // const { data: myInfo } = useMyInfoQuery();
   const handleSignOut = useCallback(() => {
     signOutMutate();
   }, [signOutMutate]);
-  useEffect(() => {
-    console.log(myInfo);
-  }, [myInfo]);
+  // useEffect(() => {
+  //   console.log(myInfo);
+  // }, [myInfo]);
   return (
     <nav>
       <Link href='/'>홈 </Link>
 
       <Link href='/profile'>프로필 </Link>
-
+      <Link href='/signup'>가입 </Link>
+      <Link href='/signin'>로그인 </Link>
+      {/* 
       {myInfo ? (
         <button onClick={handleSignOut}>로그아웃</button>
       ) : (
@@ -25,7 +27,7 @@ const Navigation = memo(() => {
           <Link href='/signup'>가입 </Link>
           <Link href='/signin'>로그인 </Link>
         </>
-      )}
+      )} */}
     </nav>
   );
 });

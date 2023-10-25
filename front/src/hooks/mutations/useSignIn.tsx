@@ -9,7 +9,7 @@ const useSignIn = () => {
   const mutation = useMutation(signInAPI, {
     onSuccess: (data) => {
       queryClient.refetchQueries(["user"]);
-      console.log(data);
+      toast.success(data.message, toastConfig);
     },
     onError: (error) => {
       if (axios.isAxiosError(error)) {

@@ -3,14 +3,14 @@ import { ApiBody, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { User } from '@prisma/client';
 
 import {
-  AuthResponseDTO,
   EmailConfirmationDTO,
   EmailDuplicationDTO,
+  SigninResponseDTO,
   SigninUserDTO,
   SignupUserDTO,
 } from './auth.dto';
 import { AuthService } from './auth.service';
-import { JWT_EXPIRY_SECONDS } from '@shared/constants/global.constants';
+// import { JWT_EXPIRY_SECONDS } from '@shared/constants/global.constants';
 
 @ApiTags('auth')
 @Controller('auth')
@@ -21,45 +21,32 @@ export class AuthController {
   @Post('email-duplication')
   @ApiOperation({ description: '이메일 중복 확인' })
   @ApiBody({ type: EmailDuplicationDTO })
-  async emailDuplication(@Body() data: EmailDuplicationDTO, @Response() res) {
-    this.logger.debug('duplication data', data);
-    const { message, hashedCode } =
-      await this.authService.emailDuplication(data);
-    return res.status(200).json({ message, hashedCode });
+  async emailDuplication(@Body() data: EmailDuplicationDTO) {
+    return this.authService.emailDuplication(data);
   }
 
   @Post('email-confirmation')
   @ApiOperation({ description: '이메일 인증 코드 확인' })
   @ApiBody({ type: EmailConfirmationDTO })
-  async emailConfirmation(@Body() data: EmailConfirmationDTO, @Response() res) {
-    const { message } = await this.authService.emailConfirmation(data);
-    return res.status(200).send(message);
+  async emailConfirmation(@Body() data: EmailConfirmationDTO) {
+    return this.authService.emailConfirmation(data);
   }
 
   @Post('signin')
   @ApiOperation({ description: '로그인' })
   @ApiBody({ type: SigninUserDTO })
-  @ApiResponse({ type: AuthResponseDTO })
+  @ApiResponse({ type: SigninResponseDTO })
   async signin(@Body() data: SigninUserDTO, @Response() res) {
-    const signinData = await this.authService.signin(data);
-
-    res.cookie('accessToken', signinData.accessToken, {
-      expires: new Date(new Date().getTime() + JWT_EXPIRY_SECONDS * 1000),
-      sameSite: 'strict',
-      secure: true,
-      httpOnly: true,
-    });
-    console.log(
-      'expire time: ',
-      new Date(new Date().getTime() + JWT_EXPIRY_SECONDS * 1000),
-    );
-    return res.status(200).json(signinData);
+    const signinPayload = await this.authService.signin(data, res);
+    return res.status(200).json(signinPayload);
   }
 
   @Post('signup')
   @ApiOperation({ description: '회원가입' })
   @ApiBody({ type: SignupUserDTO })
   async signup(@Body() data: SignupUserDTO, @Response() res): Promise<User> {
+    this.logger.debug(data);
+
     await this.authService.signup(data);
     return res
       .status(200)
