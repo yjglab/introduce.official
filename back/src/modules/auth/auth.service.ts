@@ -99,9 +99,6 @@ export class AuthService {
         }),
       ];
       console.log(accessToken, refreshToken);
-      // const accessToken = this.jwtService.sign(userPayload, {
-      //   expiresIn: GLOBAL_CONFIG.security.expiresIn,
-      // });
 
       res.cookie('refreshToken', refreshToken, {
         path: '/',
@@ -110,7 +107,7 @@ export class AuthService {
         expires: new Date(Date.now() + 1000 * 60 * 60 * 24 * 30), // 1달
       });
       return {
-        user: userPayload,
+        data: userPayload,
         accessToken: accessToken,
         message: '로그인 성공',
       };

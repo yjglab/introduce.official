@@ -7,7 +7,7 @@ export class JwtAccessDTO {
   email: string;
 }
 export class SigninResponseDTO {
-  user?: User;
+  data?: User;
   accessToken?: string;
   message: string;
 }

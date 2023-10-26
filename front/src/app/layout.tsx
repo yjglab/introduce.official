@@ -7,6 +7,8 @@ import { headers } from "next/headers";
 import { loadMyInfoAPI } from "@/api/user";
 import ClientLayout from "./layout.client";
 import Providers from "./providers.client";
+import { Provider } from "react-redux";
+import store from "@/store";
 
 export const metadata: Metadata = {
   title: {
@@ -55,7 +57,9 @@ export default async function RootLayout({ children }: { children: React.ReactNo
       <body>
         <Providers>
           <Hydrate state={dehydratedState}>
-            <ClientLayout>{children}</ClientLayout>
+            <Provider store={store}>
+              <ClientLayout>{children}</ClientLayout>
+            </Provider>
           </Hydrate>
         </Providers>
       </body>

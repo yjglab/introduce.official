@@ -1,7 +1,10 @@
+import { setMyInfo } from "@/reducers/user";
+import { AppDispatch } from "@/store";
 import useSignIn from "@hooks/mutations/useSignIn";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
+import { useDispatch } from "react-redux";
 import { PropagateLoader } from "react-spinners";
 
 interface Form {
@@ -14,7 +17,14 @@ interface Form {
 }
 const SignInForm = () => {
   const router = useRouter();
-  const { mutate: signInMutate, isLoading: isSignInLoading, isSuccess: isSignInSuccess } = useSignIn();
+  const dispatch = useDispatch<AppDispatch>();
+
+  const {
+    mutate: signInMutate,
+    isLoading: isSignInLoading,
+    isSuccess: isSignInSuccess,
+    data: signInData,
+  } = useSignIn();
 
   const {
     register,
@@ -35,6 +45,7 @@ const SignInForm = () => {
 
   useEffect(() => {
     if (isSignInSuccess) {
+      dispatch(setMyInfo(signInData));
       router.replace("/");
     }
   }, [isSignInSuccess]);

@@ -1,6 +1,13 @@
-import { Body, Controller, Logger, Post, Response } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Logger,
+  Post,
+  Res,
+  UseGuards,
+} from '@nestjs/common';
 import { ApiBody, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
-import { User } from '@prisma/client';
 
 import {
   EmailConfirmationDTO,
@@ -10,6 +17,8 @@ import {
   SignupUserDTO,
 } from './auth.dto';
 import { AuthService } from './auth.service';
+import { JwtAuthGuard } from './auth.jwt.guard';
+import { Response } from 'express';
 // import { JWT_EXPIRY_SECONDS } from '@shared/constants/global.constants';
 
 @ApiTags('auth')
@@ -36,25 +45,25 @@ export class AuthController {
   @ApiOperation({ description: '로그인' })
   @ApiBody({ type: SigninUserDTO })
   @ApiResponse({ type: SigninResponseDTO })
-  async signin(@Body() data: SigninUserDTO, @Response() res) {
-    const signinPayload = await this.authService.signin(data, res);
-    return res.status(200).json(signinPayload);
+  async signin(@Body() data: SigninUserDTO, @Res() res: Response) {
+    return this.authService.signin(data, res);
   }
 
   @Post('signup')
   @ApiOperation({ description: '회원가입' })
   @ApiBody({ type: SignupUserDTO })
-  async signup(@Body() data: SignupUserDTO, @Response() res): Promise<User> {
+  async signup(@Body() data: SignupUserDTO) {
     this.logger.debug(data);
 
     await this.authService.signup(data);
-    return res
-      .status(200)
-      .send('회원가입이 완료되었습니다! 가입된 정보로 로그인 해주세요.');
+    return {
+      message: '회원가입이 완료되었습니다! 가입된 정보로 로그인 해주세요.',
+    };
   }
 
-  @Post('signout')
-  signout(@Response() res): void {
+  @Get('signout')
+  @UseGuards(JwtAuthGuard)
+  async signout(@Res() res: Response) {
     res.clearCookie('accessToken');
     res.status(200).send('로그아웃 되었습니다.');
   }
