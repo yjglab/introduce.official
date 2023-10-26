@@ -31,7 +31,7 @@ export class AuthService {
     data: EmailDuplicationDTO,
   ): Promise<{ message: string; hashedCode: string }> {
     const userData = await this.userService.findUserByEmail({
-      email: AuthHelpers.decrypt(data.email),
+      email: AuthHelpers.encrypt(data.email),
     });
 
     if (userData) {

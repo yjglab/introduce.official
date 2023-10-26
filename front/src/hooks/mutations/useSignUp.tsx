@@ -11,7 +11,7 @@ const useSignUp = () => {
     },
     onError: (error) => {
       if (axios.isAxiosError(error)) {
-        toast.error(error.response?.data, toastConfig);
+        toast.error(error.response?.data.message, toastConfig);
       }
     },
   });
