@@ -1,6 +1,7 @@
 import {
   ForbiddenException,
   Injectable,
+  Logger,
   UnauthorizedException,
 } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
@@ -66,9 +67,15 @@ export class AuthService {
     res: Response,
   ): Promise<SigninResponseDTO> {
     try {
+      Logger.debug(AuthHelpers.encrypt(data.email));
+      Logger.debug(
+        AuthHelpers.decrypt('pwg2iIj+HIHR0QD0ny77Z8+UsvgR7VOZjPsnjw+u4Ws='),
+      );
       const user = await this.userService.findUserByEmail({
-        email: data.email,
+        email: AuthHelpers.encrypt(data.email),
       });
+      Logger.debug(user);
+
       const passwordVerified = await AuthHelpers.hashVerify(
         data.password,
         user.password,

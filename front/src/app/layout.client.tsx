@@ -1,8 +1,10 @@
 "use client";
 
+import store from "@/store";
 import Navigation from "@components/Common/Navigation";
 import classNames from "classnames";
 import { Noto_Sans } from "next/font/google";
+import { Provider } from "react-redux";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
@@ -14,12 +16,12 @@ const font = Noto_Sans({
 
 export default function RootClientLayout({ children }: { children: React.ReactNode }) {
   return (
-    <>
+    <Provider store={store}>
       <Navigation />
       <div id='layout' className={classNames(font.className)}>
         {children}
       </div>
       <ToastContainer />
-    </>
+    </Provider>
   );
 }

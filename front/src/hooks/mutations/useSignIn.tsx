@@ -5,11 +5,12 @@ import axios from "axios";
 import { toast } from "react-toastify";
 
 const useSignIn = () => {
-  const queryClient = useQueryClient();
+  // const queryClient = useQueryClient();
   const mutation = useMutation(signInAPI, {
     onSuccess: (data) => {
-      queryClient.refetchQueries(["user"]);
+      // queryClient.refetchQueries(["setMyInfo"]);
       toast.success(data.message, toastConfig);
+      console.log("useSignIn", data);
     },
     onError: (error) => {
       if (axios.isAxiosError(error)) {

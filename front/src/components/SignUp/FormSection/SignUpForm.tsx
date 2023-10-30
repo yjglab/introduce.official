@@ -54,10 +54,10 @@ const SignUpForm = () => {
     if (!isEmailConfirmationSuccess) {
       return toast.error("이메일 인증이 필요합니다.", toastConfig);
     }
-
     if (position === "default") {
       return toast.error("직무를 선택해주세요.", toastConfig);
     }
+
     signUpMutate({
       email,
       name,
@@ -75,7 +75,7 @@ const SignUpForm = () => {
     }
   }, [isSignUpSuccess]);
   return (
-    <form key='register-form' onSubmit={handleSignUpSubmit} className=''>
+    <form onSubmit={handleSignUpSubmit} className=''>
       <div>
         <div className='flex gap-y-4'>
           <label htmlFor='email-address' className='sr-only'>

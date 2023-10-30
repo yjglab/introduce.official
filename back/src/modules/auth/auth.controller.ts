@@ -24,7 +24,6 @@ import { Response } from 'express';
 @ApiTags('auth')
 @Controller('auth')
 export class AuthController {
-  private readonly logger = new Logger(AuthController.name);
   constructor(private readonly authService: AuthService) {}
 
   @Post('email-duplication')
@@ -53,8 +52,6 @@ export class AuthController {
   @ApiOperation({ description: '회원가입' })
   @ApiBody({ type: SignupUserDTO })
   async signup(@Body() data: SignupUserDTO) {
-    this.logger.debug(data);
-
     await this.authService.signup(data);
     return {
       message: '회원가입이 완료되었습니다! 가입된 정보로 로그인 해주세요.',

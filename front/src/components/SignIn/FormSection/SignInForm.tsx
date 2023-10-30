@@ -1,6 +1,8 @@
-import { setMyInfo } from "@/reducers/user";
 import { AppDispatch } from "@/store";
+import { SIGN_IN } from "@/store/slices/auth.slice";
+import { SET_MY_DATA } from "@/store/slices/user.slice";
 import useSignIn from "@hooks/mutations/useSignIn";
+import { useQuery } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
@@ -37,21 +39,23 @@ const SignInForm = () => {
 
   const handleSignInSubmit = handleSubmit(async (data) => {
     const { email, password } = data;
-    signInMutate({
+    console.log(data);
+    await signInMutate({
       email,
       password,
     });
+    if (isSignInSuccess) {
+      dispatch(SIGN_IN(signInData));
+      dispatch(SET_MY_DATA(signInData));
+      // router.replace("/");
+    }
   });
 
   useEffect(() => {
-    if (isSignInSuccess) {
-      dispatch(setMyInfo(signInData));
-      router.replace("/");
-    }
-  }, [isSignInSuccess]);
-
+    console.log(isSignInLoading, signInData);
+  }, [isSignInLoading, signInData]);
   return (
-    <form key='register-form' onSubmit={handleSignInSubmit} className=''>
+    <form onSubmit={handleSignInSubmit} className=''>
       <div>
         <div className='flex gap-y-4'>
           <label htmlFor='email-address' className='sr-only'>
