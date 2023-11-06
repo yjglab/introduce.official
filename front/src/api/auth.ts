@@ -26,6 +26,7 @@ export async function emailConfirmationAPI(data: {
   userInputCode: string; // user input code
   confirmationCode: string;
 }) {
+  console.log(data);
   const response = await api.post("/auth/email-confirmation", data);
   return response.data;
 }

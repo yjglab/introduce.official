@@ -9,9 +9,9 @@ datasource db {
 
 model User {
   id       Int       @id @default(autoincrement())
-  email    String    @unique
+  email    String    @unique @db.VarChar(300)
   name     String    @unique
-  password String
+  password String    @db.VarChar(300)
   social   Social?
   position String
   class    UserClass @default(normal)
@@ -75,7 +75,7 @@ model FindingPost {
 
 model Social {
   id           Int    @id @default(autoincrement())
-  connectionId String
+  connectionId String @db.VarChar(300)
   name         String
   user         User   @relation(fields: [userId], references: [id])
   userId       Int    @unique

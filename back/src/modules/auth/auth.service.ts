@@ -1,7 +1,6 @@
 import {
   ForbiddenException,
   Injectable,
-  Logger,
   UnauthorizedException,
 } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
@@ -32,9 +31,8 @@ export class AuthService {
     data: EmailDuplicationDTO,
   ): Promise<{ message: string; hashedCode: string }> {
     const userData = await this.userService.findUserByEmail({
-      email: AuthHelpers.encrypt(data.email),
+      email: AuthHelpers.encryptCbc(data.email),
     });
-
     if (userData) {
       throw new ForbiddenException('이미 사용중인 이메일입니다');
     }
@@ -67,15 +65,9 @@ export class AuthService {
     res: Response,
   ): Promise<SigninResponseDTO> {
     try {
-      Logger.debug(AuthHelpers.encrypt(data.email));
-      Logger.debug(
-        AuthHelpers.decrypt('pwg2iIj+HIHR0QD0ny77Z8+UsvgR7VOZjPsnjw+u4Ws='),
-      );
       const user = await this.userService.findUserByEmail({
-        email: AuthHelpers.encrypt(data.email),
+        email: AuthHelpers.encryptCbc(data.email),
       });
-      Logger.debug(user);
-
       const passwordVerified = await AuthHelpers.hashVerify(
         data.password,
         user.password,
@@ -84,16 +76,13 @@ export class AuthService {
         throw new UnauthorizedException('잘못된 비밀번호입니다.');
       }
 
-      const userPayload = {
-        ...user,
-        email: AuthHelpers.decrypt(user.email),
-      };
       const accessPayload: JwtAccessDTO = {
-        email: userPayload.email,
+        email: user.email,
       };
       const refreshPayload: JwtAccessDTO = {
-        email: userPayload.email,
+        email: user.email,
       };
+      console.log('user', user);
       console.log('JWT ENV', {
         privatekey: this.config.get('JWT_ACCESS_TOKEN_PRIVATE_KEY'),
         refreshkey: this.config.get('JWT_REFRESH_TOKEN_PRIVATE_KEY'),
@@ -107,12 +96,17 @@ export class AuthService {
       ];
       console.log(accessToken, refreshToken);
 
-      res.cookie('refreshToken', refreshToken, {
+      res.cookie('rt', refreshToken, {
         path: '/',
         httpOnly: true,
         sameSite: 'strict',
         expires: new Date(Date.now() + 1000 * 60 * 60 * 24 * 30), // 1달
       });
+      const userPayload = {
+        ...user,
+        email: AuthHelpers.decryptCbc(user.email),
+      };
+      console.log('login user data', userPayload);
       return {
         data: userPayload,
         accessToken: accessToken,
@@ -124,9 +118,6 @@ export class AuthService {
     }
   }
   public async signup(data: SignupUserDTO): Promise<User> {
-    data.email = AuthHelpers.encrypt(data.email);
-    data.password = await AuthHelpers.hash(data.password);
-
     return this.userService.createUser(data);
   }
 }

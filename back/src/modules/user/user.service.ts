@@ -1,6 +1,6 @@
 import { SignupUserDTO } from '@modules/auth/auth.dto';
 import { PrismaService } from '@modules/prisma/prisma.service';
-import { Injectable } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
 import { User } from '@prisma/client';
 
 @Injectable()
@@ -61,6 +61,7 @@ export class UserService {
   }
 
   async createUser(data: SignupUserDTO): Promise<User> {
+    Logger.debug(data.password);
     return this.prisma.user.create({
       data,
     });

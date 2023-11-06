@@ -40,7 +40,7 @@ const SignInForm = () => {
   const handleSignInSubmit = handleSubmit(async (data) => {
     const { email, password } = data;
     console.log(data);
-    await signInMutate({
+    signInMutate({
       email,
       password,
     });
@@ -52,8 +52,8 @@ const SignInForm = () => {
   });
 
   useEffect(() => {
-    console.log(isSignInLoading, signInData);
-  }, [isSignInLoading, signInData]);
+    console.log(isSignInLoading, isSignInSuccess, signInData);
+  }, [isSignInLoading, isSignInSuccess, signInData]);
   return (
     <form onSubmit={handleSignInSubmit} className=''>
       <div>

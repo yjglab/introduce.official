@@ -218,7 +218,7 @@ const SignUpForm = () => {
       <button
         type='submit'
         className='disabled:opacity-50 bg-white'
-        disabled={isSignUpLoading || !!errors.email?.message}
+        disabled={isSignUpLoading || isSignUpSuccess}
       >
         가입
       </button>

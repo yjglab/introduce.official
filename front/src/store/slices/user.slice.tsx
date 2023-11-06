@@ -13,7 +13,7 @@ export const userSlice = createSlice({
   initialState,
   reducers: {
     SET_MY_DATA(state: Draft<UserState>, { payload }) {
-      state.me = payload;
+      state.me = payload.data;
     },
   },
 });

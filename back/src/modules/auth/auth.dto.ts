@@ -3,7 +3,7 @@ import { IsEmail, IsNotEmpty, IsString } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 
 export class JwtAccessDTO {
-  @IsEmail()
+  @IsString()
   email: string;
 }
 export class SigninResponseDTO {
@@ -19,6 +19,9 @@ export class EmailDuplicationDTO {
 }
 
 export class EmailConfirmationDTO {
+  @IsEmail()
+  email: string;
+
   @IsString()
   @ApiProperty()
   userInputCode: string;

@@ -1,12 +1,4 @@
-import {
-  Body,
-  Controller,
-  Get,
-  Logger,
-  Post,
-  Res,
-  UseGuards,
-} from '@nestjs/common';
+import { Body, Controller, Get, Post, Res, UseGuards } from '@nestjs/common';
 import { ApiBody, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 
 import {
@@ -44,7 +36,10 @@ export class AuthController {
   @ApiOperation({ description: '로그인' })
   @ApiBody({ type: SigninUserDTO })
   @ApiResponse({ type: SigninResponseDTO })
-  async signin(@Body() data: SigninUserDTO, @Res() res: Response) {
+  async signin(
+    @Body() data: SigninUserDTO,
+    @Res({ passthrough: true }) res: Response,
+  ) {
     return this.authService.signin(data, res);
   }
 

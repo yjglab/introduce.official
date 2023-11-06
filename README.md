@@ -1,4 +1,4 @@
-# Nebaram Hoolter V0.0 (2023.11 출시 예정)
+# Nebaram Hoolter V0.0 (2023.12 서비스 예정)
 
 ![image](https://github.com/yjglab/Hoolter/assets/70316567/9b823283-9168-4fd2-be2e-cb6485378346)
 
@@ -11,6 +11,7 @@ Author: Jaekyeong Yuk
 <img src="https://img.shields.io/badge/React-61DAFB?style=for-the-badge&logo=React&logoColor=white">
 <img src="https://img.shields.io/badge/Next.js-000000?style=for-the-badge&logo=Next.js&logoColor=white">
 <img src="https://img.shields.io/badge/reactquery-FF4154?style=for-the-badge&logo=reactquery&logoColor=white">
+<img src="https://img.shields.io/badge/Redux--Toolkit-764ABC?style=for-the-badge&logo=Redux&logoColor=white">
 <img src="https://img.shields.io/badge/Tailwindcss-06B6D4?style=for-the-badge&logo=Tailwindcss&logoColor=white">
 <img src="https://img.shields.io/badge/Emotion-569A31?style=for-the-badge&logo=Emotion&logoColor=white">
 <img src="https://img.shields.io/badge/Framer-0055FF?style=for-the-badge&logo=Framer&logoColor=white">
