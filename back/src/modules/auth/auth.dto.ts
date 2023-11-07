@@ -1,15 +1,9 @@
-import { User } from '@prisma/client';
 import { IsEmail, IsNotEmpty, IsString } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 
 export class JwtAccessDTO {
   @IsString()
   email: string;
-}
-export class SigninResponseDTO {
-  data?: User;
-  accessToken?: string;
-  message: string;
 }
 
 export class EmailDuplicationDTO {
@@ -31,7 +25,7 @@ export class EmailConfirmationDTO {
   confirmationCode: string;
 }
 
-export class SignupUserDTO {
+export class SignUpDTO {
   @IsString()
   @ApiProperty()
   email: string;
@@ -49,7 +43,7 @@ export class SignupUserDTO {
   position: string;
 }
 
-export class SigninUserDTO {
+export class SignInDTO {
   @IsString()
   @IsNotEmpty()
   @ApiProperty()

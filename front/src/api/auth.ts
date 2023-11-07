@@ -35,19 +35,3 @@ export async function refreshAccessToken() {
   const response = await api.get("/auth/refresh");
   return response.data;
 }
-
-api.interceptors.response.use(
-  (response) => {
-    return response;
-  },
-  async (error) => {
-    const originalRequest = error.config;
-    const errorMessage = error.response.data.message as string;
-    if (errorMessage.includes("not logged in") && !originalRequest._retry) {
-      originalRequest._retry = true;
-      await refreshAccessToken();
-      return api(originalRequest);
-    }
-    return Promise.reject(error);
-  },
-);

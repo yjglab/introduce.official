@@ -1,12 +1,11 @@
 import { Body, Controller, Get, Post, Res, UseGuards } from '@nestjs/common';
-import { ApiBody, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { ApiBody, ApiOperation, ApiTags } from '@nestjs/swagger';
 
 import {
   EmailConfirmationDTO,
   EmailDuplicationDTO,
-  SigninResponseDTO,
-  SigninUserDTO,
-  SignupUserDTO,
+  SignInDTO,
+  SignUpDTO,
 } from './auth.dto';
 import { AuthService } from './auth.service';
 import { JwtAuthGuard } from './auth.jwt.guard';
@@ -34,10 +33,9 @@ export class AuthController {
 
   @Post('signin')
   @ApiOperation({ description: '로그인' })
-  @ApiBody({ type: SigninUserDTO })
-  @ApiResponse({ type: SigninResponseDTO })
+  @ApiBody({ type: SignInDTO })
   async signin(
-    @Body() data: SigninUserDTO,
+    @Body() data: SignInDTO,
     @Res({ passthrough: true }) res: Response,
   ) {
     return this.authService.signin(data, res);
@@ -45,8 +43,8 @@ export class AuthController {
 
   @Post('signup')
   @ApiOperation({ description: '회원가입' })
-  @ApiBody({ type: SignupUserDTO })
-  async signup(@Body() data: SignupUserDTO) {
+  @ApiBody({ type: SignUpDTO })
+  async signup(@Body() data: SignUpDTO) {
     await this.authService.signup(data);
     return {
       message: '회원가입이 완료되었습니다! 가입된 정보로 로그인 해주세요.',
@@ -54,6 +52,7 @@ export class AuthController {
   }
 
   @Get('signout')
+  @ApiOperation({ description: '로그아웃' })
   @UseGuards(JwtAuthGuard)
   async signout(@Res() res: Response) {
     res.clearCookie('accessToken');

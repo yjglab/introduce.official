@@ -10,7 +10,7 @@ import { User } from '@prisma/client';
 const fromCookie = (req: Request) => {
   let token = null;
   if (req && req.cookies) {
-    token = req.cookies['refreshToken']; // refreshToken 쿠키에서 받아옴
+    token = req.cookies['rt']; // refreshToken 쿠키에서 받아옴
   }
   return token;
 };

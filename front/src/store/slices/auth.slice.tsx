@@ -18,8 +18,8 @@ export const authSlice = createSlice({
   name: "auth",
   initialState,
   reducers: {
-    SIGN_IN: (state: AuthState, action: PayloadAction<string>) => {
-      state.data.accessToken = action.payload;
+    SIGN_IN: (state: AuthState, action) => {
+      state.data.accessToken = action.payload.accessToken;
       localStorage.setItem("at", state.data.accessToken);
       state.data.isSignIn = true;
     },

@@ -8,14 +8,16 @@ datasource db {
 }
 
 model User {
-  id       Int       @id @default(autoincrement())
-  email    String    @unique @db.VarChar(300)
-  name     String    @unique
-  password String    @db.VarChar(300)
-  social   Social?
-  position String
-  class    UserClass @default(normal)
-  role     UserRole  @default(user)
+  id                     Int       @id @default(autoincrement())
+  email                  String    @unique @db.VarChar(300)
+  name                   String    @unique
+  password               String    @db.VarChar(300)
+  social                 Social?
+  position               String
+  class                  UserClass @default(normal)
+  role                   UserRole  @default(user)
+  refreshToken           String?
+  refreshTokenExpiration DateTime?
 
   projectPosts ProjectPost[]
   findingPosts FindingPost[]

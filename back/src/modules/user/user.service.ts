@@ -1,11 +1,16 @@
-import { SignupUserDTO } from '@modules/auth/auth.dto';
+import { SignUpDTO } from '@modules/auth/auth.dto';
 import { PrismaService } from '@modules/prisma/prisma.service';
-import { Injectable, Logger } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
 import { User } from '@prisma/client';
+import { AuthHelpers } from '@shared/helpers/auth.helpers';
 
 @Injectable()
 export class UserService {
-  constructor(private prisma: PrismaService) {}
+  constructor(
+    private prisma: PrismaService,
+    private readonly configService: ConfigService,
+  ) {}
 
   async findUserByEmail(where: { email: string }) {
     return this.prisma.user.findUnique({
@@ -60,14 +65,13 @@ export class UserService {
     });
   }
 
-  async createUser(data: SignupUserDTO): Promise<User> {
-    Logger.debug(data.password);
+  async createUser(data: SignUpDTO): Promise<User> {
     return this.prisma.user.create({
       data,
     });
   }
 
-  async updateUser(params: { where: { email: string }; data }): Promise<User> {
+  async updateUser(params: { where: { id: number }; data }): Promise<User> {
     const { where, data } = params;
     return this.prisma.user.update({
       data,
@@ -79,5 +83,30 @@ export class UserService {
     return this.prisma.user.delete({
       where,
     });
+  }
+
+  async setRefreshToken(token: string, userId: number) {
+    const refreshToken = await AuthHelpers.hash(token);
+    const refreshTokenExpiration = await this.getRefreshTokenExpiration();
+    await this.prisma.user.update({
+      where: {
+        id: userId,
+      },
+      data: {
+        refreshToken,
+        refreshTokenExpiration,
+      },
+    });
+  }
+
+  async getRefreshTokenExpiration(): Promise<Date> {
+    const currentDate = new Date();
+    const expirationDate = new Date(
+      currentDate.getTime() +
+        parseInt(
+          this.configService.get<string>('JWT_REFRESH_TOKEN_EXPIRATION'),
+        ),
+    );
+    return expirationDate;
   }
 }

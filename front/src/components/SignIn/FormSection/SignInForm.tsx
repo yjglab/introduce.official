@@ -1,4 +1,4 @@
-import { AppDispatch } from "@/store";
+import { AppDispatch, RootState } from "@/store";
 import { SIGN_IN } from "@/store/slices/auth.slice";
 import { SET_MY_DATA } from "@/store/slices/user.slice";
 import useSignIn from "@hooks/mutations/useSignIn";
@@ -6,7 +6,7 @@ import { useQuery } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { PropagateLoader } from "react-spinners";
 
 interface Form {
@@ -20,7 +20,7 @@ interface Form {
 const SignInForm = () => {
   const router = useRouter();
   const dispatch = useDispatch<AppDispatch>();
-
+  const { me } = useSelector((state: RootState) => state.user);
   const {
     mutate: signInMutate,
     isLoading: isSignInLoading,
@@ -44,16 +44,14 @@ const SignInForm = () => {
       email,
       password,
     });
-    if (isSignInSuccess) {
-      dispatch(SIGN_IN(signInData));
-      dispatch(SET_MY_DATA(signInData));
-      // router.replace("/");
-    }
   });
 
   useEffect(() => {
-    console.log(isSignInLoading, isSignInSuccess, signInData);
-  }, [isSignInLoading, isSignInSuccess, signInData]);
+    if (isSignInSuccess) {
+      dispatch(SIGN_IN(signInData));
+      dispatch(SET_MY_DATA(signInData));
+    }
+  }, [isSignInSuccess]);
   return (
     <form onSubmit={handleSignInSubmit} className=''>
       <div>

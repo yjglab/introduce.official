@@ -1,6 +1,7 @@
 import {
   ForbiddenException,
   Injectable,
+  NotFoundException,
   UnauthorizedException,
 } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
@@ -9,10 +10,8 @@ import { User } from '@prisma/client';
 import {
   EmailConfirmationDTO,
   EmailDuplicationDTO,
-  JwtAccessDTO,
-  SigninResponseDTO,
-  SigninUserDTO,
-  SignupUserDTO,
+  SignInDTO,
+  SignUpDTO,
 } from './auth.dto';
 import { UserService } from '@modules/user/user.service';
 import { AuthHelpers } from '@shared/helpers/auth.helpers';
@@ -24,7 +23,7 @@ export class AuthService {
   constructor(
     private userService: UserService,
     private jwtService: JwtService,
-    private readonly config: ConfigService,
+    private readonly configService: ConfigService,
   ) {}
 
   public async emailDuplication(
@@ -48,7 +47,7 @@ export class AuthService {
   public async emailConfirmation(
     data: EmailConfirmationDTO,
   ): Promise<{ message: string }> {
-    const codeMatched = await AuthHelpers.hashVerify(
+    const codeMatched = await AuthHelpers.hashVerified(
       data.userInputCode,
       data.confirmationCode,
     );
@@ -60,15 +59,48 @@ export class AuthService {
     return { message: '인증되었습니다.' };
   }
 
+  public async generateAccessToken(user: User): Promise<string> {
+    const payload = {
+      id: user.id,
+      email: user.email,
+      name: user.name,
+      position: user.position,
+    };
+    return this.jwtService.signAsync(payload);
+  }
+  public async generateRefreshToken(user: User): Promise<string> {
+    const payload = {
+      id: user.id,
+      email: user.email,
+      name: user.name,
+      position: user.position,
+    };
+    return this.jwtService.signAsync(
+      { id: payload.id },
+      {
+        secret: this.configService.get<string>('JWT_REFRESH_TOKEN_PRIVATE_KEY'),
+        expiresIn: this.configService.get<string>(
+          'JWT_REFRESH_TOKEN_EXPIRATION',
+        ),
+      },
+    );
+  }
   public async signin(
-    data: SigninUserDTO,
+    data: SignInDTO,
     res: Response,
-  ): Promise<SigninResponseDTO> {
+  ): Promise<{
+    data?: User;
+    accessToken?: string;
+    message: string;
+  }> {
     try {
       const user = await this.userService.findUserByEmail({
         email: AuthHelpers.encryptCbc(data.email),
       });
-      const passwordVerified = await AuthHelpers.hashVerify(
+      if (!user) {
+        throw new NotFoundException('존재하지 않는 사용자입니다.');
+      }
+      const passwordVerified = await AuthHelpers.hashVerified(
         data.password,
         user.password,
       );
@@ -76,37 +108,13 @@ export class AuthService {
         throw new UnauthorizedException('잘못된 비밀번호입니다.');
       }
 
-      const accessPayload: JwtAccessDTO = {
-        email: user.email,
-      };
-      const refreshPayload: JwtAccessDTO = {
-        email: user.email,
-      };
-      console.log('user', user);
-      console.log('JWT ENV', {
-        privatekey: this.config.get('JWT_ACCESS_TOKEN_PRIVATE_KEY'),
-        refreshkey: this.config.get('JWT_REFRESH_TOKEN_PRIVATE_KEY'),
-      });
-      const [accessToken, refreshToken] = [
-        await this.jwtService.signAsync(accessPayload),
-        await this.jwtService.signAsync(refreshPayload, {
-          secret: this.config.get('JWT_REFRESH_TOKEN_PRIVATE_KEY'),
-          expiresIn: this.config.get('JWT_REFRESH_TOKEN_EXPIRATION') * 1000,
-        }),
-      ];
-      console.log(accessToken, refreshToken);
+      const accessToken = await this.generateAccessToken(user);
+      const refreshToken = await this.generateRefreshToken(user);
 
-      res.cookie('rt', refreshToken, {
-        path: '/',
-        httpOnly: true,
-        sameSite: 'strict',
-        expires: new Date(Date.now() + 1000 * 60 * 60 * 24 * 30), // 1달
-      });
       const userPayload = {
         ...user,
         email: AuthHelpers.decryptCbc(user.email),
       };
-      console.log('login user data', userPayload);
       return {
         data: userPayload,
         accessToken: accessToken,
@@ -117,7 +125,7 @@ export class AuthService {
       return { message: '로그인 실패' };
     }
   }
-  public async signup(data: SignupUserDTO): Promise<User> {
+  public async signup(data: SignUpDTO): Promise<User> {
     return this.userService.createUser(data);
   }
 }

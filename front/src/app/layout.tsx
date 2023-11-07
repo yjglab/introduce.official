@@ -7,6 +7,7 @@ import { headers } from "next/headers";
 import { loadMyInfoAPI } from "@/api/user";
 import ClientLayout from "./layout.client";
 import Providers from "./providers.client";
+import { launchApi } from "@api";
 
 export const metadata: Metadata = {
   title: {
@@ -40,6 +41,7 @@ export const metadata: Metadata = {
 };
 
 const getQueryClient = cache(() => new QueryClient());
+launchApi();
 
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
   const queryClient = getQueryClient();
