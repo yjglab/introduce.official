@@ -1,9 +1,9 @@
 import { IsEmail, IsNotEmpty, IsString } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 
-export class JwtAccessDTO {
-  @IsString()
-  email: string;
+export class JwtRefreshTokenDTO {
+  @IsNotEmpty()
+  refreshToken: string;
 }
 
 export class EmailDuplicationDTO {

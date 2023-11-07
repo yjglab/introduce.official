@@ -1,35 +1,18 @@
-import {
-  ExecutionContext,
-  Injectable,
-  UnauthorizedException,
-} from '@nestjs/common';
-import { Reflector } from '@nestjs/core';
-import { AuthGuard } from '@nestjs/passport';
-import { User } from '@prisma/client';
-import { Observable } from 'rxjs';
+import { CanActivate, ExecutionContext, Injectable } from '@nestjs/common';
+import { JwtService } from '@nestjs/jwt';
 
 @Injectable()
-export class JwtAuthGuard extends AuthGuard('jwt') {
-  roles: string[];
-
-  constructor(private reflector: Reflector) {
-    super(reflector);
-  }
-  canActivate(
-    context: ExecutionContext,
-  ): boolean | Promise<boolean> | Observable<boolean> {
-    this.roles = this.reflector.get<string[]>('roles', context.getHandler());
-    return super.canActivate(context);
-  }
-
-  handleRequest(err: Error, user: User): any {
-    if (err || !user) {
-      throw err || new UnauthorizedException();
-    }
-
-    if (!this.roles) {
+export class JwtAuthGuard implements CanActivate {
+  constructor(private jwtService: JwtService) {}
+  async canActivate(context: ExecutionContext): Promise<any> {
+    try {
+      const request = context.switchToHttp().getRequest();
+      const accessToken = request.cookies['accessToken'];
+      const user = await this.jwtService.verify(accessToken);
+      request.user = user;
       return user;
+    } catch (err) {
+      return false;
     }
-    return user;
   }
 }

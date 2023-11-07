@@ -10,6 +10,7 @@ import { User } from '@prisma/client';
 import {
   EmailConfirmationDTO,
   EmailDuplicationDTO,
+  JwtRefreshTokenDTO,
   SignInDTO,
   SignUpDTO,
 } from './auth.dto';
@@ -17,6 +18,7 @@ import { UserService } from '@modules/user/user.service';
 import { AuthHelpers } from '@shared/helpers/auth.helpers';
 import { ConfigService } from '@nestjs/config';
 import { Response } from 'express';
+import { JwtTokenPayload } from './types';
 
 @Injectable()
 export class AuthService {
@@ -60,7 +62,7 @@ export class AuthService {
   }
 
   public async generateAccessToken(user: User): Promise<string> {
-    const payload = {
+    const payload: JwtTokenPayload = {
       id: user.id,
       email: user.email,
       name: user.name,
@@ -69,7 +71,7 @@ export class AuthService {
     return this.jwtService.signAsync(payload);
   }
   public async generateRefreshToken(user: User): Promise<string> {
-    const payload = {
+    const payload: JwtTokenPayload = {
       id: user.id,
       email: user.email,
       name: user.name,
@@ -85,12 +87,38 @@ export class AuthService {
       },
     );
   }
+
+  public async refresh(
+    refreshTokenDto: JwtRefreshTokenDTO,
+  ): Promise<{ accessToken: string }> {
+    const { refreshToken } = refreshTokenDto;
+
+    // JWT Refresh Token 검증
+    const decodedRefreshToken = this.jwtService.verify(refreshToken, {
+      secret: process.env.JWT_REFRESH_TOKEN_PRIVATE_KEY,
+    }) as JwtTokenPayload;
+
+    // 사용자 존재여부 확인
+    const user = await this.userService.getRefreshTokenMatchedUser(
+      refreshToken,
+      decodedRefreshToken.id,
+    );
+    if (!user) {
+      throw new UnauthorizedException('인증토큰과 일치하는 사용자가 없습니다');
+    }
+
+    // 새 토큰 생성
+    const accessToken = await this.generateAccessToken(user);
+    return { accessToken };
+  }
+
   public async signin(
     data: SignInDTO,
     res: Response,
   ): Promise<{
     data?: User;
     accessToken?: string;
+    refreshToken?: string;
     message: string;
   }> {
     try {
@@ -111,13 +139,24 @@ export class AuthService {
       const accessToken = await this.generateAccessToken(user);
       const refreshToken = await this.generateRefreshToken(user);
 
+      await this.userService.setRefreshToken(refreshToken, user.id);
+
+      res.setHeader('Authorization', 'Bearer ' + [accessToken, refreshToken]);
+      res.cookie('accessToken', accessToken, {
+        httpOnly: true,
+      });
+      res.cookie('refreshToken', refreshToken, {
+        httpOnly: true,
+      });
+
       const userPayload = {
         ...user,
         email: AuthHelpers.decryptCbc(user.email),
       };
       return {
         data: userPayload,
-        accessToken: accessToken,
+        accessToken,
+        refreshToken,
         message: '로그인 성공',
       };
     } catch (err) {

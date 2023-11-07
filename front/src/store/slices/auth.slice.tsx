@@ -4,6 +4,7 @@ export interface AuthState {
   data: {
     isSignIn: boolean;
     accessToken: string;
+    refreshToken: string;
   };
 }
 
@@ -11,6 +12,7 @@ const initialState: AuthState = {
   data: {
     isSignIn: false,
     accessToken: "",
+    refreshToken: "",
   },
 };
 
@@ -20,12 +22,14 @@ export const authSlice = createSlice({
   reducers: {
     SIGN_IN: (state: AuthState, action) => {
       state.data.accessToken = action.payload.accessToken;
-      localStorage.setItem("at", state.data.accessToken);
+      state.data.refreshToken = action.payload.refreshToken;
+      localStorage.setItem("accessToken", state.data.accessToken);
       state.data.isSignIn = true;
     },
     SIGN_OUT: (state: AuthState) => {
       state.data.accessToken = "";
-      localStorage.setItem("at", "");
+      state.data.refreshToken = "";
+      localStorage.setItem("accessToken", "");
       state.data.isSignIn = false;
     },
   },

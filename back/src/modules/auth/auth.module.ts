@@ -1,13 +1,11 @@
 import { Module, forwardRef } from '@nestjs/common';
 import { JwtModule } from '@nestjs/jwt';
-import { JwtStrategy } from './auth.jwt.strategy';
 import { AuthController } from './auth.controller';
 import { AuthService } from './auth.service';
 import { PrismaModule } from '@modules/prisma/prisma.module';
 import { UserService } from '@modules/user/user.service';
 import { PrismaService } from '@modules/prisma/prisma.service';
 import { UserModule } from '@modules/user/user.module';
-import { JwtRefreshStrategy } from './auth.jwt.refresh.strategy';
 import { PassportModule } from '@nestjs/passport';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 
@@ -29,12 +27,6 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
     forwardRef(() => UserModule),
   ],
   controllers: [AuthController],
-  providers: [
-    UserService,
-    AuthService,
-    JwtStrategy,
-    PrismaService,
-    JwtRefreshStrategy,
-  ],
+  providers: [UserService, AuthService, PrismaService],
 })
 export class AuthModule {}
