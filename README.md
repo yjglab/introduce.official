@@ -162,4 +162,13 @@ Author: Jaekyeong Yuk
 -
 ```
 
+### References
+
+- [JWT Refresh Token Implementation](https://wanago.io/2020/09/21/api-nestjs-refresh-tokens-jwt/)
+- [nestjs+prisma](https://docs.nestjs.com/recipes/prisma)
+
+### Memo
+
+- prisma asia timezone 문제있음.
+
 ![image](https://github.com/yjglab/nebaram/assets/70316567/5bc77120-ce07-4052-9db3-460c082852b1)

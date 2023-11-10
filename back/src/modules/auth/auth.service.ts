@@ -1,6 +1,7 @@
 import {
   ForbiddenException,
   Injectable,
+  Logger,
   NotFoundException,
   UnauthorizedException,
 } from '@nestjs/common';
@@ -135,12 +136,10 @@ export class AuthService {
       if (!passwordVerified) {
         throw new UnauthorizedException('잘못된 비밀번호입니다.');
       }
-
       const accessToken = await this.generateAccessToken(user);
       const refreshToken = await this.generateRefreshToken(user);
 
       await this.userService.setRefreshToken(refreshToken, user.id);
-
       res.setHeader('Authorization', 'Bearer ' + [accessToken, refreshToken]);
       res.cookie('accessToken', accessToken, {
         httpOnly: true,
@@ -153,6 +152,7 @@ export class AuthService {
         ...user,
         email: AuthHelpers.decryptCbc(user.email),
       };
+      Logger.debug(userPayload);
       return {
         data: userPayload,
         accessToken,

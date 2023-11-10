@@ -8,8 +8,8 @@ const useSignOut = () => {
   const queryClient = useQueryClient();
   const mutation = useMutation(signOutAPI, {
     onSuccess: async (data) => {
-      toast.success(data, toastConfig);
-      queryClient.refetchQueries(["user"]);
+      toast.success(data.message, toastConfig);
+      // queryClient.refetchQueries(["user"]);
     },
     onError: (error) => {
       if (axios.isAxiosError(error)) {

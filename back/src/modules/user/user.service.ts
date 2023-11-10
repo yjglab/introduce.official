@@ -1,6 +1,6 @@
 import { SignUpDTO } from '@modules/auth/auth.dto';
 import { PrismaService } from '@modules/prisma/prisma.service';
-import { Injectable, UnauthorizedException } from '@nestjs/common';
+import { Injectable, Logger, UnauthorizedException } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { User } from '@prisma/client';
 import { AuthHelpers } from '@shared/helpers/auth.helpers';
@@ -98,6 +98,8 @@ export class UserService {
   async setRefreshToken(token: string, userId: number) {
     const refreshToken = await AuthHelpers.hash(token);
     const refreshTokenExpiration = await this.getRefreshTokenExpiration();
+
+    Logger.debug(refreshTokenExpiration);
     await this.prisma.user.update({
       where: {
         id: userId,
@@ -105,6 +107,22 @@ export class UserService {
       data: {
         refreshToken,
         refreshTokenExpiration,
+        // refreshTokenExpiration: new Date(
+        //   refreshTokenExpiration.getTime() + 32400000, // +9h
+        // ),
+      },
+    });
+    Logger.debug('Clear');
+  }
+
+  async removeRefreshToken(userId: number) {
+    return await this.prisma.user.update({
+      where: {
+        id: userId,
+      },
+      data: {
+        refreshToken: null,
+        refreshTokenExpiration: null,
       },
     });
   }
@@ -117,6 +135,7 @@ export class UserService {
           this.configService.get<string>('JWT_REFRESH_TOKEN_EXPIRATION'),
         ),
     );
+
     return expirationDate;
   }
 

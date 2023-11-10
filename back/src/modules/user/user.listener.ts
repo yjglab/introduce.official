@@ -5,7 +5,7 @@ import { AuthHelpers } from '@shared/helpers/auth.helpers';
 export class UserListener {
   static async onCreated(params, next) {
     if (params.model == 'User') {
-      if (params.action === 'create' || params.action === 'update') {
+      if (params.action === 'create') {
         const email = params.args['data'].email;
         const password = params.args['data'].password;
 

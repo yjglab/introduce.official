@@ -15,8 +15,4 @@ export const GLOBAL_CONFIG: Config = {
     version: '1',
     path: '/api',
   },
-  security: {
-    expiresIn: 3600 * 24, // 24h
-    bcryptSaltOrRound: 10,
-  },
 };

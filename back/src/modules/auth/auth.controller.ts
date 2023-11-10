@@ -22,6 +22,7 @@ import { JwtAuthGuard } from './auth.jwt.guard';
 import { Response } from 'express';
 import { UserService } from '@modules/user/user.service';
 import { User } from '@prisma/client';
+import { JwtRefreshGuard } from './auth.jwt.refresh.guard';
 // import { JWT_EXPIRY_SECONDS } from '@shared/constants/global.constants';
 
 @ApiTags('auth')
@@ -68,10 +69,14 @@ export class AuthController {
 
   @Get('signout')
   @ApiOperation({ description: '로그아웃' })
-  @UseGuards(JwtAuthGuard)
-  async signout(@Res() res: Response) {
+  @UseGuards(JwtRefreshGuard)
+  async signout(@Req() req, @Res() res: Response) {
+    await this.userService.removeRefreshToken(req.user.id); // refresh-guard를 통해 받아온 req 객체
     res.clearCookie('accessToken');
-    res.status(200).send('로그아웃 되었습니다.');
+    res.clearCookie('refreshToken');
+    return res.send({
+      message: '정상적으로 로그아웃 되었습니다.',
+    });
   }
 
   @Get('authenticate')

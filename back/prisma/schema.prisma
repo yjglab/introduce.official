@@ -28,7 +28,7 @@ model User {
   markedProjectPosts ProjectPost[] @relation("UserMarkedProjectPosts")
   markedFindingPosts FindingPost[] @relation("UserMarkedFindingPosts")
 
-  createdAt DateTime? @default(now())
+  createdAt DateTime @default(dbgenerated("NOW()"))
 }
 
 model ProjectPost {
