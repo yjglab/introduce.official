@@ -8,6 +8,9 @@ import { PrismaService } from '@modules/prisma/prisma.service';
 import { UserModule } from '@modules/user/user.module';
 import { PassportModule } from '@nestjs/passport';
 import { ConfigModule, ConfigService } from '@nestjs/config';
+import { JwtRefreshGuard } from './auth.jwt.refresh.guard';
+import { JwtAuthGuard } from './auth.jwt.guard';
+import { JwtRefreshStrategy } from './auth.jwt.refresh.strategy';
 
 @Module({
   imports: [
@@ -27,6 +30,13 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
     forwardRef(() => UserModule),
   ],
   controllers: [AuthController],
-  providers: [UserService, AuthService, PrismaService],
+  providers: [
+    UserService,
+    AuthService,
+    PrismaService,
+    JwtRefreshGuard,
+    JwtAuthGuard,
+    JwtRefreshStrategy,
+  ],
 })
 export class AuthModule {}

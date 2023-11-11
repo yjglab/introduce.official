@@ -13,7 +13,6 @@ import { ApiBody, ApiOperation, ApiTags } from '@nestjs/swagger';
 import {
   EmailConfirmationDTO,
   EmailDuplicationDTO,
-  JwtRefreshTokenDTO,
   SignInDTO,
   SignUpDTO,
 } from './auth.dto';
@@ -85,26 +84,60 @@ export class AuthController {
   })
   @UseGuards(JwtAuthGuard)
   async user(@Req() req, @Res() res: Response) {
-    const userId = req.user.id;
-    const verifiedUser: User = await this.userService.findUserById(userId);
-    return res.send(verifiedUser);
+    try {
+      const userId = req.user.id;
+      const verifiedUser: User = await this.userService.findUserById(userId);
+      return res.send(verifiedUser);
+    } catch (error) {
+      console.error('<Get> authenticate 실패');
+      return false;
+    }
   }
 
   @Post('refresh')
-  async refresh(
-    @Body() refreshTokenDto: JwtRefreshTokenDTO,
-    @Res({ passthrough: true }) res: Response,
-  ) {
+  @ApiOperation({
+    description:
+      'Refresh Token과 매치하는 사용자가 있는지 확인 후 새 Access Token 발급',
+  })
+  @UseGuards(JwtRefreshGuard)
+  async refresh(@Req() req, @Res({ passthrough: true }) res: Response) {
     try {
-      const newAccessToken = (await this.authService.refresh(refreshTokenDto))
-        .accessToken;
+      const newAccessToken = (
+        await this.authService.refresh({ refreshToken: req.user.refreshToken })
+      ).accessToken;
       res.setHeader('Authorization', 'Bearer ' + newAccessToken);
       res.cookie('accessToken', newAccessToken, {
         httpOnly: true,
-      }); // js 접근방지
+      }); // js/XSS 접근 및 공격 방지
       res.send({ newAccessToken });
     } catch (err) {
-      throw new UnauthorizedException('Invalid Refresh Token');
+      throw new UnauthorizedException(
+        'Refresh Token이 잘못되었거나 인증이 만료된 토큰입니다.',
+      );
     }
   }
+
+  // @Post('refresh')
+  // @ApiOperation({
+  //   description:
+  //     'Refresh Token과 매치하는 사용자가 있는지 확인 후 새 Access Token 발급',
+  // })
+  // async refresh(
+  //   @Body() refreshTokenDto: JwtRefreshTokenDTO,
+  //   @Res({ passthrough: true }) res: Response,
+  // ) {
+  //   try {
+  //     const newAccessToken = (await this.authService.refresh(refreshTokenDto))
+  //       .accessToken;
+  //     res.setHeader('Authorization', 'Bearer ' + newAccessToken);
+  //     res.cookie('accessToken', newAccessToken, {
+  //       httpOnly: true,
+  //     }); // js 접근방지
+  //     res.send({ newAccessToken });
+  //   } catch (err) {
+  //     throw new UnauthorizedException(
+  //       'Refresh Token이 잘못되었거나 인증이 만료된 토큰입니다.',
+  //     );
+  //   }
+  // }
 }

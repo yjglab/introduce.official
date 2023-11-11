@@ -94,7 +94,7 @@ export class AuthService {
   ): Promise<{ accessToken: string }> {
     const { refreshToken } = refreshTokenDto;
 
-    // JWT Refresh Token 검증
+    // JWT Refresh Token 시크릿 키 검증
     const decodedRefreshToken = this.jwtService.verify(refreshToken, {
       secret: process.env.JWT_REFRESH_TOKEN_PRIVATE_KEY,
     }) as JwtTokenPayload;
@@ -105,7 +105,9 @@ export class AuthService {
       decodedRefreshToken.id,
     );
     if (!user) {
-      throw new UnauthorizedException('인증토큰과 일치하는 사용자가 없습니다');
+      throw new UnauthorizedException(
+        'Refresh Token과 일치하는 사용자가 없습니다',
+      );
     }
 
     // 새 토큰 생성
