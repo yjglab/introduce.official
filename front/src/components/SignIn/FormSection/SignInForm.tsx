@@ -48,7 +48,7 @@ const SignInForm = () => {
 
   useEffect(() => {
     if (isSignInSuccess) {
-      dispatch(SIGN_IN(signInData));
+      dispatch(SIGN_IN());
       dispatch(SET_MY_DATA(signInData));
     }
   }, [isSignInSuccess]);

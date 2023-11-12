@@ -20,6 +20,7 @@ import { AuthHelpers } from '@shared/helpers/auth.helpers';
 import { ConfigService } from '@nestjs/config';
 import { Response } from 'express';
 import { JwtTokenPayload } from './types';
+import { calcDate, fieldExclude } from '@shared/helpers/prisma.helpers';
 
 @Injectable()
 export class AuthService {
@@ -119,9 +120,7 @@ export class AuthService {
     data: SignInDTO,
     res: Response,
   ): Promise<{
-    data?: User;
-    accessToken?: string;
-    refreshToken?: string;
+    data?: object;
     message: string;
   }> {
     try {
@@ -143,6 +142,7 @@ export class AuthService {
 
       await this.userService.setRefreshToken(refreshToken, user.id);
       res.setHeader('Authorization', 'Bearer ' + [accessToken, refreshToken]);
+
       res.cookie('accessToken', accessToken, {
         httpOnly: true,
       });
@@ -154,11 +154,16 @@ export class AuthService {
         ...user,
         email: AuthHelpers.decryptCbc(user.email),
       };
+      fieldExclude(userPayload, [
+        'password',
+        'refreshToken',
+        'refreshTokenExpiration',
+      ]);
       Logger.debug(userPayload);
+      const a = await this.userService.findUserById({ id: 1 });
+      Logger.debug(calcDate(a.refreshTokenExpiration, 'get'));
       return {
         data: userPayload,
-        accessToken,
-        refreshToken,
         message: '로그인 성공',
       };
     } catch (err) {

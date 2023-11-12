@@ -109,7 +109,7 @@ export class AuthController {
       res.cookie('accessToken', newAccessToken, {
         httpOnly: true,
       }); // js/XSS 접근 및 공격 방지
-      res.send({ newAccessToken });
+      res.send({ message: 'accessToken 재발급되었음.' });
     } catch (err) {
       throw new UnauthorizedException(
         'Refresh Token이 잘못되었거나 인증이 만료된 토큰입니다.',

@@ -1,9 +1,10 @@
 import { SignUpDTO } from '@modules/auth/auth.dto';
 import { PrismaService } from '@modules/prisma/prisma.service';
-import { Injectable, Logger, UnauthorizedException } from '@nestjs/common';
+import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { User } from '@prisma/client';
 import { AuthHelpers } from '@shared/helpers/auth.helpers';
+import { calcDate } from '@shared/helpers/prisma.helpers';
 
 @Injectable()
 export class UserService {
@@ -26,51 +27,7 @@ export class UserService {
     return this.prisma.user.findUnique({
       where,
       include: {
-        social: {
-          select: {
-            name: true,
-          },
-        },
-        projectPosts: {
-          select: {
-            title: true,
-            category: true,
-            description: true,
-            source: {
-              select: {
-                name: true,
-                link: true,
-                owner: true,
-              },
-            },
-            grades: true,
-            user: {
-              select: {
-                name: true,
-              },
-            },
-            skills: true,
-            likers: {
-              select: {
-                name: true,
-              },
-            },
-            markers: {
-              select: {
-                name: true,
-              },
-            },
-            sections: {
-              select: {
-                header: true,
-                description: true,
-                images: true,
-              },
-            },
-            createdAt: true,
-            updatedAt: true,
-          },
-        },
+        projectPosts: true,
       },
     });
   }
@@ -97,22 +54,17 @@ export class UserService {
 
   async setRefreshToken(token: string, userId: number) {
     const refreshToken = await AuthHelpers.hash(token);
-    const refreshTokenExpiration = await this.getRefreshTokenExpiration();
+    const refreshTokenExpiration = await this.generateRefreshTokenExpiration();
 
-    Logger.debug(refreshTokenExpiration);
     await this.prisma.user.update({
       where: {
         id: userId,
       },
       data: {
         refreshToken,
-        refreshTokenExpiration,
-        // refreshTokenExpiration: new Date(
-        //   refreshTokenExpiration.getTime() + 32400000, // +9h
-        // ),
+        refreshTokenExpiration: calcDate(refreshTokenExpiration, 'set'),
       },
     });
-    Logger.debug('Clear');
   }
 
   async removeRefreshToken(userId: number) {
@@ -127,7 +79,7 @@ export class UserService {
     });
   }
 
-  async getRefreshTokenExpiration(): Promise<Date> {
+  async generateRefreshTokenExpiration(): Promise<Date> {
     const currentDate = new Date();
     const expirationDate = new Date(
       currentDate.getTime() +
