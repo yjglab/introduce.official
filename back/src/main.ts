@@ -4,9 +4,11 @@ import { NestFactory } from '@nestjs/core';
 
 import { SERVER_PORT } from '@shared/constants/global.constants';
 import { setupSwagger } from '@utils/swagger/setupSwagger';
+import * as cookieParser from 'cookie-parser';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
+  app.use(cookieParser());
   setupSwagger(app);
 
   app.enableCors({

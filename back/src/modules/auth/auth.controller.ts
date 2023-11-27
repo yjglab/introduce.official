@@ -1,34 +1,25 @@
-import {
-  Body,
-  Controller,
-  Get,
-  Post,
-  Req,
-  Res,
-  UnauthorizedException,
-  UseGuards,
-} from '@nestjs/common';
+import { Body, Controller, Post, UseGuards } from '@nestjs/common';
 import { ApiBody, ApiOperation, ApiTags } from '@nestjs/swagger';
 
 import {
   EmailConfirmationDTO,
   EmailDuplicationDTO,
+  ReprintTokenDTO,
   SignInDTO,
+  SignOutDTO,
   SignUpDTO,
 } from './auth.dto';
 import { AuthService } from './auth.service';
-import { JwtAuthGuard } from './auth.jwt.guard';
-import { Response } from 'express';
 import { UserService } from '@modules/user/user.service';
+import { JwtAuthGuard } from './jwt/jwt.guard';
+import { AuthUser } from './auth.user.decorator';
 import { User } from '@prisma/client';
-import { JwtRefreshGuard } from './auth.jwt.refresh.guard';
-// import { JWT_EXPIRY_SECONDS } from '@shared/constants/global.constants';
 
 @ApiTags('auth')
 @Controller('auth')
 export class AuthController {
   constructor(
-    private readonly authService: AuthService,
+    private authService: AuthService,
     private userService: UserService,
   ) {}
 
@@ -48,12 +39,13 @@ export class AuthController {
 
   @Post('signin')
   @ApiOperation({ description: '로그인' })
-  @ApiBody({ type: SignInDTO })
-  async signin(
-    @Body() data: SignInDTO,
-    @Res({ passthrough: true }) res: Response,
-  ) {
-    return this.authService.signin(data, res);
+  async signin(@Body() data: SignInDTO) {
+    return this.authService.signin(data);
+  }
+
+  @Post('reprint-token')
+  async reprintToken(@Body() data: ReprintTokenDTO) {
+    return this.authService.reprintToken(data);
   }
 
   @Post('signup')
@@ -66,78 +58,10 @@ export class AuthController {
     };
   }
 
-  @Get('signout')
   @ApiOperation({ description: '로그아웃' })
-  @UseGuards(JwtRefreshGuard)
-  async signout(@Req() req, @Res() res: Response) {
-    await this.userService.removeRefreshToken(req.user.id); // refresh-guard를 통해 받아온 req 객체
-    res.clearCookie('accessToken');
-    res.clearCookie('refreshToken');
-    return res.send({
-      message: '정상적으로 로그아웃 되었습니다.',
-    });
-  }
-
-  @Get('authenticate')
-  @ApiOperation({
-    description: 'Access Token이 유효한지 검사 후 사용자 정보 전송',
-  })
   @UseGuards(JwtAuthGuard)
-  async user(@Req() req, @Res() res: Response) {
-    try {
-      const userId = req.user.id;
-      const verifiedUser: User = await this.userService.findUserById(userId);
-      return res.send(verifiedUser);
-    } catch (error) {
-      console.error('<Get> authenticate 실패');
-      return false;
-    }
+  @Post('signout')
+  async signout(@AuthUser() user: User, @Body() data: SignOutDTO) {
+    return this.authService.signout(user.id, data);
   }
-
-  @Post('refresh')
-  @ApiOperation({
-    description:
-      'Refresh Token과 매치하는 사용자가 있는지 확인 후 새 Access Token 발급',
-  })
-  @UseGuards(JwtRefreshGuard)
-  async refresh(@Req() req, @Res({ passthrough: true }) res: Response) {
-    try {
-      const newAccessToken = (
-        await this.authService.refresh({ refreshToken: req.user.refreshToken })
-      ).accessToken;
-      res.setHeader('Authorization', 'Bearer ' + newAccessToken);
-      res.cookie('accessToken', newAccessToken, {
-        httpOnly: true,
-      }); // js/XSS 접근 및 공격 방지
-      res.send({ message: 'accessToken 재발급되었음.' });
-    } catch (err) {
-      throw new UnauthorizedException(
-        'Refresh Token이 잘못되었거나 인증이 만료된 토큰입니다.',
-      );
-    }
-  }
-
-  // @Post('refresh')
-  // @ApiOperation({
-  //   description:
-  //     'Refresh Token과 매치하는 사용자가 있는지 확인 후 새 Access Token 발급',
-  // })
-  // async refresh(
-  //   @Body() refreshTokenDto: JwtRefreshTokenDTO,
-  //   @Res({ passthrough: true }) res: Response,
-  // ) {
-  //   try {
-  //     const newAccessToken = (await this.authService.refresh(refreshTokenDto))
-  //       .accessToken;
-  //     res.setHeader('Authorization', 'Bearer ' + newAccessToken);
-  //     res.cookie('accessToken', newAccessToken, {
-  //       httpOnly: true,
-  //     }); // js 접근방지
-  //     res.send({ newAccessToken });
-  //   } catch (err) {
-  //     throw new UnauthorizedException(
-  //       'Refresh Token이 잘못되었거나 인증이 만료된 토큰입니다.',
-  //     );
-  //   }
-  // }
 }

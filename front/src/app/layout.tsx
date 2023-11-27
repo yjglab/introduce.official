@@ -3,11 +3,8 @@ import type { Metadata } from "next";
 import { CLIENT_URL, SERVICE_NAME } from "@constants";
 import { cache } from "react";
 import { Hydrate, QueryClient, dehydrate } from "@tanstack/react-query";
-import { headers } from "next/headers";
-import { loadMyInfoAPI } from "@/api/user";
 import ClientLayout from "./layout.client";
 import Providers from "./providers.client";
-import { launchApi } from "@api";
 
 export const metadata: Metadata = {
   title: {
@@ -41,15 +38,24 @@ export const metadata: Metadata = {
 };
 
 const getQueryClient = cache(() => new QueryClient());
-launchApi();
+// launchApi();
 
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
   const queryClient = getQueryClient();
   // const header = headers();
-  // const cookie = header.get("Cookie");
-  // await queryClient.prefetchQuery(["user"], () =>
-  //   loadMyInfoAPI({ headers: cookie ? { cookie } : undefined }),
+  // const cookie = header.get("Cookie"); // server 영역이므로 http-only 쿠키 접근 가능함.
+  // const nestCookies = cookies();
+  // const accessToken = nestCookies.get("accessToken")?.value;
+  // console.log("accesss");
+
+  // await queryClient.prefetchQuery(["retainAuth"], () =>
+  //   retainAuthAPI({ headers: cookie ? { cookie } : undefined }),
   // );
+  // //   await queryClient.prefetchQuery(["retainAuth"], () =>
+  // //   retainAuthAPI({ accessToken: accessToken || undefined }),
+  // // );
+
+  // console.log("dddd");
   const dehydratedState = dehydrate(queryClient);
   queryClient.clear();
   return (
