@@ -2,33 +2,49 @@ import { Module } from '@nestjs/common';
 import { JwtModule } from '@nestjs/jwt';
 import { AuthController } from './auth.controller';
 import { AuthService } from './auth.service';
-import { UserService } from '@modules/user/user.service';
-import { PrismaService } from '@modules/prisma/prisma.service';
-import { ConfigService } from '@nestjs/config';
-import { customJwtService } from './jwt/jwt.service';
-import { JwtStrategy } from './jwt/jwt.strategy';
-import { PassportModule } from '@nestjs/passport';
+import { ConfigModule, ConfigService } from '@nestjs/config';
+import { UserModule } from '@modules/user/user.module';
+import { BullModule, BullModuleOptions } from '@nestjs/bull';
+import {
+  FacebookOauthStrategy,
+  GoogleOauthStrategy,
+  JwtAuthStrategy,
+} from './strategies';
 
 @Module({
-  controllers: [AuthController],
-  providers: [
-    UserService,
-    AuthService,
-    PrismaService,
-    JwtStrategy,
-    customJwtService,
-  ],
   imports: [
-    PassportModule.register({ defaultStrategy: 'jwt', session: false }),
+    UserModule,
     JwtModule.registerAsync({
+      imports: [ConfigModule],
+      inject: [ConfigService],
       useFactory: async (configService: ConfigService) => ({
-        secret: configService.get<string>('JWT_ACCESS_TOKEN_PRIVATE_KEY'),
+        secret: configService.get('JWT_ACCESS_SECRET_KEY'),
         signOptions: {
-          expiresIn: configService.get<string>('JWT_ACCESS_TOKEN_EXPIRATION'),
+          expiresIn: configService.get('JWT_ACCESS_EXPIRATION_TIME'),
         },
       }),
     }),
-    // forwardRef(() => UserModule),
+    BullModule.registerQueueAsync({
+      name: 'mail-queue',
+      imports: [ConfigModule],
+      inject: [ConfigService],
+      useFactory: async (
+        configService: ConfigService,
+      ): Promise<BullModuleOptions> => ({
+        redis: {
+          host: configService.get('REDIS_HOST') || 'localhost',
+          port: configService.get('REDIS_PORT') || 6379,
+        },
+      }),
+    }),
   ],
+  controllers: [AuthController],
+  providers: [
+    AuthService,
+    GoogleOauthStrategy,
+    FacebookOauthStrategy,
+    JwtAuthStrategy,
+  ],
+  exports: [AuthService],
 })
 export class AuthModule {}

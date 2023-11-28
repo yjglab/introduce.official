@@ -1,67 +1,107 @@
-import { Body, Controller, Post, UseGuards } from '@nestjs/common';
-import { ApiBody, ApiOperation, ApiTags } from '@nestjs/swagger';
-
 import {
-  EmailConfirmationDTO,
-  EmailDuplicationDTO,
-  ReprintTokenDTO,
-  SignInDTO,
-  SignOutDTO,
-  SignUpDTO,
-} from './auth.dto';
+  Body,
+  Controller,
+  Delete,
+  Get,
+  HttpCode,
+  Post,
+  Query,
+  Req,
+  UseGuards,
+} from '@nestjs/common';
+import {
+  ApiCookieAuth,
+  ApiCreatedResponse,
+  ApiOkResponse,
+  ApiTags,
+} from '@nestjs/swagger';
+import { SkipThrottle } from '@nestjs/throttler';
+
+import { CreateAccountDto, LoginDto } from './auth.dto';
 import { AuthService } from './auth.service';
-import { UserService } from '@modules/user/user.service';
-import { JwtAuthGuard } from './jwt/jwt.guard';
-import { AuthUser } from './auth.user.decorator';
+import { JwtAuthGuard, RolesGuard, VerifiedGuard } from '@common/guards';
+import { Roles, CurrentUser, Verified as Status } from '@common/decorators';
+import { Role, AccountStatus } from '@common/enums';
 import { User } from '@prisma/client';
+import { Request } from 'express';
 
 @ApiTags('auth')
 @Controller('auth')
 export class AuthController {
-  constructor(
-    private authService: AuthService,
-    private userService: UserService,
-  ) {}
+  constructor(private authService: AuthService) {}
 
-  @Post('email-duplication')
-  @ApiOperation({ description: '이메일 중복 확인' })
-  @ApiBody({ type: EmailDuplicationDTO })
-  async emailDuplication(@Body() data: EmailDuplicationDTO) {
-    return this.authService.emailDuplication(data);
+  @ApiCreatedResponse({
+    description: '전달받은 사용자 정보가 올바르면 계정 생성',
+  })
+  @Post('local/register')
+  async register(@Body() credentials: CreateAccountDto, @Req() req: Request) {
+    return this.authService.register(credentials, req);
   }
 
-  @Post('email-confirmation')
-  @ApiOperation({ description: '이메일 인증 코드 확인' })
-  @ApiBody({ type: EmailConfirmationDTO })
-  async emailConfirmation(@Body() data: EmailConfirmationDTO) {
-    return this.authService.emailConfirmation(data);
+  @ApiOkResponse({
+    description: '사용자 로그인',
+  })
+  @HttpCode(200)
+  @Post('local/login')
+  async login(@Body() credentials: LoginDto, @Req() req: Request) {
+    return this.authService.login(credentials, req);
   }
 
-  @Post('signin')
-  @ApiOperation({ description: '로그인' })
-  async signin(@Body() data: SignInDTO) {
-    return this.authService.signin(data);
-  }
-
-  @Post('reprint-token')
-  async reprintToken(@Body() data: ReprintTokenDTO) {
-    return this.authService.reprintToken(data);
-  }
-
-  @Post('signup')
-  @ApiOperation({ description: '회원가입' })
-  @ApiBody({ type: SignUpDTO })
-  async signup(@Body() data: SignUpDTO) {
-    await this.authService.signup(data);
-    return {
-      message: '회원가입이 완료되었습니다! 가입된 정보로 로그인 해주세요.',
-    };
-  }
-
-  @ApiOperation({ description: '로그아웃' })
+  @ApiCookieAuth()
+  @ApiOkResponse({
+    description: '사용자 로그아웃',
+  })
+  @Delete('logout')
   @UseGuards(JwtAuthGuard)
-  @Post('signout')
-  async signout(@AuthUser() user: User, @Body() data: SignOutDTO) {
-    return this.authService.signout(user.id, data);
+  async logout(@Req() req: Request) {
+    return this.authService.logout(req);
   }
+
+  @ApiCookieAuth()
+  @ApiOkResponse({
+    description: '현재 로그인된 사용자의 정보 로드',
+  })
+  @UseGuards(JwtAuthGuard)
+  @Get('me')
+  @SkipThrottle({ default: false })
+  getProfile(@Req() req: Request) {
+    return this.authService.getProfile(req);
+  }
+
+  @ApiOkResponse({
+    description: '사용자 계정 확인',
+  })
+  @Status(AccountStatus.PENDING)
+  @UseGuards(JwtAuthGuard, VerifiedGuard)
+  @Get('account/confirm')
+  confirmAccount(@CurrentUser() user: User, @Query('token') token: string) {
+    return this.authService.confirmAccount(user, token);
+  }
+
+  @ApiOkResponse({
+    description: '사용자 계정 확인 토큰 재전송',
+  })
+  @Status(AccountStatus.PENDING)
+  @UseGuards(JwtAuthGuard, VerifiedGuard)
+  @Get('account/confirm-resend')
+  resendConfirmToken(@CurrentUser() user: User) {
+    return this.authService.resendConfirmationToken(user);
+  }
+
+  @ApiCookieAuth()
+  @ApiOkResponse({
+    description: '어드민 제한 API',
+  })
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles(Role.ADMIN)
+  @Get('admin')
+  getAdminData() {
+    return '어드민만 접근 가능한 경로입니다';
+  }
+
+  // todo: google login
+  // todo: facebook login
+  // password reset
+  // password change
+  // password set new
 }

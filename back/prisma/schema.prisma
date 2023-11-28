@@ -4,20 +4,20 @@ generator client {
 
 datasource db {
   provider = "postgresql"
-  url      = env("DATABASE_URL")
+  url      = env("DB_URL")
 }
 
 model User {
-  id                     Int       @id @default(autoincrement())
-  email                  String    @unique @db.VarChar(300)
-  name                   String    @unique
-  password               String    @db.VarChar(300)
-  social                 Social?
-  position               String
-  class                  UserClass @default(normal)
-  role                   UserRole  @default(user)
-  refreshToken           String?
-  refreshTokenExpiration DateTime?
+  provider      Provider?
+  providerId    String?
+  id            Int           @id @default(autoincrement())
+  email         String        @unique @db.VarChar(300)
+  nickname      String        @unique
+  password      String        @db.VarChar(300)
+  position      String
+  class         UserClass     @default(normal)
+  role          UserRole      @default(user)
+  accountStatus AccountStatus @default(pending)
 
   projectPosts ProjectPost[]
   findingPosts FindingPost[]
@@ -75,14 +75,6 @@ model FindingPost {
   updatedAt DateTime @updatedAt
 }
 
-model Social {
-  id           Int    @id @default(autoincrement())
-  connectionId String @db.VarChar(300)
-  name         String
-  user         User   @relation(fields: [userId], references: [id])
-  userId       Int    @unique
-}
-
 model ProjectPostSection {
   id          Int         @id @default(autoincrement())
   header      String
@@ -108,5 +100,19 @@ enum UserClass {
 
 enum UserRole {
   user
+  premium
+  moderator
   admin
+}
+
+enum Provider {
+  google
+  facebook
+  local
+}
+
+enum AccountStatus {
+  pending
+  verified
+  banned
 }

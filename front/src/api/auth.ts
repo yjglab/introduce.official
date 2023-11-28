@@ -36,80 +36,71 @@ export async function emailConfirmationAPI(data: {
   return response.data;
 }
 
-async function refreshToken(token: JWT): Promise<JWT> {
-  const res = await fetch(SERVER_URL + "/auth/refresh", {
-    method: "POST",
-    headers: {
-      authorization: `Refresh ${token.backendTokens.refreshToken}`,
-    },
-  });
-  console.log("refreshed");
+export const instance = axios.create({
+  baseURL: "http://localhost:4000",
+  headers: { Authorization: `Bearer ${default_access_token}` },
+});
 
-  const response = await res.json();
-
-  return {
-    ...token,
-    backendTokens: response,
-  };
-}
-
-export const authOptions: NextAuthOptions = {
-  providers: [
-    CredentialsProvider({
-      name: "Credentials",
-      credentials: {
-        username: {
-          label: "Username",
-          type: "text",
-          placeholder: "jsmith",
-        },
-        password: { label: "Password", type: "password" },
-      },
-      async authorize(credentials, req) {
-        if (!credentials?.username || !credentials?.password) return null;
-        const { username, password } = credentials;
-        const res = await fetch(SERVER_URL + "/auth/signin", {
-          method: "POST",
-          body: JSON.stringify({
-            username,
-            password,
-          }),
-          headers: {
-            "Content-Type": "application/json",
-          },
-        });
-        if (res.status == 401) {
-          console.log(res.statusText);
-
-          return null;
-        }
-        const user = await res.json();
-        return user;
-      },
-    }),
-  ],
-
-  callbacks: {
-    async jwt({ token, user }) {
-      if (user) return { ...token, ...user };
-
-      if (new Date().getTime() < token.backendTokens.expiresIn) return token;
-
-      return await refreshToken(token);
-    },
-
-    async session({ token, session }) {
-      session.user = token.user;
-      session.backendTokens = token.backendTokens;
-
-      return session;
-    },
+instance.interceptors.response.use(
+  (res) => {
+    return res;
   },
-};
+  async (error) => {
+    // response에서 error가 발생했을 경우 catch로 넘어가기 전에 처리
+    try {
+      const errResponseStatus = error.response.status;
+      const errResponseData = error.response.data;
+      const prevRequest = error.config;
 
-const handler = NextAuth(authOptions);
+      // access token이 만료되어 발생하는 에러인 경우
+      if (errResponseData.error?.message === "jwt expired" || errResponseStatus === 401) {
+        const preRefreshToken = getCookie(REFRESH_TOKEN);
+        if (preRefreshToken) {
+          // refresh token을 이용하여 access token 재발급
+          async function regenerateToken() {
+            return await axios
+              .post("api/user/token", {
+                refresh_token: preRefreshToken,
+              })
+              .then(async (res) => {
+                const { access_token, refresh_token } = res.data;
+                // 새로 받은 token들 저장
+                setCookie(ACCESS_TOKEN, access_token, {
+                  path: "/" /*httpOnly: true */,
+                });
+                setCookie(REFRESH_TOKEN, refresh_token, {
+                  path: "/" /*httpOnly: true */,
+                });
 
-export { handler as GET, handler as POST };
+                // header 새로운 token으로 재설정
+                prevRequest.headers.Authorization = `Bearer ${access_token}`;
+
+                // 실패했던 기존 request 재시도
+                return await axios(prevRequest);
+              })
+              .catch((e) => {
+                /*
+                 token 재발행 또는 기존 요청 재시도 실패 시
+                 기존 token 제거
+                 */
+                removeCookie(ACCESS_TOKEN);
+                removeCookie(REFRESH_TOKEN);
+                window.location.href = "/";
+
+                return new Error(e);
+              });
+          }
+          return await regenerateToken();
+        } else {
+          throw new Error("There is no refresh token");
+        }
+      }
+    } catch (e) {
+      // 오류 내용 출력 후 요청 거절
+      return Promise.reject(e);
+    }
+  },
+);
 
 // export async function refreshAccessToken() {
 //   const response = await api.get("/auth/refresh");
