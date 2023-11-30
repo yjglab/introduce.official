@@ -37,8 +37,8 @@ export class FacebookOauthStrategy extends PassportStrategy(
         providerId: profile.id,
         email: profile.emails[0].value,
         password: 'provided',
-        nickname: profile.nickname ?? profile.name.givenName,
-        image: profile.photos[0].value,
+        nickname: profile.displayName ?? profile.name.givenName,
+        avatar: profile.photos[0].value,
       };
 
       return user;

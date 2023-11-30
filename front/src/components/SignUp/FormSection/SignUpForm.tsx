@@ -11,7 +11,7 @@ import { toast } from "react-toastify";
 interface Form {
   email: string;
   userInputCode: string;
-  name: string;
+  nickname: string;
   password: string;
   passwordConfirm: string;
   position: string;
@@ -50,7 +50,7 @@ const SignUpForm = () => {
     await emailConfirmationMutate({ email, userInputCode, confirmationCode });
   };
   const handleSignUpSubmit = handleSubmit(async (data) => {
-    const { email, name, password, position } = data;
+    const { email, nickname, password, position } = data;
     if (!isEmailConfirmationSuccess) {
       return toast.error("이메일 인증이 필요합니다.", toastConfig);
     }
@@ -60,7 +60,7 @@ const SignUpForm = () => {
 
     signUpMutate({
       email,
-      name,
+      nickname,
       password,
       position,
     });
@@ -144,25 +144,25 @@ const SignUpForm = () => {
 
       <div>
         <div className='flex gap-y-4'>
-          <label htmlFor='name' className='sr-only'>
-            name
+          <label htmlFor='nickname' className='sr-only'>
+            nickname
           </label>
           <span>사용자명</span>
           <input
-            {...register("name", {
+            {...register("nickname", {
               required: true,
               maxLength: {
                 value: 10,
                 message: "사용자명 제한",
               },
             })}
-            id='name'
+            id='nickname'
             required
             className='border border-black'
             placeholder='작성해주세요'
             size={30}
             type='text'
-            autoComplete='name'
+            autoComplete='nickname'
             disabled={isSignUpLoading}
           />
         </div>

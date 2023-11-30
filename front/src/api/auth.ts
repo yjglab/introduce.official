@@ -6,7 +6,12 @@ import { SERVER_URL } from "@constants";
 import { NextAuthOptions } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 
-export async function signUpAPI(data: { email: string; name: string; password: string; position: string }) {
+export async function signUpAPI(data: {
+  email: string;
+  nickname: string;
+  password: string;
+  position: string;
+}) {
   const response = await api.post("/auth/signup", data);
   return response.data;
 }

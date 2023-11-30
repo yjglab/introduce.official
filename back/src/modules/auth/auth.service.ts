@@ -37,7 +37,7 @@ export class AuthService {
   public async register(registrationData: CreateAccountDto, req: Request) {
     try {
       const user = await this.userService.create({
-        image: this.generateGravatarUrl(registrationData.email),
+        avatar: this.generateGravatarUrl(registrationData.email),
         provider: Providers.Local,
         ...registrationData,
       });
@@ -58,7 +58,7 @@ export class AuthService {
           throw new UniqueViolation('email');
         }
 
-        if (err.detail.includes('nick_name' || 'nick' || 'nickname')) {
+        if (err.detail.includes('nickname')) {
           throw new UniqueViolation('nickname');
         }
       }

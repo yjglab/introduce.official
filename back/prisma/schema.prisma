@@ -8,27 +8,24 @@ datasource db {
 }
 
 model User {
-  provider      Provider?
-  providerId    String?
-  id            Int           @id @default(autoincrement())
-  email         String        @unique @db.VarChar(300)
-  nickname      String        @unique
-  password      String        @db.VarChar(300)
-  position      String
-  class         UserClass     @default(normal)
-  role          UserRole      @default(user)
-  accountStatus AccountStatus @default(pending)
-
-  projectPosts ProjectPost[]
-  findingPosts FindingPost[]
-
-  likedProjectPosts ProjectPost[] @relation("UserLikedProjectPosts")
-  likedFindingPosts FindingPost[] @relation("UserLikedFindingPosts")
-
+  provider           Provider?
+  providerId         String?
+  id                 Int           @id @default(autoincrement())
+  email              String        @unique
+  nickname           String        @unique
+  password           String
+  position           String
+  role               UserRole      @default(user)
+  accountStatus      AccountStatus @default(pending)
+  avatar             String?       @default("")
+  projectPosts       ProjectPost[]
+  findingPosts       FindingPost[]
+  likedProjectPosts  ProjectPost[] @relation("UserLikedProjectPosts")
+  likedFindingPosts  FindingPost[] @relation("UserLikedFindingPosts")
   markedProjectPosts ProjectPost[] @relation("UserMarkedProjectPosts")
   markedFindingPosts FindingPost[] @relation("UserMarkedFindingPosts")
-
-  createdAt DateTime @default(now())
+  createdAt          DateTime      @default(now())
+  updatedAt          DateTime      @default(now())
 }
 
 model ProjectPost {
