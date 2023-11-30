@@ -1,10 +1,14 @@
 # Nebaram Hoolter V0.0 (2023.12 서비스 예정)
 
+##### Server 개발 작업이 조금 늦어지고 있어 예정보다 미뤄질 수 있습니다.
+
 ![image](https://github.com/yjglab/Hoolter/assets/70316567/9b823283-9168-4fd2-be2e-cb6485378346)
 
-Author: Jaekyeong Yuk
+Author/Developer: Jaekyeong Yuk
 
 #### 기술 태그
+
+> Frontend
 
 <div> 
 <img src="https://img.shields.io/badge/TypeScript-3178C6?style=for-the-badge&logo=TypeScript&logoColor=white">
@@ -16,9 +20,14 @@ Author: Jaekyeong Yuk
 <img src="https://img.shields.io/badge/Emotion-569A31?style=for-the-badge&logo=Emotion&logoColor=white">
 <img src="https://img.shields.io/badge/Framer-0055FF?style=for-the-badge&logo=Framer&logoColor=white">
 <img src="https://img.shields.io/badge/vercel-000000?style=for-the-badge&logo=vercel&logoColor=white">
+
+> Backend
+
 <img src="https://img.shields.io/badge/nest.js-E0234E?style=for-the-badge&logo=nestjs&logoColor=white">
-<img src="https://img.shields.io/badge/postgre sql-4169E1?style=for-the-badge&logo=postgresql&logoColor=white">
 <img src="https://img.shields.io/badge/prisma-2D3748?style=for-the-badge&logo=prisma&logoColor=white">
+<img src="https://img.shields.io/badge/redis-DC382D?style=for-the-badge&logo=redis&logoColor=white">
+<img src="https://img.shields.io/badge/socket.io-010101?style=for-the-badge&logo=socket.io&logoColor=white">
+<img src="https://img.shields.io/badge/postgre sql-4169E1?style=for-the-badge&logo=postgresql&logoColor=white">
 <img src="https://img.shields.io/badge/firebase-FFCA28?style=for-the-badge&logo=firebase&logoColor=white">
 </div>
 
@@ -57,8 +66,9 @@ Author: Jaekyeong Yuk
 
 > 사용자 프로필
 
-- Avvvatar 아바타 사용
+- 아바타 gravatar 기본사용 및 별도 수정
 - 닉네임
+- 포지션 (1회 변경 제한)
 - 비밀번호 (bcrypt, 단방향 암호화-DB)
 - 이메일 (cryptoJS, 양방향 암호화-DB, 복호화-클라이언트)
 
@@ -68,96 +78,106 @@ Author: Jaekyeong Yuk
 - 인증키 확인
 - 관련 데이터 완전 삭제
 
+> 그 외
+
+- JWT 토큰 활용 로컬/소셜 로그인
+- 그룹 / 프라이빗 채팅
+- Rate limiting
+
 #### DB 테이블 설계
 
 > 사용자 & 포스트 Data Types
 
 ```json
 {
-    "email": "30자 이내 string",
-    "name": "10자 이내 string",
-    "password": "300자 이내 string(hashed)",
-    "social": {
-        "id": "100자 이내 string",
-        "name": "20자 이내 string",
+  "generator": { "provider": "prisma-client-js" },
+  "datasource": {
+    "provider": "postgresql",
+    "url": { "value": "env('DB_URL')" }
+  },
+  "models": {
+    "User": {
+      "provider": "Provider?",
+      "providerId": "String?",
+      "id": { "type": "Int", "decorators": ["@id", "@default(autoincrement())"] },
+      "email": { "type": "String", "decorators": ["@unique"] },
+      "nickname": { "type": "String", "decorators": ["@unique"] },
+      "password": "String",
+      "position": "String",
+      "role": { "type": "UserRole", "decorators": ["@default(user)"] },
+      "accountStatus": { "type": "AccountStatus", "decorators": ["@default(pending)"] },
+      "avatar": { "type": "String", "decorators": ["@default('')"] },
+      "projectPosts": { "type": "ProjectPost[]" },
+      "findingPosts": { "type": "FindingPost[]" },
+      "likedProjectPosts": { "type": "ProjectPost[]", "relation": "UserLikedProjectPosts" },
+      "likedFindingPosts": { "type": "FindingPost[]", "relation": "UserLikedFindingPosts" },
+      "markedProjectPosts": { "type": "ProjectPost[]", "relation": "UserMarkedProjectPosts" },
+      "markedFindingPosts": { "type": "FindingPost[]", "relation": "UserMarkedFindingPosts" },
+      "createdAt": { "type": "DateTime", "decorators": ["@default(now())"] },
+      "updatedAt": { "type": "DateTime", "decorators": ["@default(now())"] }
     },
-    "class": "normal", // normal, pro
-    "position": "20자 이내 string", // developer, designer, general
-    "admin": "boolean",
-    "Posts": {
-        "project": [
-            {
-                "id": "number",
-                "type": "project",
-                "category": "20자 이내 string",
-                "title": "20자 이내 string",
-                "description": "500자 이내 string",
-                "source": {
-                    "name": "string(선택)",
-                    "link": "300자 이내 string",
-                    "owner": "20자 이내 string",
-                },
-                "skills": [
-                    {
-                        "name": "20자 이내 string(선택)",
-                    }
-                ],
-                "sections": [
-                    {
-                        "header": "20자 이내 string",
-                        "description": "500자 이내 string",
-                        "images": [
-                            {
-                                "src": "300자 이내 string",
-                            }
-                        ]
-                    }
-                ],
-                "grades": "float number",
-                "likers": [
-                    {
-                        "name": "10자 이내 string(user name)",
-                    }
-                ],
-                "markers": [
-                    {
-                        "name": "10자 이내 string(user name)",
-                    }
-                ]
-            }
-        ],
-        "finding": [
-            {
-                "id": "number",
-                "type": "finding",
-                "category": "20자 이내 string",
-                "title": "20자 이내 string",
-                "description": "500자 이내 string",
-                "skills": [
-                    {
-                        "name": "20자 이내 string(선택)",
-                    }
-                ],
-                "sections": [
-                    {
-                        "header": "20자 이내 string",
-                        "description": "500자 이내 string",
-                        "images": [
-                            {
-                                "src": "300자 이내 string",
-                            }
-                        ]
-                    }
-                ],
-                "deadline": "10자 이내 string", // 2020.09.04 형식의 문자열
-                "markers": [
-                    {
-                        "name": "10자 이내 string(user name)",
-                    }
-                ]
-            }
-        ]
+    "ProjectPost": {
+      "id": { "type": "Int", "decorators": ["@id", "@default(autoincrement())"] },
+      "category": "String",
+      "title": "String",
+      "description": "String",
+      "source": "ProjectSource?",
+      "grades": { "type": "Float", "decorators": ["@default(0)"] },
+      "user": { "type": "User", "relation": { "fields": ["userId"], "references": ["id"] } },
+      "userId": "Int",
+      "skills": { "type": "String[]" },
+      "likers": { "type": "User[]", "relation": "UserLikedProjectPosts" },
+      "markers": { "type": "User[]", "relation": "UserMarkedProjectPosts" },
+      "sections": { "type": "ProjectPostSection[]" },
+      "createdAt": { "type": "DateTime", "decorators": ["@default(now())"] },
+      "updatedAt": { "type": "DateTime", "decorators": ["@updatedAt"] }
+    },
+    "ProjectSource": {
+      "id": { "type": "Int", "decorators": ["@id", "@default(autoincrement())"] },
+      "name": "String",
+      "link": "String",
+      "owner": "String",
+      "post": { "type": "ProjectPost", "relation": { "fields": ["postId"], "references": ["id"] } },
+      "postId": { "type": "Int", "decorators": ["@unique"] }
+    },
+    "FindingPost": {
+      "id": { "type": "Int", "decorators": ["@id", "@default(autoincrement())"] },
+      "category": "String",
+      "title": "String",
+      "description": "String",
+      "deadline": "String",
+      "user": { "type": "User", "relation": { "fields": ["userId"], "references": ["id"] } },
+      "userId": "Int",
+      "skills": { "type": "String[]" },
+      "likers": { "type": "User[]", "relation": "UserLikedFindingPosts" },
+      "markers": { "type": "User[]", "relation": "UserMarkedFindingPosts" },
+      "sections": { "type": "FindingPostSection[]" },
+      "createdAt": { "type": "DateTime", "decorators": ["@default(now())"] },
+      "updatedAt": { "type": "DateTime", "decorators": ["@updatedAt"] }
+    },
+    "ProjectPostSection": {
+      "id": { "type": "Int", "decorators": ["@id", "@default(autoincrement())"] },
+      "header": "String",
+      "description": "String",
+      "images": { "type": "String[]" },
+      "post": { "type": "ProjectPost", "relation": { "fields": ["postId"], "references": ["id"] } },
+      "postId": "Int"
+    },
+    "FindingPostSection": {
+      "id": { "type": "Int", "decorators": ["@id", "@default(autoincrement())"] },
+      "header": "String",
+      "description": "String",
+      "images": { "type": "String[]" },
+      "post": { "type": "FindingPost", "relation": { "fields": ["postId"], "references": ["id"] } },
+      "postId": "Int"
     }
+  },
+  "enums": {
+    "UserClass": ["normal", "pro"],
+    "UserRole": ["user", "premium", "moderator", "admin"],
+    "Provider": ["google", "facebook", "local"],
+    "AccountStatus": ["pending", "verified", "banned"]
+  }
 }
 -
 ```
