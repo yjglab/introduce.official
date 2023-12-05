@@ -16,7 +16,7 @@ export class UserController {
   @UseGuards(JwtAuthGuard, VerifiedGuard)
   @Patch('update')
   updateProfile(
-    @CurrentUser('id') id: string,
+    @CurrentUser('id') id: number,
     @Body() updateData: UpdateUserDto,
   ) {
     return this.userService.updateProfile(id, updateData);

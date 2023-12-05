@@ -8,7 +8,6 @@ import { User } from '@prisma/client';
 
 import { CreateAccountDto, LoginDto } from './auth.dto';
 import { UserService } from '@modules/user/user.service';
-import { calcDate, fieldExclude } from '@shared/helpers/prisma.helpers';
 import { JwtService } from '@nestjs/jwt';
 import { ConfigService } from '@nestjs/config';
 import { RedisService } from '@liaoliaots/nestjs-redis';
@@ -110,7 +109,7 @@ export class AuthService {
         id: user.id,
       },
       {
-        issuer: 'PoProstuWitold',
+        issuer: 'TeamIntroduce',
         secret: this.configService.get('JWT_ACCESS_SECRET_KEY'),
         expiresIn: this.configService.get('JWT_ACCESS_EXPIRATION_TIME'),
       },
@@ -123,7 +122,7 @@ export class AuthService {
       },
       {
         jwtid,
-        issuer: 'PoProstuWitold',
+        issuer: 'TeamIntroduce',
         secret: this.configService.get('JWT_REFRESH_SECRET_KEY'),
         expiresIn: this.configService.get('JWT_REFRESH_EXPIRATION_TIME'),
       },
@@ -273,7 +272,7 @@ export class AuthService {
         id: verifiedJWt.id,
       },
       {
-        issuer: 'PoProstuWitold',
+        issuer: 'TeamIntroduce',
         secret: this.configService.get('JWT_ACCESS_SECRET_KEY'),
         expiresIn: this.configService.get('JWT_ACCESS_EXPIRATION_TIME'),
       },

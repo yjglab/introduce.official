@@ -19,6 +19,7 @@ import helmet from 'helmet';
 import * as express from 'express';
 import * as cookieParser from 'cookie-parser';
 import * as compression from 'compression';
+import { RedisIoAdapter } from '@modules/chat/chat.adapter';
 
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(
@@ -28,6 +29,7 @@ async function bootstrap() {
 
   const configService = app.get<ConfigService>(ConfigService);
   const reflector = app.get(Reflector);
+
   // GLOBAL MIDDLEWARES
   app.enableCors({
     credentials: true,
@@ -47,10 +49,10 @@ async function bootstrap() {
 
   app.useGlobalInterceptors(new ClassSerializerInterceptor(reflector));
 
-  // const redisIoAdapter = new RedisIoAdapter(app);
-  // await redisIoAdapter.connectToRedis();
+  const redisIoAdapter = new RedisIoAdapter(app);
+  await redisIoAdapter.connectToRedis();
 
-  // app.useWebSocketAdapter(redisIoAdapter);
+  app.useWebSocketAdapter(redisIoAdapter);
 
   if (configService.get('NODE_ENV') === 'development') {
     setupSwagger(app);

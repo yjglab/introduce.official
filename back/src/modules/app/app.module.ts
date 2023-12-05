@@ -7,8 +7,12 @@ import { UserModule } from '@modules/user/user.module';
 import { ProjectSourceModule } from '@modules/projectSource/projectSource.module';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler';
-import { RedisModule, RedisModuleOptions } from '@liaoliaots/nestjs-redis';
 import { APP_GUARD } from '@nestjs/core';
+import { RedisModule, RedisModuleOptions } from '@liaoliaots/nestjs-redis';
+import {
+  WsEmitterClientOptions,
+  WsEmitterModule,
+} from '@modules/chat/ws-emitter.module';
 
 @Module({
   imports: [
@@ -35,7 +39,20 @@ import { APP_GUARD } from '@nestjs/core';
         };
       },
     }),
-    // todo: 웹소켓 WsEmitterModule 추가
+    WsEmitterModule.registerAsync({
+      imports: [ConfigModule],
+      inject: [ConfigService],
+      useFactory: async (
+        configService: ConfigService,
+      ): Promise<WsEmitterClientOptions> => {
+        return {
+          config: {
+            host: configService.get('REDIS_HOST') || 'localhost',
+            port: configService.get('REDIS_PORT') || 6379,
+          },
+        };
+      },
+    }),
     PrismaModule,
     AuthModule,
     ProjectPostModule,

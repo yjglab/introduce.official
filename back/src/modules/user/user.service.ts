@@ -58,6 +58,9 @@ export class UserService {
       where: {
         [field]: value,
       },
+      include: {
+        projectPosts: true,
+      },
     });
     return user;
   }

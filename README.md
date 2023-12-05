@@ -1,8 +1,8 @@
-# Nebaram Hoolter V0.0 (2023.12 서비스 예정)
+# Introduce V0.0 (2024.02 서비스 예정)
 
-##### Server 개발 작업이 조금 늦어지고 있어 예정보다 미뤄질 수 있습니다.
+##### Server 개발 작업이 예정보다 늦어지고 있어 추가로 미뤄질 수 있습니다.
 
-![image](https://github.com/yjglab/Hoolter/assets/70316567/9b823283-9168-4fd2-be2e-cb6485378346)
+![image](https://github.com/yjglab/Hoolter/assets/70316567/110aaf64-15c3-4e6b-babd-d673f98d4294)
 
 Author/Developer: Jaekyeong Yuk
 
@@ -88,98 +88,123 @@ Author/Developer: Jaekyeong Yuk
 
 > 사용자 & 포스트 Data Types
 
-```json
-{
-  "generator": { "provider": "prisma-client-js" },
-  "datasource": {
-    "provider": "postgresql",
-    "url": { "value": "env('DB_URL')" }
-  },
-  "models": {
-    "User": {
-      "provider": "Provider?",
-      "providerId": "String?",
-      "id": { "type": "Int", "decorators": ["@id", "@default(autoincrement())"] },
-      "email": { "type": "String", "decorators": ["@unique"] },
-      "nickname": { "type": "String", "decorators": ["@unique"] },
-      "password": "String",
-      "position": "String",
-      "role": { "type": "UserRole", "decorators": ["@default(user)"] },
-      "accountStatus": { "type": "AccountStatus", "decorators": ["@default(pending)"] },
-      "avatar": { "type": "String", "decorators": ["@default('')"] },
-      "projectPosts": { "type": "ProjectPost[]" },
-      "findingPosts": { "type": "FindingPost[]" },
-      "likedProjectPosts": { "type": "ProjectPost[]", "relation": "UserLikedProjectPosts" },
-      "likedFindingPosts": { "type": "FindingPost[]", "relation": "UserLikedFindingPosts" },
-      "markedProjectPosts": { "type": "ProjectPost[]", "relation": "UserMarkedProjectPosts" },
-      "markedFindingPosts": { "type": "FindingPost[]", "relation": "UserMarkedFindingPosts" },
-      "createdAt": { "type": "DateTime", "decorators": ["@default(now())"] },
-      "updatedAt": { "type": "DateTime", "decorators": ["@default(now())"] }
-    },
-    "ProjectPost": {
-      "id": { "type": "Int", "decorators": ["@id", "@default(autoincrement())"] },
-      "category": "String",
-      "title": "String",
-      "description": "String",
-      "source": "ProjectSource?",
-      "grades": { "type": "Float", "decorators": ["@default(0)"] },
-      "user": { "type": "User", "relation": { "fields": ["userId"], "references": ["id"] } },
-      "userId": "Int",
-      "skills": { "type": "String[]" },
-      "likers": { "type": "User[]", "relation": "UserLikedProjectPosts" },
-      "markers": { "type": "User[]", "relation": "UserMarkedProjectPosts" },
-      "sections": { "type": "ProjectPostSection[]" },
-      "createdAt": { "type": "DateTime", "decorators": ["@default(now())"] },
-      "updatedAt": { "type": "DateTime", "decorators": ["@updatedAt"] }
-    },
-    "ProjectSource": {
-      "id": { "type": "Int", "decorators": ["@id", "@default(autoincrement())"] },
-      "name": "String",
-      "link": "String",
-      "owner": "String",
-      "post": { "type": "ProjectPost", "relation": { "fields": ["postId"], "references": ["id"] } },
-      "postId": { "type": "Int", "decorators": ["@unique"] }
-    },
-    "FindingPost": {
-      "id": { "type": "Int", "decorators": ["@id", "@default(autoincrement())"] },
-      "category": "String",
-      "title": "String",
-      "description": "String",
-      "deadline": "String",
-      "user": { "type": "User", "relation": { "fields": ["userId"], "references": ["id"] } },
-      "userId": "Int",
-      "skills": { "type": "String[]" },
-      "likers": { "type": "User[]", "relation": "UserLikedFindingPosts" },
-      "markers": { "type": "User[]", "relation": "UserMarkedFindingPosts" },
-      "sections": { "type": "FindingPostSection[]" },
-      "createdAt": { "type": "DateTime", "decorators": ["@default(now())"] },
-      "updatedAt": { "type": "DateTime", "decorators": ["@updatedAt"] }
-    },
-    "ProjectPostSection": {
-      "id": { "type": "Int", "decorators": ["@id", "@default(autoincrement())"] },
-      "header": "String",
-      "description": "String",
-      "images": { "type": "String[]" },
-      "post": { "type": "ProjectPost", "relation": { "fields": ["postId"], "references": ["id"] } },
-      "postId": "Int"
-    },
-    "FindingPostSection": {
-      "id": { "type": "Int", "decorators": ["@id", "@default(autoincrement())"] },
-      "header": "String",
-      "description": "String",
-      "images": { "type": "String[]" },
-      "post": { "type": "FindingPost", "relation": { "fields": ["postId"], "references": ["id"] } },
-      "postId": "Int"
-    }
-  },
-  "enums": {
-    "UserClass": ["normal", "pro"],
-    "UserRole": ["user", "premium", "moderator", "admin"],
-    "Provider": ["google", "facebook", "local"],
-    "AccountStatus": ["pending", "verified", "banned"]
-  }
+```prisma
+generator client {
+  provider = "prisma-client-js"
 }
--
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DB_URL")
+}
+
+model User {
+  provider           Provider?
+  providerId         String?
+  id                 Int           @id @default(autoincrement())
+  email              String        @unique
+  nickname           String        @unique
+  password           String
+  position           String
+  role               UserRole      @default(user)
+  accountStatus      AccountStatus @default(pending)
+  avatar             String?       @default("")
+  projectPosts       ProjectPost[]
+  findingPosts       FindingPost[]
+  likedProjectPosts  ProjectPost[] @relation("UserLikedProjectPosts")
+  likedFindingPosts  FindingPost[] @relation("UserLikedFindingPosts")
+  markedProjectPosts ProjectPost[] @relation("UserMarkedProjectPosts")
+  markedFindingPosts FindingPost[] @relation("UserMarkedFindingPosts")
+  createdAt          DateTime      @default(now())
+  updatedAt          DateTime      @default(now())
+}
+
+model ProjectPost {
+  id          Int                  @id @default(autoincrement())
+  category    String
+  title       String
+  description String
+  source      ProjectSource?
+  grades      Float                @default(0)
+  user        User                 @relation(fields: [userId], references: [id])
+  userId      Int
+  skills      String[]
+  likers      User[]               @relation("UserLikedProjectPosts")
+  markers     User[]               @relation("UserMarkedProjectPosts")
+  sections    ProjectPostSection[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model ProjectSource {
+  id     Int         @id @default(autoincrement())
+  name   String
+  link   String
+  owner  String
+  post   ProjectPost @relation(fields: [postId], references: [id])
+  postId Int         @unique
+}
+
+model FindingPost {
+  id          Int                  @id @default(autoincrement())
+  category    String
+  title       String
+  description String
+  deadline    String
+  user        User                 @relation(fields: [userId], references: [id])
+  userId      Int
+  skills      String[]
+  likers      User[]               @relation("UserLikedFindingPosts")
+  markers     User[]               @relation("UserMarkedFindingPosts")
+  sections    FindingPostSection[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model ProjectPostSection {
+  id          Int         @id @default(autoincrement())
+  header      String
+  description String
+  images      String[]
+  post        ProjectPost @relation(fields: [postId], references: [id])
+  postId      Int
+}
+
+model FindingPostSection {
+  id          Int         @id @default(autoincrement())
+  header      String
+  description String
+  images      String[]
+  post        FindingPost @relation(fields: [postId], references: [id])
+  postId      Int
+}
+
+enum UserClass {
+  normal
+  pro
+}
+
+enum UserRole {
+  user
+  premium
+  moderator
+  admin
+}
+
+enum Provider {
+  google
+  facebook
+  local
+}
+
+enum AccountStatus {
+  pending
+  verified
+  banned
+}
+
 ```
 
 ### References

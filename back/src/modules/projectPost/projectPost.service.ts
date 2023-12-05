@@ -18,9 +18,7 @@ export class ProjectPostService {
   }
 
   async createPost(data: RegisterProjectPostDTO): Promise<ProjectPost> {
-    const user = await this.userService.findUserByEmail({
-      email: data.userEmail,
-    });
+    const user = await this.userService.getUserByField('email', data.userEmail);
 
     return this.prisma.projectPost.create({
       data: {

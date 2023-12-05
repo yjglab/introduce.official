@@ -1,10 +1,10 @@
 import "./globals.css";
 import type { Metadata } from "next";
-import { CLIENT_URL, SERVICE_NAME } from "@constants";
 import { cache } from "react";
 import { Hydrate, QueryClient, dehydrate } from "@tanstack/react-query";
 import ClientLayout from "./layout.client";
 import Providers from "./providers.client";
+import { CLIENT_URL, SERVICE_NAME } from "@/utils/constants";
 
 export const metadata: Metadata = {
   title: {

@@ -9,11 +9,6 @@ import { RegisterProjectPostDTO } from './projectPost.dto';
 export class ProjectPostController {
   constructor(private projectPostService: ProjectPostService) {}
 
-  // @Get('/')
-  // async getAllPosts(): Promise<ProjectPost[]> {
-  //   return this.projectPostService.findAll({});
-  // }
-
   @Get('project-post/:id')
   async getPostById(@Param('id') id: number): Promise<ProjectPost> {
     return this.projectPostService.findOne({ id });
