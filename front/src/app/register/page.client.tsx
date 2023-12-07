@@ -2,10 +2,9 @@
 
 import React, { useEffect } from "react";
 import { useRouter } from "next/navigation";
-import useMyInfoQuery from "@/hooks/queries/useMyInfo";
-import FormSection from "@components/SignUp/FormSection";
+import FormSection from "@components/Register/FormSection";
 
-const SignUpClientPage = () => {
+const RegisterClientPage = () => {
   const router = useRouter();
   // const { data: myData } = useMyInfoQuery();
   // useEffect(() => {
@@ -18,4 +17,4 @@ const SignUpClientPage = () => {
   );
 };
 
-export default SignUpClientPage;
+export default RegisterClientPage;

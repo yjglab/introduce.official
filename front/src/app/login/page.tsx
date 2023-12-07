@@ -15,7 +15,7 @@ export async function generateMetadata() {
   } as Metadata;
 }
 
-const SignInPage = async () => {
+const LoginPage = async () => {
   const header = headers();
   const cookie = header.get("Cookie");
   // const myInfo = await loadMyInfoAPI({
@@ -27,4 +27,4 @@ const SignInPage = async () => {
   return <ClientPage />;
 };
 
-export default SignInPage;
+export default LoginPage;

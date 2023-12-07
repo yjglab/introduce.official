@@ -7,7 +7,7 @@ import { UserService } from '@modules/user/user.service';
 
 export type JwtAccessPayload = {
   id: string | number;
-  nickname: string;
+  displayName: string;
 };
 
 @Injectable()

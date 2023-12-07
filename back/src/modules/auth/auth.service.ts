@@ -57,8 +57,8 @@ export class AuthService {
           throw new UniqueViolation('email');
         }
 
-        if (err.detail.includes('nickname')) {
-          throw new UniqueViolation('nickname');
+        if (err.detail.includes('displayName')) {
+          throw new UniqueViolation('displayName');
         }
       }
       throw new InternalServerErrorException();
@@ -105,7 +105,7 @@ export class AuthService {
 
     const accessToken = await this.jwtService.signAsync(
       {
-        nickname: user.nickname,
+        displayName: user.displayName,
         id: user.id,
       },
       {
@@ -117,7 +117,7 @@ export class AuthService {
 
     const refreshToken = await this.jwtService.signAsync(
       {
-        nickname: user.nickname,
+        displayName: user.displayName,
         id: user.id,
       },
       {

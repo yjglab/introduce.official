@@ -4,6 +4,7 @@ import {
   Delete,
   Get,
   HttpCode,
+  Logger,
   Post,
   Query,
   Req,
@@ -26,7 +27,10 @@ import { User } from '@prisma/client';
 import { Request } from 'express';
 
 @ApiTags('auth')
-@Controller('auth')
+@Controller({
+  path: 'auth',
+  version: '1',
+})
 export class AuthController {
   constructor(private authService: AuthService) {}
 
@@ -35,6 +39,7 @@ export class AuthController {
   })
   @Post('local/register')
   async register(@Body() credentials: CreateAccountDto, @Req() req: Request) {
+    Logger.debug('ddd');
     return this.authService.register(credentials, req);
   }
 

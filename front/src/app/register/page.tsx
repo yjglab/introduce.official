@@ -1,7 +1,6 @@
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 import React from "react";
-import { loadMyInfoAPI } from "@/api/user";
 import ClientPage from "./page.client";
 import { Metadata } from "next";
 
@@ -16,7 +15,7 @@ export async function generateMetadata() {
   } as Metadata;
 }
 
-const SignUpPage = async () => {
+const RegisterPage = async () => {
   // const header = headers();
   // const cookie = header.get("Cookie");
   // const myData = await loadMyInfoAPI({
@@ -28,4 +27,4 @@ const SignUpPage = async () => {
   return <ClientPage />;
 };
 
-export default SignUpPage;
+export default RegisterPage;

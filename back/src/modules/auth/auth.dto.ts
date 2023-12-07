@@ -52,7 +52,7 @@ export class CreateAccountDto {
     message:
       '닉네임은 문자, 숫자, 단어 사이의 공백만 포함할 수 있으며 최대 30자까지 가능합니다',
   })
-  nickname: string;
+  displayName: string;
 
   @ApiProperty({
     required: true,
@@ -64,8 +64,8 @@ export class CreateAccountDto {
   @NotContains(' ', {
     message: '비밀번호는 빈칸을 포함할 수 없습니다',
   })
-  @Length(3, 30, {
-    message: '비밀번호는 3~30자 사이여야 합니다.',
+  @Length(3, 14, {
+    message: '비밀번호는 3~14자 사이여야 합니다.',
   })
   password: string;
 
@@ -94,8 +94,8 @@ export class LoginDto {
   @NotContains(' ', {
     message: '비밀번호는 빈칸을 포함할 수 없습니다',
   })
-  @Length(3, 30, {
-    message: '비밀번호는 3~30자 사이여야 합니다.',
+  @Length(3, 14, {
+    message: '비밀번호는 3~14자 사이여야 합니다.',
   })
   password: string;
 }

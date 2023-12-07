@@ -10,6 +10,8 @@ import {
   GoogleOauthStrategy,
   JwtAuthStrategy,
 } from './strategies';
+import { PrismaModule } from '@modules/prisma/prisma.module';
+import { PrismaService } from '@modules/prisma/prisma.service';
 
 @Module({
   imports: [
@@ -37,9 +39,11 @@ import {
         },
       }),
     }),
+    PrismaModule,
   ],
   controllers: [AuthController],
   providers: [
+    PrismaService,
     AuthService,
     GoogleOauthStrategy,
     FacebookOauthStrategy,

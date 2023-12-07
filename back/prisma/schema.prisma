@@ -12,7 +12,7 @@ model User {
   providerId         String?
   id                 Int           @id @default(autoincrement())
   email              String        @unique
-  nickname           String        @unique
+  displayName        String        @unique
   password           String
   position           String
   role               UserRole      @default(user)

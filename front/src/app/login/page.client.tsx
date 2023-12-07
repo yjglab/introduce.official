@@ -2,10 +2,9 @@
 
 import React, { useEffect } from "react";
 import { useRouter } from "next/navigation";
-import useMyInfoQuery from "@/hooks/queries/useMyInfo";
-import FormSection from "@components/SignIn/FormSection";
+import FormSection from "@components/Login/FormSection";
 
-const SignInClientPage = () => {
+const LoginClientPage = () => {
   const router = useRouter();
   // const { data: myInfo } = useMyInfoQuery();
   // useEffect(() => {
@@ -18,4 +17,4 @@ const SignInClientPage = () => {
   );
 };
 
-export default SignInClientPage;
+export default LoginClientPage;

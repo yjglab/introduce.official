@@ -15,7 +15,7 @@ export class UpdateUserDto {
     message:
       '닉네임은 문자, 숫자, 단어 사이의 공백만 포함할 수 있으며 최대 12자까지 가능합니다.',
   })
-  nickname: string;
+  displayName: string;
 
   // todo: position 외 수정 추가할 사용자 정보들.
 }

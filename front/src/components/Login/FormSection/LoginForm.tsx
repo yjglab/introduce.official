@@ -17,7 +17,7 @@ interface Form {
   passwordConfirm: string;
   position: string;
 }
-const SignInForm = () => {
+const LoginForm = () => {
   const router = useRouter();
   const dispatch = useDispatch<AppDispatch>();
   const { me } = useSelector((state: RootState) => state.user);
@@ -85,8 +85,8 @@ const SignInForm = () => {
             {...register("password", {
               required: true,
               maxLength: {
-                value: 12,
-                message: "비밀번호 제한",
+                value: 14,
+                message: "",
               },
             })}
             id='password'
@@ -109,4 +109,4 @@ const SignInForm = () => {
   );
 };
 
-export default SignInForm;
+export default LoginForm;

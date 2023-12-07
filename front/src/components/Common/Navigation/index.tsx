@@ -1,5 +1,4 @@
 import useSignOut from "@hooks/mutations/useSignOut";
-import useMyInfoQuery from "@hooks/queries/useMyInfo";
 import Link from "next/link";
 import { memo, useCallback, useEffect } from "react";
 
@@ -17,8 +16,8 @@ const Navigation = memo(() => {
       <Link href='/'>홈 </Link>
 
       <Link href='/profile'>프로필 </Link>
-      <Link href='/signup'>가입 </Link>
-      <Link href='/signin'>로그인 </Link>
+      <Link href='/register'>가입 </Link>
+      <Link href='/login'>로그인 </Link>
       {/* 
       {myInfo ? (
         <button onClick={handleSignOut}>로그아웃</button>

@@ -20,7 +20,7 @@ export class FacebookOauthStrategy extends PassportStrategy(
         'emails',
         'gender',
         'name',
-        'nickname',
+        'displayName',
         'picture.type(large)',
       ],
     });
@@ -37,7 +37,7 @@ export class FacebookOauthStrategy extends PassportStrategy(
         providerId: profile.id,
         email: profile.emails[0].value,
         password: 'provided',
-        nickname: profile.displayName ?? profile.name.givenName,
+        displayName: profile.displayName ?? profile.name.givenName,
         avatar: profile.photos[0].value,
       };
 

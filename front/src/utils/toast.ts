@@ -14,7 +14,7 @@ interface ToastConfig {
 }
 export const toastConfig: ToastConfig = {
   position: "bottom-center",
-  autoClose: 2000,
+  autoClose: 3500,
   hideProgressBar: true,
   newestOnTop: true,
   closeOnClick: true,

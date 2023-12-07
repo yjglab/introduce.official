@@ -1,9 +1,9 @@
-import SignUpForm from "./SignUpForm";
+import RegisterForm from "./RegisterForm";
 
 const FormSection = () => {
   return (
     <div>
-      <SignUpForm />
+      <RegisterForm />
     </div>
   );
 };

@@ -45,7 +45,7 @@ export class UserService {
           throw new UniqueViolation('email');
         }
 
-        if (err.detail.includes('nickname')) {
+        if (err.detail.includes('displayName')) {
           throw new UniqueViolation('displayName');
         }
       }
@@ -89,7 +89,7 @@ export class UserService {
           email: req.user.email,
           position: req.user.position,
           password: req.user.password,
-          nickname: req.user.nickname,
+          displayName: req.user.displayName,
           avatar: req.user.avatar,
           accountStatus: AccountStatus.VERIFIED,
         },

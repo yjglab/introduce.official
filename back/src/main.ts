@@ -84,7 +84,9 @@ async function bootstrap() {
 
   useContainer(app.select(AppModule), { fallbackOnErrors: true });
   await app.listen(Number(configService.get('APP_PORT')));
-
+  const server = app.getHttpServer();
+  const address = server.address();
+  console.log(address);
   return app;
 }
 bootstrap();

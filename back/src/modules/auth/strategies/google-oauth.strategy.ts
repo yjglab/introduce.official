@@ -26,7 +26,7 @@ export class GoogleOauthStrategy extends PassportStrategy(Strategy, 'google') {
         providerId: profile.id,
         email: profile.emails[0].value,
         password: 'provided',
-        nickname: profile.displayName,
+        displayName: profile.displayName,
         avatar: profile.photos[0].value,
         verified: profile.emails[0].verified,
       };
