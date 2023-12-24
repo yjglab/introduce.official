@@ -67,7 +67,7 @@ Author/Developer: Jaekyeong Yuk
 > 사용자 프로필
 
 - 아바타 gravatar 기본사용 및 별도 수정
-- 닉네임
+- 표시 이름
 - 포지션 (1회 변경 제한)
 - 비밀번호 (bcrypt, 단방향 암호화-DB)
 - 이메일 (cryptoJS, 양방향 암호화-DB, 복호화-클라이언트)

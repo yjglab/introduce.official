@@ -43,20 +43,19 @@ export class CreateAccountDto {
     required: true,
   })
   @IsNotEmpty({
-    message: '닉네임을 입력해주세요',
+    message: '표시 이름을 입력해주세요',
   })
-  @Length(3, 50, {
-    message: '닉네임은 3~30자(영문 기준) 사이여야 합니다',
+  @Length(3, 12, {
+    message: '표시 이름은 3~12자(영문 기준) 사이여야 합니다',
   })
-  @Matches(/^[\w](?!.*?\.{2})[\w. ]{1,30}[\w]$/, {
+  @Matches(/^[\w](?!.*?\.{2})[\w. ]{3,12}[\w]$/, {
     message:
-      '닉네임은 문자, 숫자, 단어 사이의 공백만 포함할 수 있으며 최대 30자까지 가능합니다',
+      '표시 이름은 문자, 숫자, 단어 사이의 공백만 포함할 수 있으며 최대 12자까지 가능합니다',
   })
   displayName: string;
 
   @ApiProperty({
     required: true,
-    example: 'demo123',
   })
   @IsNotEmpty({
     message: '비밀번호를 입력해주세요',
@@ -75,12 +74,12 @@ export class CreateAccountDto {
 
 export class LoginDto {
   @IsNotEmpty({
-    message: 'Email cannot be empty or whitespace',
+    message: '이메일은 빈칸을 포함할 수 없습니다',
   })
   @IsEmail(
     {},
     {
-      message: 'Email should be email',
+      message: '이메일 형식이 아닙니다',
     },
   )
   email: string;

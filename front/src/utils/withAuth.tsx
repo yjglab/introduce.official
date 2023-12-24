@@ -1,7 +1,9 @@
+"use client";
+
 import { RootState } from "@/store";
 import { Container } from "@components/Common/Container";
 import Head from "next/head";
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 
@@ -60,7 +62,7 @@ export const withAuth = (option: AuthOption, Component: React.FC<{ data: any }>)
           </div>
         </Container>
       </>
-    ); // Render whatever you want while the authentication occurs
+    );
   };
 
   return AuthenticatedComponent;

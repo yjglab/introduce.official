@@ -37,10 +37,10 @@ async function bootstrap() {
     optionsSuccessStatus: 200,
     methods: ['GET', 'HEAD', 'PUT', 'PATCH', 'POST', 'DELETE'],
   });
-  app.enableVersioning({
-    type: VersioningType.URI,
-    defaultVersion: '1',
-  });
+  // app.enableVersioning({
+  //   type: VersioningType.URI,
+  //   defaultVersion: "1",
+  // });
   app.use(express.json());
   app.use(express.urlencoded({ extended: false }));
   app.use(cookieParser());
@@ -57,9 +57,8 @@ async function bootstrap() {
   if (configService.get('NODE_ENV') === 'development') {
     setupSwagger(app);
   }
-
-  // app.enable('trust proxy') // 리버스 프록시 사용하는 경우에만(nginx)
   app.setGlobalPrefix(configService.get('API_PREFIX') || '/api');
+  // app.enable('trust proxy') // 리버스 프록시 사용하는 경우에만(nginx)
   app.useGlobalPipes(
     new ValidationPipe({
       exceptionFactory: (errors: ValidationError[]) => {

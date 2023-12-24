@@ -1,11 +1,5 @@
-import SignInForm from "./SignInForm";
-
 const FormSection = () => {
-  return (
-    <div>
-      <SignInForm />
-    </div>
-  );
+  return <div></div>;
 };
 
 export default FormSection;

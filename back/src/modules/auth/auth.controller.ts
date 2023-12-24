@@ -4,7 +4,6 @@ import {
   Delete,
   Get,
   HttpCode,
-  Logger,
   Post,
   Query,
   Req,
@@ -39,7 +38,6 @@ export class AuthController {
   })
   @Post('local/register')
   async register(@Body() credentials: CreateAccountDto, @Req() req: Request) {
-    Logger.debug('ddd');
     return this.authService.register(credentials, req);
   }
 

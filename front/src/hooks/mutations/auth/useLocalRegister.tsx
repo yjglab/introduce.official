@@ -23,11 +23,6 @@ const useLocalRegister = () => {
       );
       dispatch(SET_USER(response.user));
     },
-    onError: (error) => {
-      if (error instanceof AxiosError) {
-        toast.error(error.response?.data, toastConfig);
-      }
-    },
   });
 
   return mutation;

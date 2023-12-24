@@ -7,10 +7,10 @@ import { Metadata } from "next";
 export async function generateMetadata() {
   return {
     title: "회원가입",
-    description: "훌터에 회원가입하고 프로젝트를 업로드해보세요!",
+    description: "인트로듀스에 회원가입",
     openGraph: {
       title: "회원가입",
-      description: "훌터에 회원가입하고 프로젝트를 업로드해보세요!",
+      description: "인트로듀스에 회원가입",
     },
   } as Metadata;
 }

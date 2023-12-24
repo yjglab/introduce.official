@@ -2,6 +2,7 @@ import {
   HttpException,
   Injectable,
   InternalServerErrorException,
+  Logger,
   UnauthorizedException,
 } from '@nestjs/common';
 import { User } from '@prisma/client';
@@ -40,7 +41,7 @@ export class AuthService {
         provider: Providers.Local,
         ...registrationData,
       });
-
+      Logger.debug('ok');
       await this.sendConfirmationToken(user);
 
       const [accessToken, refreshToken] = await this.generateTokens(user);
