@@ -1,25 +1,11 @@
 import Link from "next/link";
 import { FC, memo, useCallback, useEffect } from "react";
-import ThemeModeButton from "./ThemeModeButton";
 import SiteMenu from "./SiteMenu";
+import ThemeSwitcher from "@app/ThemeSwitcher";
 
-interface Props {
-  setThemeMode: (mode: string | null) => void;
-}
-const Navigation: FC<Props> = memo(({ setThemeMode }) => {
-  const toggleThemeMode = () => {
-    const themeMode = localStorage.getItem("themeMode");
-    if (themeMode === "dark") {
-      localStorage.setItem("themeMode", "light");
-      setThemeMode("light");
-    } else {
-      localStorage.setItem("themeMode", "dark");
-      setThemeMode("dark");
-    }
-  };
-
+const Navigation = memo(() => {
   return (
-    <header className='flex flex-wrap md:justify-start md:flex-nowrap z-50 w-full bg-white text-sm py-3 md:py-0 dark:bg-gray-800'>
+    <header className='flex fixed top-0 flex-wrap md:justify-start md:flex-nowrap z-50 w-full bg-white text-sm py-3 md:py-0 dark:bg-gray-800'>
       <nav className='max-w-[85rem] w-full mx-auto px-4 md:px-6 lg:px-8' aria-label='Global'>
         <div className='relative md:flex md:items-center md:justify-between'>
           <div className='flex items-center justify-between'>
@@ -79,7 +65,7 @@ const Navigation: FC<Props> = memo(({ setThemeMode }) => {
           >
             <div className='overflow-hidden overflow-y-auto max-h-[75vh] [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-track]:bg-gray-100 [&::-webkit-scrollbar-thumb]:bg-gray-300 dark:[&::-webkit-scrollbar-track]:bg-slate-700 dark:[&::-webkit-scrollbar-thumb]:bg-slate-500'>
               <div className='flex flex-col gap-x-0 mt-5 divide-y divide-dashed divide-gray-200 md:flex-row md:items-center md:justify-end md:gap-x-7 md:mt-0 md:ps-7 md:divide-y-0 md:divide-solid dark:divide-gray-700'>
-                <ThemeModeButton />
+                <ThemeSwitcher />
 
                 <Link
                   className='font-medium text-gray-500 hover:text-gray-400 py-3 md:py-6 dark:text-gray-400 dark:hover:text-gray-500 dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600'

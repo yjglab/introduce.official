@@ -50,10 +50,10 @@ export default async function RootLayout({ children }: { children: React.ReactNo
       <body>
         <Providers>
           <Hydrate state={dehydratedState}>
-            <PrelineLoader />
             <ClientLayout>{children}</ClientLayout>
           </Hydrate>
         </Providers>
+        <PrelineLoader />
       </body>
     </html>
   );

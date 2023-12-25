@@ -17,20 +17,10 @@ const font = Noto_Sans({
 });
 
 export default function RootClientLayout({ children }: { children: React.ReactNode }) {
-  const [themeMode, setThemeMode] = useState<string | null>("");
-  useEffect(() => {
-    if (!localStorage.getItem("themeMode")) {
-      localStorage.setItem("themeMode", "light");
-      setThemeMode("light");
-    } else {
-      setThemeMode(localStorage.getItem("themeMode"));
-    }
-  }, []);
-
   return (
     <Provider store={store}>
-      <Navigation setThemeMode={setThemeMode} />
-      <div id='layout' className={(classNames(font.className), `${themeMode}`)}>
+      <Navigation />
+      <div id='layout' className={(classNames(font.className), "mt-12")}>
         {children}
       </div>
       <ToastContainer />

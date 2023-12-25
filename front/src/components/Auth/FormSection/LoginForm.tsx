@@ -1,5 +1,8 @@
 import { FC, useState } from "react";
+import useLocalRegister from "@hooks/mutations/auth/useLocalRegister";
+import { ErrorField } from "@components/Common/ErrorField";
 import useLocalLogin from "@hooks/mutations/auth/useLocalLogin";
+import Link from "next/link";
 
 interface Props {
   ApiErrors: any;
@@ -11,6 +14,8 @@ type LoginValues = {
 };
 
 const LoginForm: FC<Props> = ({ ApiErrors, setAPIErrors }) => {
+  const [open, setOpen] = useState<boolean>(false);
+
   const {
     mutate: localLoginMutate,
     isLoading: isLocalLoginLoading,
@@ -21,6 +26,12 @@ const LoginForm: FC<Props> = ({ ApiErrors, setAPIErrors }) => {
   } = useLocalLogin();
 
   const loginValues: LoginValues = { email: "", password: "" };
+  // const loginSchema = Yup.object().shape({
+  //   email: Yup.string()
+  //     .email("이메일 형식이어야 합니다")
+  //     .required("이메일은 비워둘 수 없거나 공백일 수 없습니다"),
+  //   password: Yup.string().required("비밀번호는 비워둘 수 없거나 공백일 수 없습니다"),
+  // });
 
   const submitLoginForm = (values) => {
     console.log(values);
@@ -37,6 +48,10 @@ const LoginForm: FC<Props> = ({ ApiErrors, setAPIErrors }) => {
     } catch (err: any) {
       console.log("ERROR", err);
     }
+  };
+
+  const toggle = () => {
+    setOpen(!open);
   };
 
   return <></>;
