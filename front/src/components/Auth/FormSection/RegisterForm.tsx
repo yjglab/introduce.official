@@ -1,4 +1,4 @@
-import { FC, useState } from "react";
+import { FC, useEffect, useState } from "react";
 import useLocalRegister from "@hooks/mutations/auth/useLocalRegister";
 import { ErrorField } from "@components/Common/ErrorField";
 
@@ -15,8 +15,10 @@ interface Props {
 interface RegisterValues {
   email: string;
   password: string;
+  passwordCheck: string;
   position: string;
   displayName: string;
+  term: boolean;
 }
 
 const RegisterForm: FC<Props> = ({ setFormType }) => {
@@ -66,9 +68,11 @@ const RegisterForm: FC<Props> = ({ setFormType }) => {
       console.log("ERROR", err);
     }
   };
-
+  useEffect(() => {
+    console.log(errors.email);
+  }, [errors.email]);
   return (
-    <form>
+    <form onSubmit={handleSubmit(onSubmit)}>
       <div className='lg:max-w-lg lg:mx-auto lg:me-0 ms-auto'>
         <div className='p-4 sm:p-7 flex flex-col bg-white rounded-2xl shadow-lg dark:bg-slate-900'>
           <div className='text-center'>
@@ -94,8 +98,14 @@ const RegisterForm: FC<Props> = ({ setFormType }) => {
               <div className='hs-tooltip [--placement:bottom] '>
                 <div className='hs-tooltip-toggle relative'>
                   <input
-                    type='email'
-                    id='hs-hero-signup-form-floating-input-email'
+                    {...register("email", {
+                      required: "이메일을 입력해주세요.",
+                      pattern: {
+                        value: /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/i,
+                        message: "이메일 형식이 아닙니다.",
+                      },
+                    })}
+                    id='email'
                     className='peer border p-4 block w-full border-gray-200 rounded-lg text-sm placeholder:text-transparent focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-slate-900 dark:border-gray-700 dark:text-gray-400 dark:focus:ring-gray-600
           focus:pt-6
           focus:pb-2
@@ -106,7 +116,7 @@ const RegisterForm: FC<Props> = ({ setFormType }) => {
                     placeholder=''
                   />
                   <label
-                    htmlFor='hs-hero-signup-form-floating-input-email'
+                    htmlFor='email'
                     className='absolute top-0 start-0 p-4 h-full text-sm truncate pointer-events-none transition ease-in-out duration-100 border border-transparent dark:text-white peer-disabled:opacity-50 peer-disabled:pointer-events-none
             peer-focus:text-xs
             peer-focus:-translate-y-1.5
@@ -117,18 +127,31 @@ const RegisterForm: FC<Props> = ({ setFormType }) => {
                   >
                     이메일
                   </label>
-                  <Tooltip content='이메일 형식이 아닙니다' />
-                  <div className='absolute inset-y-0 end-0 flex items-center pointer-events-none pe-3'>
-                    <InputError />
-                  </div>
+                  <Tooltip content={errors.email?.message} />
+                  {errors.email && (
+                    <div className='absolute inset-y-0 end-0 flex items-center pointer-events-none pe-3'>
+                      <InputError />
+                    </div>
+                  )}
                 </div>
               </div>
 
               <div className='hs-tooltip [--placement:bottom] '>
                 <div className='hs-tooltip-toggle relative'>
                   <input
+                    {...register("displayName", {
+                      required: "표시 이름을 입력해주세요.",
+                      minLength: {
+                        value: 3,
+                        message: "최소 3~12자가 필요합니다.",
+                      },
+                      maxLength: {
+                        value: 12,
+                        message: "최소 3~12자가 필요합니다.",
+                      },
+                    })}
                     type='text'
-                    id='hs-hero-signup-form-floating-input-last-name'
+                    id='displayName'
                     className='peer border p-4 block w-full border-gray-200 rounded-lg text-sm placeholder:text-transparent focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-slate-900 dark:border-gray-700 dark:text-gray-400 dark:focus:ring-gray-600
           focus:pt-6
           focus:pb-2
@@ -139,7 +162,7 @@ const RegisterForm: FC<Props> = ({ setFormType }) => {
                     placeholder=''
                   />
                   <label
-                    htmlFor='hs-hero-signup-form-floating-input-last-name'
+                    htmlFor='displayName'
                     className='absolute top-0 start-0 p-4 h-full text-sm truncate pointer-events-none transition ease-in-out duration-100 border border-transparent dark:text-white peer-disabled:opacity-50 peer-disabled:pointer-events-none
             peer-focus:text-xs
             peer-focus:-translate-y-1.5
@@ -150,18 +173,31 @@ const RegisterForm: FC<Props> = ({ setFormType }) => {
                   >
                     표시 이름
                   </label>
-                  <Tooltip content='최소 3~12자가 필요합니다.' />
-                  <div className='absolute inset-y-0 end-0 flex items-center pointer-events-none pe-3'>
-                    <InputError />
-                  </div>
+                  <Tooltip content={errors.displayName?.message} />
+                  {errors.displayName && (
+                    <div className='absolute inset-y-0 end-0 flex items-center pointer-events-none pe-3'>
+                      <InputError />
+                    </div>
+                  )}
                 </div>
               </div>
 
-              <div className='relative col-span-full'>
-                <div className='relative'>
+              <div className='hs-tooltip [--placement:bottom] relative col-span-full'>
+                <div className='hs-tooltip-toggle relative'>
                   <input
+                    {...register("password", {
+                      required: "비밀번호를 입력해주세요.",
+                      minLength: {
+                        value: 3,
+                        message: "최소 3~14자가 필요합니다.",
+                      },
+                      maxLength: {
+                        value: 14,
+                        message: "최소 3~14자가 필요합니다.",
+                      },
+                    })}
                     type='password'
-                    id='hs-hero-signup-form-floating-input-new-password'
+                    id='password'
                     className='peer border p-4 block w-full border-gray-200 rounded-lg text-sm placeholder:text-transparent focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-slate-900 dark:border-gray-700 dark:text-gray-400 dark:focus:ring-gray-600
           focus:pt-6
           focus:pb-2
@@ -171,11 +207,9 @@ const RegisterForm: FC<Props> = ({ setFormType }) => {
           autofill:pb-2'
                     placeholder=''
                   />
-                  <div className='absolute inset-y-0 end-0 flex items-center pointer-events-none pe-3'>
-                    <InputError />
-                  </div>
+
                   <label
-                    htmlFor='hs-hero-signup-form-floating-input-new-password'
+                    htmlFor='password'
                     className='absolute top-0 start-0 p-4 h-full text-sm truncate pointer-events-none transition ease-in-out duration-100 border border-transparent dark:text-white peer-disabled:opacity-50 peer-disabled:pointer-events-none
             peer-focus:text-xs
             peer-focus:-translate-y-1.5
@@ -184,19 +218,25 @@ const RegisterForm: FC<Props> = ({ setFormType }) => {
             peer-[:not(:placeholder-shown)]:-translate-y-1.5
             peer-[:not(:placeholder-shown)]:text-gray-500'
                   >
-                    새 비밀번호
+                    비밀번호
                   </label>
+                  <Tooltip content={errors.password?.message} />
+                  {errors.password && (
+                    <div className='absolute inset-y-0 end-0 flex items-center pointer-events-none pe-3'>
+                      <InputError />
+                    </div>
+                  )}
                 </div>
 
                 <div
-                  id='hs-strong-password-popover'
+                  id='password-popover'
                   className='hidden absolute z-10 w-full bg-blue-50 rounded-lg p-4 dark:bg-blue-950'
                 >
                   <div
                     id='hs-strong-password-in-popover'
                     data-hs-strong-password='{
-              "target": "#hs-hero-signup-form-floating-input-new-password",
-              "hints": "#hs-strong-password-popover",
+              "target": "#password",
+              "hints": "#password-popover",
               "stripClasses": "hs-strong-password:opacity-100 hs-strong-password-accepted:bg-teal-500 h-2 flex-auto rounded-full bg-blue-500 opacity-50 mx-1",
               "mode": "popover",
               "minLength": "3"
@@ -276,8 +316,11 @@ const RegisterForm: FC<Props> = ({ setFormType }) => {
               <div className='hs-tooltip [--placement:bottom] col-span-full'>
                 <div className='hs-tooltip-toggle relative'>
                   <input
+                    {...register("passwordCheck", {
+                      required: "비밀번호가 일치하지 않습니다.",
+                    })}
                     type='password'
-                    id='hs-hero-signup-form-floating-input-current-password'
+                    id='passwordCheck'
                     className='peer border p-4 block w-full border-gray-200 rounded-lg text-sm placeholder:text-transparent focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-slate-900 dark:border-gray-700 dark:text-gray-400 dark:focus:ring-gray-600
           focus:pt-6
           focus:pb-2
@@ -287,12 +330,14 @@ const RegisterForm: FC<Props> = ({ setFormType }) => {
           autofill:pb-2'
                     placeholder=''
                   />
-                  <Tooltip content='비밀번호가 일치하지 않습니다' />
-                  <div className='absolute inset-y-0 end-0 flex items-center pointer-events-none pe-3'>
-                    <InputError />
-                  </div>
+                  <Tooltip content={errors.passwordCheck?.message} />
+                  {errors.passwordCheck && (
+                    <div className='absolute inset-y-0 end-0 flex items-center pointer-events-none pe-3'>
+                      <InputError />
+                    </div>
+                  )}
                   <label
-                    htmlFor='hs-hero-signup-form-floating-input-current-password'
+                    htmlFor='passwordCheck'
                     className='absolute top-0 start-0 p-4 h-full text-sm truncate pointer-events-none transition ease-in-out duration-100 border border-transparent dark:text-white peer-disabled:opacity-50 peer-disabled:pointer-events-none
             peer-focus:text-xs
             peer-focus:-translate-y-1.5
@@ -310,6 +355,7 @@ const RegisterForm: FC<Props> = ({ setFormType }) => {
             <div className='mt-5 flex items-center'>
               <label htmlFor='term' className='text-sm dark:text-white flex gap-1'>
                 <input
+                  {...register("term", { required: true })}
                   id='term'
                   name='term'
                   type='checkbox'
@@ -323,9 +369,11 @@ const RegisterForm: FC<Props> = ({ setFormType }) => {
                     개인정보수집 및 활용동의서
                   </a>
                   에 동의합니다
-                  <div className='ml-2 inset-y-0 end-0 flex items-center pointer-events-none pe-3'>
-                    <InputError />
-                  </div>
+                  {errors.term && (
+                    <div className='ml-1 inset-y-0 end-0 flex items-center pointer-events-none pe-3'>
+                      <InputError />
+                    </div>
+                  )}
                 </div>
               </label>
             </div>
