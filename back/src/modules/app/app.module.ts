@@ -13,6 +13,7 @@ import {
   WsEmitterClientOptions,
   WsEmitterModule,
 } from '@modules/chat/ws-emitter.module';
+import { PrismaService } from '@modules/prisma/prisma.service';
 
 @Module({
   imports: [
@@ -65,6 +66,7 @@ import {
       provide: APP_GUARD,
       useClass: ThrottlerGuard,
     },
+    PrismaService,
   ],
 })
 export class AppModule {}

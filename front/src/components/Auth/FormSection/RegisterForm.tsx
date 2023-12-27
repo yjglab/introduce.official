@@ -8,6 +8,8 @@ import InputError from "@components/Common/Icons/InputError";
 import InputUnchecked from "@components/Common/Icons/InputUnchecked";
 import InputChecked from "@components/Common/Icons/InputChecked";
 import SocialAuth from "./SocialAuth";
+import LoadingSpinner from "@components/Common/LoadingSpinner";
+import { DEVELOPMENT } from "@/utils/constants";
 
 interface Props {
   setFormType: (type: "login" | "register") => void;
@@ -35,42 +37,19 @@ const RegisterForm: FC<Props> = ({ setFormType }) => {
     register,
     handleSubmit,
     reset,
+    getValues,
     formState: { errors },
   } = useForm<RegisterValues>();
 
-  // const registerError = {
-  //   email: Yup.string()
-  //     .email("C:이메일 형식이어야 합니다")
-  //     .required("C:이메일은 비워둘 수 없거나 공백일 수 없습니다"),
-  //   password: Yup.string()
-  //     .required("C:비밀번호는 비워둘 수 없거나 공백일 수 없습니다")
-  //     .min(3, "C:비밀번호는 3자리에서 14자리 사이이어야 합니다")
-  //     .max(14, "C:비밀번호는 3자리에서 14자리 사이이어야 합니다"),
-  //   position: Yup.string().required("소속된 직무를 선택해야 합니다"),
-  //   displayName: Yup.string()
-  //     .required("C:표시 이름은 비워둘 수 없거나 공백일 수 없습니다")
-  //     .min(3, "C:표시 이름은 3자리에서 12자리 사이이어야 합니다")
-  //     .max(12, "C:표시 이름은 3자리에서 12자리 사이이어야 합니다"),
-  // };
-
   const onSubmit = (values: RegisterValues) => {
-    console.log(values);
+    const { email, displayName, password, position } = values;
     try {
-      localRegisterMutate(values);
-      if (isLocalRegisterError) {
-        // setAPIErrors(localRegisterError);
-      }
-      if (me) {
-        // router.push("/me");
-        console.log("register 성공");
-      }
+      localRegisterMutate({ email, displayName, password, position });
     } catch (err: any) {
       console.log("ERROR", err);
     }
   };
-  useEffect(() => {
-    console.log(errors.email);
-  }, [errors.email]);
+
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <div className='lg:max-w-lg lg:mx-auto lg:me-0 ms-auto'>
@@ -141,13 +120,9 @@ const RegisterForm: FC<Props> = ({ setFormType }) => {
                   <input
                     {...register("displayName", {
                       required: "표시 이름을 입력해주세요.",
-                      minLength: {
-                        value: 3,
-                        message: "최소 3~12자가 필요합니다.",
-                      },
-                      maxLength: {
-                        value: 12,
-                        message: "최소 3~12자가 필요합니다.",
+                      pattern: {
+                        value: /^(?=.*[a-zA-Z0-9가-힣])[a-zA-Z0-9가-힣]{3,12}$/,
+                        message: "3~12자 이하의 영문 소문자, 숫자 또는 한글로 구성되어야 합니다",
                       },
                     })}
                     type='text'
@@ -187,15 +162,13 @@ const RegisterForm: FC<Props> = ({ setFormType }) => {
                   <input
                     {...register("password", {
                       required: "비밀번호를 입력해주세요.",
-                      minLength: {
-                        value: 3,
-                        message: "최소 3~14자가 필요합니다.",
-                      },
-                      maxLength: {
-                        value: 14,
-                        message: "최소 3~14자가 필요합니다.",
+                      pattern: {
+                        value:
+                          /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&#.~_-])[A-Za-z\d@$!%*?&#.~_-]{3,14}$/,
+                        message: "비밀번호 형식을 준수해주세요.",
                       },
                     })}
+                    defaultValue={DEVELOPMENT ? "Ab2@" : ""}
                     type='password'
                     id='password'
                     className='peer border p-4 block w-full border-gray-200 rounded-lg text-sm placeholder:text-transparent focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-slate-900 dark:border-gray-700 dark:text-gray-400 dark:focus:ring-gray-600
@@ -317,10 +290,15 @@ const RegisterForm: FC<Props> = ({ setFormType }) => {
                 <div className='hs-tooltip-toggle relative'>
                   <input
                     {...register("passwordCheck", {
+                      validate: {
+                        matched: (value) =>
+                          value === getValues("password") || "비밀번호가 일치하지 않습니다.",
+                      },
                       required: "비밀번호가 일치하지 않습니다.",
                     })}
                     type='password'
                     id='passwordCheck'
+                    defaultValue={DEVELOPMENT ? "Ab2@" : ""}
                     className='peer border p-4 block w-full border-gray-200 rounded-lg text-sm placeholder:text-transparent focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-slate-900 dark:border-gray-700 dark:text-gray-400 dark:focus:ring-gray-600
           focus:pt-6
           focus:pb-2
@@ -350,8 +328,53 @@ const RegisterForm: FC<Props> = ({ setFormType }) => {
                   </label>
                 </div>
               </div>
+
+              {/* Position 선택 */}
+              <div className='hs-tooltip [--placement:bottom] col-span-full'>
+                <div className='hs-tooltip-toggle relative'>
+                  <select
+                    {...register("position", {
+                      validate: {
+                        matched: (value) =>
+                          value === "개발자" || value === "디자이너" || "직무를 선택해주세요.",
+                      },
+                      required: "직무를 선택해주세요.",
+                    })}
+                    id='position'
+                    className='peer p-4 pe-9 block w-full border border-gray-200 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-slate-900 dark:border-gray-700 dark:text-gray-400 dark:focus:ring-gray-600
+                    focus:pt-6
+                    focus:pb-2
+                    [&:not(:placeholder-shown)]:pt-6
+                    [&:not(:placeholder-shown)]:pb-2
+                    autofill:pt-6
+                    autofill:pb-2'
+                  >
+                    <option>직무를 선택해주세요</option>
+                    <option>개발자</option>
+                    <option>디자이너</option>
+                  </select>
+                  <label
+                    className='absolute top-0 start-0 p-4 h-full truncate pointer-events-none transition ease-in-out duration-100 border border-transparent dark:text-white peer-disabled:opacity-50 peer-disabled:pointer-events-none
+                    peer-focus:text-xs
+                    peer-focus:-translate-y-1.5
+                    peer-focus:text-gray-500
+                    peer-[:not(:placeholder-shown)]:text-xs
+                    peer-[:not(:placeholder-shown)]:-translate-y-1.5
+                    peer-[:not(:placeholder-shown)]:text-gray-500'
+                  >
+                    직무 선택
+                  </label>
+                  <Tooltip content={errors.position?.message} />
+                  {errors.position && (
+                    <div className='absolute inset-y-0 end-0 flex items-center pointer-events-none pe-3'>
+                      <InputError />
+                    </div>
+                  )}
+                </div>
+              </div>
             </div>
 
+            {/* 약관 확인 */}
             <div className='mt-5 flex items-center'>
               <label htmlFor='term' className='text-sm dark:text-white flex gap-1'>
                 <input
@@ -378,13 +401,16 @@ const RegisterForm: FC<Props> = ({ setFormType }) => {
               </label>
             </div>
 
-            <div className='mt-5'>
+            {/* 제출 */}
+            <div className='mt-5 relative'>
               <button
                 type='submit'
+                disabled={isLocalRegisterLoading || isLocalRegisterSuccess}
                 className='w-full py-3 px-4 inline-flex justify-center items-center gap-x-2 text-sm font-semibold rounded-lg border border-transparent bg-blue-600 text-white hover:bg-blue-700 disabled:opacity-50 disabled:pointer-events-none dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600'
               >
                 회원가입
               </button>
+              {(isLocalRegisterLoading || isLocalRegisterSuccess) && <LoadingSpinner background={true} />}
             </div>
           </div>
         </div>
@@ -394,148 +420,3 @@ const RegisterForm: FC<Props> = ({ setFormType }) => {
 };
 
 export default RegisterForm;
-
-/*
-<form onSubmit={handleSubmit(onSubmit)} className=''>
-        <div>
-          <div className='flex gap-y-4'>
-            <label htmlFor='email-address' className='sr-only'>
-              Email address
-            </label>
-            <span>이메일</span>
-            <div>
-              <label
-                htmlFor='hs-validation-name-error'
-                className='block text-sm font-medium mb-2 dark:text-white'
-              >
-                Email
-              </label>
-              <span className='block text-sm text-gray-500 mb-2'>Optional</span>
-              <div className='relative'>
-                <input
-                  type='text'
-                  id='hs-validation-name-error'
-                  name='hs-validation-name-error'
-                  className='py-3 px-4 block w-full border-red-500 rounded-lg text-sm focus:border-red-500 focus:ring-red-500 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400'
-                  required
-                  aria-describedby='hs-validation-name-error-helper'
-                />
-                <div className='absolute inset-y-0 end-0 flex items-center pointer-events-none pe-3'>
-                  <svg
-                    className='flex-shrink-0 h-4 w-4 text-red-500'
-                    xmlns='http://www.w3.org/2000/svg'
-                    width='24'
-                    height='24'
-                    viewBox='0 0 24 24'
-                    fill='none'
-                    stroke='currentColor'
-                    strokeWidth='2'
-                    strokeLinecap='round'
-                    strokeLinejoin='round'
-                  >
-                    <circle cx='12' cy='12' r='10' />
-                    <line x1='12' x2='12' y1='8' y2='12' />
-                    <line x1='12' x2='12.01' y1='16' y2='16' />
-                  </svg>
-                </div>
-              </div>
-              <p className='text-sm text-red-600 mt-2' id='hs-validation-name-error-helper'>
-                Please enter a valid email address.
-              </p>
-            </div>
-            <input
-              {...register("email", {
-                required: true,
-                pattern: {
-                  value: /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/i,
-                  message: "이메일 형식이 아닙니다.",
-                },
-              })}
-              id='email-address'
-              required
-              className='border border-black'
-              placeholder='작성해주세요'
-              size={30}
-              type='email'
-              autoComplete='email'
-            />
-          </div>
-        </div>
-
-        <div>
-          <div className='flex gap-y-4'>
-            <label htmlFor='displayName' className='sr-only'>
-              displayName
-            </label>
-            <span>사용자명</span>
-            <input
-              {...register("displayName", {
-                required: true,
-                maxLength: {
-                  value: 10,
-                  message: "사용자명 제한",
-                },
-              })}
-              id='displayName'
-              required
-              className='border border-black'
-              placeholder='작성해주세요'
-              size={30}
-              type='text'
-              autoComplete='displayName'
-              disabled={false}
-            />
-          </div>
-        </div>
-
-        <div>
-          <div className='flex gap-y-4'>
-            <label htmlFor='password' className='sr-only'>
-              password
-            </label>
-            <span>비밀번호</span>
-            <input
-              {...register("password", {
-                required: true,
-                maxLength: 14,
-              })}
-              id='password'
-              required
-              className='border border-black'
-              placeholder='작성해주세요'
-              size={30}
-              type='password'
-              autoComplete='password'
-              disabled={false}
-            />
-          </div>
-        </div>
-
-        <div>
-          <div className='flex gap-y-4'>
-            <label htmlFor='position' className='sr-only'>
-              Position
-            </label>
-            <span>직무 선택</span>
-
-            <select
-              id='position'
-              {...register("position", {
-                required: true,
-              })}
-              placeholder='선택하쇼'
-            >
-              <option value='default'>직무를 선택해주세요</option>
-              <option value='developer'>개발자</option>
-              <option value='designer'>디자이너</option>
-            </select>
-          </div>
-        </div>
-
-        <button type='submit' className='disabled:opacity-50 bg-white' disabled={false}>
-          가입
-        </button>
-
-        {/* <PropagateLoader color='white' loading={false} size={10} /> */
-// </form>
-// */

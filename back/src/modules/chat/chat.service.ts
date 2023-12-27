@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
 import { Socket } from 'socket.io';
 import { parse } from 'cookie';
 import { WsException } from '@nestjs/websockets';
@@ -6,6 +6,7 @@ import { AuthService } from '@modules/auth/auth.service';
 
 @Injectable()
 export class ChatService {
+  private readonly logger: Logger = new Logger('ChatService');
   constructor(private readonly authService: AuthService) {}
 
   async getUserFromSocket(socket: Socket) {

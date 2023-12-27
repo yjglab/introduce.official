@@ -5,6 +5,7 @@ import {
   BadRequestException,
   Injectable,
   InternalServerErrorException,
+  Logger,
 } from '@nestjs/common';
 import { Prisma } from '@prisma/client';
 
@@ -12,6 +13,7 @@ import { Prisma } from '@prisma/client';
 export class UserService {
   constructor(private prisma: PrismaService) {}
 
+  private readonly logger: Logger = new Logger('UserService');
   public async create(data: Prisma.UserCreateInput) {
     const user = await this.prisma.user.create({ data });
     return user;

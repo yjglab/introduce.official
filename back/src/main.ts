@@ -4,7 +4,7 @@ import {
   HttpException,
   HttpStatus,
   ValidationPipe,
-  VersioningType,
+  // VersioningType,
 } from '@nestjs/common';
 import {
   ExpressAdapter,

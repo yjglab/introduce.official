@@ -26,6 +26,8 @@ import { AuthHelpers } from '@shared/helpers/auth.helpers';
 
 @Injectable()
 export class AuthService {
+  private readonly logger: Logger = new Logger('ChatGateway');
+
   constructor(
     private readonly jwtService: JwtService,
     private readonly userService: UserService,
@@ -41,11 +43,8 @@ export class AuthService {
         provider: Providers.Local,
         ...registrationData,
       });
-      Logger.debug('ok');
       await this.sendConfirmationToken(user);
-
       const [accessToken, refreshToken] = await this.generateTokens(user);
-
       await this.setTokens(req, { accessToken, refreshToken });
 
       return {
@@ -62,7 +61,7 @@ export class AuthService {
           throw new UniqueViolation('displayName');
         }
       }
-      throw new InternalServerErrorException();
+      throw new InternalServerErrorException('Register Error');
     }
   }
 
@@ -128,7 +127,7 @@ export class AuthService {
         expiresIn: this.configService.get('JWT_REFRESH_EXPIRATION_TIME'),
       },
     );
-
+    this.logger.log(`refresh-token:${user.id}:${jwtid}`);
     await this.redisService
       .getClient()
       .set(

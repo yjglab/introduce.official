@@ -1,5 +1,5 @@
 import { PrismaService } from '@modules/prisma/prisma.service';
-import { Injectable } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
 import { Prisma, ProjectPost } from '@prisma/client';
 import { RegisterProjectPostDTO } from './projectPost.dto';
 import { UserService } from '@modules/user/user.service';
@@ -10,7 +10,7 @@ export class ProjectPostService {
     private userService: UserService,
     private prisma: PrismaService,
   ) {}
-
+  private readonly logger: Logger = new Logger('ProjectPostService');
   async findOne(where: Prisma.ProjectPostWhereUniqueInput) {
     return this.prisma.projectPost.findUnique({
       where,
