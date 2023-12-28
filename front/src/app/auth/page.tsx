@@ -1,5 +1,3 @@
-import { headers } from "next/headers";
-import { redirect } from "next/navigation";
 import React from "react";
 import ClientPage from "./page.client";
 import { Metadata } from "next";
@@ -16,14 +14,6 @@ export async function generateMetadata() {
 }
 
 const RegisterPage = async () => {
-  // const header = headers();
-  // const cookie = header.get("Cookie");
-  // const myData = await loadMyInfoAPI({
-  //   headers: cookie ? { cookie } : undefined,
-  // });
-  // if (myData) {
-  //   redirect("/");
-  // }
   return <ClientPage />;
 };
 

@@ -4,7 +4,7 @@ const SiteMenu = () => {
       <div className='hs-dropdown [--strategy:static] md:[--strategy:absolute] [--adaptive:none] md:[--trigger:hover] py-3 md:py-4'>
         <button
           type='button'
-          className='flex items-center w-full text-gray-500 hover:text-gray-400 font-medium dark:text-gray-400 dark:hover:text-gray-500 dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600'
+          className='flex items-center w-full text-gray-900 hover:text-gray-500 font-medium dark:text-gray-300 dark:hover:text-gray-500 dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600'
         >
           SiteMenu
           <svg

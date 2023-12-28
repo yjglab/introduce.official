@@ -2,8 +2,18 @@ import Link from "next/link";
 import { FC, memo, useCallback, useEffect } from "react";
 import SiteMenu from "./SiteMenu";
 import ThemeSwitcher from "@app/ThemeSwitcher";
+import { useSelector } from "react-redux";
+import { RootState } from "@/store";
+import useLogout from "@hooks/mutations/auth/useLogout";
 
 const Navigation = memo(() => {
+  const { authenticated } = useSelector((state: RootState) => state.user);
+  const { mutate: logoutMutate } = useLogout();
+
+  const handleLogout = () => {
+    logoutMutate();
+  };
+
   return (
     <header className='flex fixed top-0 flex-wrap md:justify-start md:flex-nowrap z-50 w-full bg-white text-sm py-3 md:py-0 dark:bg-gray-800'>
       <nav className='max-w-[85rem] w-full mx-auto px-4 md:px-6 lg:px-8' aria-label='Global'>
@@ -24,37 +34,8 @@ const Navigation = memo(() => {
                 aria-controls='navbar-collapse-with-animation'
                 aria-label='Toggle navigation'
               >
-                <svg
-                  className='hs-collapse-open:hidden flex-shrink-0 w-4 h-4'
-                  xmlns='http://www.w3.org/2000/svg'
-                  width='24'
-                  height='24'
-                  viewBox='0 0 24 24'
-                  fill='none'
-                  stroke='currentColor'
-                  strokeWidth='2'
-                  strokeLinecap='round'
-                  strokeLinejoin='round'
-                >
-                  <line x1='3' x2='21' y1='6' y2='6' />
-                  <line x1='3' x2='21' y1='12' y2='12' />
-                  <line x1='3' x2='21' y1='18' y2='18' />
-                </svg>
-                <svg
-                  className='hs-collapse-open:block hidden flex-shrink-0 w-4 h-4'
-                  xmlns='http://www.w3.org/2000/svg'
-                  width='24'
-                  height='24'
-                  viewBox='0 0 24 24'
-                  fill='none'
-                  stroke='currentColor'
-                  strokeWidth='2'
-                  strokeLinecap='round'
-                  strokeLinejoin='round'
-                >
-                  <path d='M18 6 6 18' />
-                  <path d='m6 6 12 12' />
-                </svg>
+                <i className='text-[18px] bi bi-list hs-collapse-open:hidden'></i>
+                <i className='text-[22px] bi bi-x hs-collapse-open:block hidden'></i>
               </button>
             </div>
           </div>
@@ -66,38 +47,31 @@ const Navigation = memo(() => {
             <div className='overflow-hidden overflow-y-auto max-h-[75vh] [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-track]:bg-gray-100 [&::-webkit-scrollbar-thumb]:bg-gray-300 dark:[&::-webkit-scrollbar-track]:bg-slate-700 dark:[&::-webkit-scrollbar-thumb]:bg-slate-500'>
               <div className='flex flex-col gap-x-0 mt-5 divide-y divide-dashed divide-gray-200 md:flex-row md:items-center md:justify-end md:gap-x-7 md:mt-0 md:ps-7 md:divide-y-0 md:divide-solid dark:divide-gray-700'>
                 <ThemeSwitcher />
-
                 <Link
-                  className='font-medium text-gray-500 hover:text-gray-400 py-3 md:py-6 dark:text-gray-400 dark:hover:text-gray-500 dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600'
+                  className='font-medium text-gray-900 hover:text-gray-500 py-3 md:py-6 dark:text-gray-300 dark:hover:text-gray-500 dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600'
                   href='/'
                 >
                   홈
                 </Link>
-
                 <SiteMenu />
-
                 <div className='pt-3 md:pt-0'>
-                  <Link
-                    className='py-2.5 px-4 inline-flex items-center gap-x-2 text-sm font-semibold rounded-lg border border-transparent bg-blue-600 text-white hover:bg-blue-700 disabled:opacity-50 disabled:pointer-events-none dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600'
-                    href='/auth'
-                  >
-                    <svg
-                      className='flex-shrink-0 w-4 h-4'
-                      xmlns='http://www.w3.org/2000/svg'
-                      width='24'
-                      height='24'
-                      viewBox='0 0 24 24'
-                      fill='none'
-                      stroke='currentColor'
-                      strokeWidth='2'
-                      strokeLinecap='round'
-                      strokeLinejoin='round'
+                  {authenticated ? (
+                    <button
+                      onClick={handleLogout}
+                      className='py-2.5 px-4 inline-flex items-center gap-x-2 text-sm font-semibold rounded-lg border border-transparent bg-blue-600 text-white hover:bg-blue-700 disabled:opacity-50 disabled:pointer-events-none dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600'
                     >
-                      <path d='M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2' />
-                      <circle cx='12' cy='7' r='4' />
-                    </svg>
-                    로그인 / 회원가입
-                  </Link>
+                      <i className='text-[16px] bi bi-door-closed-fill'></i>
+                      로그아웃
+                    </button>
+                  ) : (
+                    <Link
+                      className='py-2.5 px-4 inline-flex items-center gap-x-2 text-sm font-semibold rounded-lg border border-transparent bg-blue-600 text-white hover:bg-blue-700 disabled:opacity-50 disabled:pointer-events-none dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600'
+                      href='/auth'
+                    >
+                      <i className='text-[16px] bi bi-person-fill'></i>
+                      로그인 / 회원가입
+                    </Link>
+                  )}
                 </div>
               </div>
             </div>

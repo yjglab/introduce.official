@@ -4,9 +4,6 @@ import { ErrorField } from "@components/Common/ErrorField";
 
 import { useForm } from "react-hook-form";
 import Tooltip from "@components/Common/Tooltip";
-import InputError from "@components/Common/Icons/InputError";
-import InputUnchecked from "@components/Common/Icons/InputUnchecked";
-import InputChecked from "@components/Common/Icons/InputChecked";
 import SocialAuth from "./SocialAuth";
 import LoadingSpinner from "@components/Common/LoadingSpinner";
 import { DEVELOPMENT } from "@/utils/constants";
@@ -109,7 +106,7 @@ const RegisterForm: FC<Props> = ({ setFormType }) => {
                   <Tooltip content={errors.email?.message} />
                   {errors.email && (
                     <div className='absolute inset-y-0 end-0 flex items-center pointer-events-none pe-3'>
-                      <InputError />
+                      <i className='bi bi-exclamation-circle text-red-500 flex-shrink-0'></i>
                     </div>
                   )}
                 </div>
@@ -151,7 +148,7 @@ const RegisterForm: FC<Props> = ({ setFormType }) => {
                   <Tooltip content={errors.displayName?.message} />
                   {errors.displayName && (
                     <div className='absolute inset-y-0 end-0 flex items-center pointer-events-none pe-3'>
-                      <InputError />
+                      <i className='bi bi-exclamation-circle text-red-500 flex-shrink-0'></i>
                     </div>
                   )}
                 </div>
@@ -196,7 +193,7 @@ const RegisterForm: FC<Props> = ({ setFormType }) => {
                   <Tooltip content={errors.password?.message} />
                   {errors.password && (
                     <div className='absolute inset-y-0 end-0 flex items-center pointer-events-none pe-3'>
-                      <InputError />
+                      <i className='bi bi-exclamation-circle text-red-500 flex-shrink-0'></i>
                     </div>
                   )}
                 </div>
@@ -227,10 +224,10 @@ const RegisterForm: FC<Props> = ({ setFormType }) => {
                       className='hs-strong-password-active:text-teal-500 flex items-center gap-x-2'
                     >
                       <span className='hidden' data-check>
-                        <InputUnchecked />
+                        <i className='bi bi-check-lg text-teal-500'></i>
                       </span>
                       <span data-uncheck>
-                        <InputChecked />
+                        <i className='bi bi-check-lg'></i>
                       </span>
                       최소 3~14자가 필요합니다.
                     </li>
@@ -239,10 +236,10 @@ const RegisterForm: FC<Props> = ({ setFormType }) => {
                       className='hs-strong-password-active:text-teal-500 flex items-center gap-x-2'
                     >
                       <span className='hidden' data-check>
-                        <InputUnchecked />
+                        <i className='bi bi-check-lg text-teal-500'></i>
                       </span>
                       <span data-uncheck>
-                        <InputChecked />
+                        <i className='bi bi-check-lg'></i>
                       </span>
                       영문 소문자를 포함해야 합니다.
                     </li>
@@ -251,10 +248,10 @@ const RegisterForm: FC<Props> = ({ setFormType }) => {
                       className='hs-strong-password-active:text-teal-500 flex items-center gap-x-2'
                     >
                       <span className='hidden' data-check>
-                        <InputUnchecked />
+                        <i className='bi bi-check-lg text-teal-500'></i>
                       </span>
                       <span data-uncheck>
-                        <InputChecked />
+                        <i className='bi bi-check-lg'></i>
                       </span>
                       영문 대문자를 포함해야 합니다.
                     </li>
@@ -263,10 +260,10 @@ const RegisterForm: FC<Props> = ({ setFormType }) => {
                       className='hs-strong-password-active:text-teal-500 flex items-center gap-x-2'
                     >
                       <span className='hidden' data-check>
-                        <InputUnchecked />
+                        <i className='bi bi-check-lg text-teal-500'></i>
                       </span>
                       <span data-uncheck>
-                        <InputChecked />
+                        <i className='bi bi-check-lg'></i>
                       </span>
                       숫자를 포함해야 합니다.
                     </li>
@@ -275,10 +272,10 @@ const RegisterForm: FC<Props> = ({ setFormType }) => {
                       className='hs-strong-password-active:text-teal-500 flex items-center gap-x-2'
                     >
                       <span className='hidden' data-check>
-                        <InputUnchecked />
+                        <i className='bi bi-check-lg text-teal-500'></i>
                       </span>
                       <span data-uncheck>
-                        <InputChecked />
+                        <i className='bi bi-check-lg'></i>
                       </span>
                       특수문자를 포함해야 합니다.
                     </li>
@@ -311,7 +308,7 @@ const RegisterForm: FC<Props> = ({ setFormType }) => {
                   <Tooltip content={errors.passwordCheck?.message} />
                   {errors.passwordCheck && (
                     <div className='absolute inset-y-0 end-0 flex items-center pointer-events-none pe-3'>
-                      <InputError />
+                      <i className='bi bi-exclamation-circle text-red-500 flex-shrink-0'></i>
                     </div>
                   )}
                   <label
@@ -367,7 +364,7 @@ const RegisterForm: FC<Props> = ({ setFormType }) => {
                   <Tooltip content={errors.position?.message} />
                   {errors.position && (
                     <div className='absolute inset-y-0 end-0 flex items-center pointer-events-none pe-3'>
-                      <InputError />
+                      <i className='bi bi-exclamation-circle text-red-500 flex-shrink-0'></i>
                     </div>
                   )}
                 </div>
@@ -394,7 +391,7 @@ const RegisterForm: FC<Props> = ({ setFormType }) => {
                   에 동의합니다
                   {errors.term && (
                     <div className='ml-1 inset-y-0 end-0 flex items-center pointer-events-none pe-3'>
-                      <InputError />
+                      <i className='bi bi-exclamation-circle text-red-500 flex-shrink-0'></i>
                     </div>
                   )}
                 </div>

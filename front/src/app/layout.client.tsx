@@ -4,8 +4,6 @@ import store from "@/store";
 import Navigation from "@components/Common/Navigation";
 import classNames from "classnames";
 import { Noto_Sans } from "next/font/google";
-import { headers } from "next/headers";
-import { useEffect, useState } from "react";
 import { Provider } from "react-redux";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";

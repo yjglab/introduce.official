@@ -38,4 +38,4 @@ export const userSlice = createSlice({
   // },
 });
 
-export const { SET_USER } = userSlice.actions;
+export const { SET_USER, LOGOUT } = userSlice.actions;

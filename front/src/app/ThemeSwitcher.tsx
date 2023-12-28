@@ -2,8 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { useTheme } from "next-themes";
-import { SunIcon } from "@heroicons/react/24/outline";
-import { MoonIcon } from "@heroicons/react/24/solid";
+import classNames from "classnames";
 
 const ThemeSwitcher = () => {
   const [mounted, setMounted] = useState(false);
@@ -12,21 +11,27 @@ const ThemeSwitcher = () => {
   useEffect(() => {
     setMounted(true);
   }, []);
-
   if (!mounted) {
     return null;
   }
-
+  const currentTheme = theme === "system" ? systemTheme : theme;
+  const changeTheme = () => {
+    if (currentTheme === "dark") setTheme("light");
+    else setTheme("dark");
+  };
   const renderThemeChanger = () => {
     if (!mounted) return null;
 
-    const currentTheme = theme === "system" ? systemTheme : theme;
-
-    if (currentTheme === "dark") {
-      return <SunIcon className='w-6 h-6 text-yellow-500 ' role='button' onClick={() => setTheme("light")} />;
-    } else {
-      return <MoonIcon className='w-6 h-6 text-gray-900 ' role='button' onClick={() => setTheme("dark")} />;
-    }
+    return (
+      <i
+        className={classNames(
+          currentTheme === "dark" ? "text-gray-300 -rotate-180" : "text-gray-900 rotate-0",
+          "duration-500 text-[16px] bi bi-circle-half",
+        )}
+        role='button'
+        onClick={() => changeTheme()}
+      />
+    );
   };
 
   return <>{renderThemeChanger()}</>;
