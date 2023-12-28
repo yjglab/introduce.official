@@ -1,12 +1,17 @@
 import { FC, useEffect, useState } from "react";
-import useLocalRegister from "@hooks/mutations/auth/useLocalRegister";
-import { ErrorField } from "@components/Common/ErrorField";
-
 import { useForm } from "react-hook-form";
 import Tooltip from "@components/Common/Tooltip";
 import SocialAuth from "./SocialAuth";
 import LoadingSpinner from "@components/Common/LoadingSpinner";
 import { DEVELOPMENT } from "@/utils/constants";
+import axios from "axios";
+import { useMutation } from "@tanstack/react-query";
+import { registerAPI } from "@api/auth";
+import { toast } from "react-toastify";
+import { toastConfig } from "@/utils/toast";
+import { useDispatch } from "react-redux";
+import { SET_USER } from "@/store/slices/user.slice";
+import { useRouter } from "next/navigation";
 
 interface Props {
   setFormType: (type: "login" | "register") => void;
@@ -21,14 +26,28 @@ interface RegisterValues {
 }
 
 const RegisterForm: FC<Props> = ({ setFormType }) => {
+  const [apiError, setApiError] = useState<{ [key: string]: string } | null>(null);
+  const dispatch = useDispatch();
   const {
     mutate: localRegisterMutate,
     isLoading: isLocalRegisterLoading,
     isSuccess: isLocalRegisterSuccess,
-    isError: isLocalRegisterError,
     data: me,
-    error: localRegisterError,
-  } = useLocalRegister();
+  } = useMutation(registerAPI, {
+    onSuccess: (response) => {
+      toast.success(
+        `${response.user.displayName}님, 회원가입 되었습니다. 이메일 인증 후 정상 이용 가능합니다.`,
+        toastConfig,
+      );
+      dispatch(SET_USER(response.user));
+      setApiError(null);
+    },
+    onError: (error) => {
+      if (axios.isAxiosError(error)) {
+        setApiError(error.response?.data);
+      }
+    },
+  });
 
   const {
     register,
@@ -70,6 +89,7 @@ const RegisterForm: FC<Props> = ({ setFormType }) => {
               Or
             </div>
 
+            {/* 이메일 */}
             <div className='grid grid-cols-2 gap-4'>
               <div className='hs-tooltip [--placement:bottom] '>
                 <div className='hs-tooltip-toggle relative'>
@@ -81,6 +101,7 @@ const RegisterForm: FC<Props> = ({ setFormType }) => {
                         message: "이메일 형식이 아닙니다.",
                       },
                     })}
+                    disabled={isLocalRegisterSuccess}
                     id='email'
                     className='peer border p-4 block w-full border-gray-200 rounded-lg text-sm placeholder:text-transparent focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-slate-900 dark:border-gray-700 dark:text-gray-400 dark:focus:ring-gray-600
           focus:pt-6
@@ -103,8 +124,8 @@ const RegisterForm: FC<Props> = ({ setFormType }) => {
                   >
                     이메일
                   </label>
-                  <Tooltip content={errors.email?.message} />
-                  {errors.email && (
+                  <Tooltip content={errors.email?.message || apiError?.email} />
+                  {(errors.email || apiError?.email) && (
                     <div className='absolute inset-y-0 end-0 flex items-center pointer-events-none pe-3'>
                       <i className='bi bi-exclamation-circle text-red-500 flex-shrink-0'></i>
                     </div>
@@ -112,6 +133,7 @@ const RegisterForm: FC<Props> = ({ setFormType }) => {
                 </div>
               </div>
 
+              {/* 표시 이름 */}
               <div className='hs-tooltip [--placement:bottom] '>
                 <div className='hs-tooltip-toggle relative'>
                   <input
@@ -122,6 +144,7 @@ const RegisterForm: FC<Props> = ({ setFormType }) => {
                         message: "3~12자 이하의 영문 소문자, 숫자 또는 한글로 구성되어야 합니다",
                       },
                     })}
+                    disabled={isLocalRegisterSuccess}
                     type='text'
                     id='displayName'
                     className='peer border p-4 block w-full border-gray-200 rounded-lg text-sm placeholder:text-transparent focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-slate-900 dark:border-gray-700 dark:text-gray-400 dark:focus:ring-gray-600
@@ -145,8 +168,8 @@ const RegisterForm: FC<Props> = ({ setFormType }) => {
                   >
                     표시 이름
                   </label>
-                  <Tooltip content={errors.displayName?.message} />
-                  {errors.displayName && (
+                  <Tooltip content={errors.displayName?.message || apiError?.displayName} />
+                  {(errors.displayName || apiError?.displayName) && (
                     <div className='absolute inset-y-0 end-0 flex items-center pointer-events-none pe-3'>
                       <i className='bi bi-exclamation-circle text-red-500 flex-shrink-0'></i>
                     </div>
@@ -165,6 +188,7 @@ const RegisterForm: FC<Props> = ({ setFormType }) => {
                         message: "비밀번호 형식을 준수해주세요.",
                       },
                     })}
+                    disabled={isLocalRegisterSuccess}
                     defaultValue={DEVELOPMENT ? "Ab2@" : ""}
                     type='password'
                     id='password'
@@ -283,6 +307,7 @@ const RegisterForm: FC<Props> = ({ setFormType }) => {
                 </div>
               </div>
 
+              {/* 비밀번호 확인 */}
               <div className='hs-tooltip [--placement:bottom] col-span-full'>
                 <div className='hs-tooltip-toggle relative'>
                   <input
@@ -293,6 +318,7 @@ const RegisterForm: FC<Props> = ({ setFormType }) => {
                       },
                       required: "비밀번호가 일치하지 않습니다.",
                     })}
+                    disabled={isLocalRegisterSuccess}
                     type='password'
                     id='passwordCheck'
                     defaultValue={DEVELOPMENT ? "Ab2@" : ""}
@@ -337,6 +363,7 @@ const RegisterForm: FC<Props> = ({ setFormType }) => {
                       },
                       required: "직무를 선택해주세요.",
                     })}
+                    disabled={isLocalRegisterSuccess}
                     id='position'
                     className='peer p-4 pe-9 block w-full border border-gray-200 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-slate-900 dark:border-gray-700 dark:text-gray-400 dark:focus:ring-gray-600
                     focus:pt-6
@@ -376,6 +403,7 @@ const RegisterForm: FC<Props> = ({ setFormType }) => {
               <label htmlFor='term' className='text-sm dark:text-white flex gap-1'>
                 <input
                   {...register("term", { required: true })}
+                  disabled={isLocalRegisterSuccess}
                   id='term'
                   name='term'
                   type='checkbox'
@@ -407,7 +435,7 @@ const RegisterForm: FC<Props> = ({ setFormType }) => {
               >
                 회원가입
               </button>
-              {(isLocalRegisterLoading || isLocalRegisterSuccess) && <LoadingSpinner background={true} />}
+              {isLocalRegisterLoading && <LoadingSpinner background={true} />}
             </div>
           </div>
         </div>

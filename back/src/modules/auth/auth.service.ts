@@ -1,4 +1,5 @@
 import {
+  BadRequestException,
   HttpException,
   Injectable,
   InternalServerErrorException,
@@ -14,19 +15,15 @@ import { ConfigService } from '@nestjs/config';
 import { RedisService } from '@liaoliaots/nestjs-redis';
 import { Queue } from 'bull';
 import { InjectQueue } from '@nestjs/bull';
-import { AccountStatus, PostgresErrorCode, Providers } from '@common/enums';
-import {
-  InvalidCredentials,
-  SocialProvider,
-  UniqueViolation,
-} from '@common/exceptions';
+import { AccountStatus, Providers } from '@common/enums';
+import { InvalidCredentials, SocialProvider } from '@common/exceptions';
 import { Request } from 'express';
 import { nanoid } from 'nanoid';
 import { AuthHelpers } from '@shared/helpers/auth.helpers';
 
 @Injectable()
 export class AuthService {
-  private readonly logger: Logger = new Logger('ChatGateway');
+  private readonly logger: Logger = new Logger('AuthService');
 
   constructor(
     private readonly jwtService: JwtService,
@@ -52,14 +49,15 @@ export class AuthService {
         accessToken,
       };
     } catch (err) {
-      if (err.code == PostgresErrorCode.UniqueViolation) {
-        if (err.detail.includes('email')) {
-          throw new UniqueViolation('email');
-        }
-
-        if (err.detail.includes('displayName')) {
-          throw new UniqueViolation('displayName');
-        }
+      if (err.meta.target.includes('email')) {
+        throw new BadRequestException({
+          email: '이미 존재하는 이메일 계정입니다.',
+        });
+      }
+      if (err.meta.target.includes('displayName')) {
+        throw new BadRequestException({
+          displayName: '이미 존재하는 표시 이름입니다.',
+        });
       }
       throw new InternalServerErrorException('Register Error');
     }
