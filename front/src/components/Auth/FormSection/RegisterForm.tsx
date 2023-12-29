@@ -1,4 +1,4 @@
-import { FC, useEffect, useState } from "react";
+import { FC, useState } from "react";
 import { useForm } from "react-hook-form";
 import Tooltip from "@components/Common/Tooltip";
 import SocialAuth from "./SocialAuth";
@@ -7,10 +7,9 @@ import { DEVELOPMENT } from "@/utils/constants";
 import axios from "axios";
 import { useMutation } from "@tanstack/react-query";
 import { registerAPI } from "@api/auth";
-import { toast } from "react-toastify";
-import { toastConfig } from "@/utils/toast";
 import { useDispatch } from "react-redux";
 import { SET_USER } from "@/store/slices/user.slice";
+import Modal from "@components/Common/Modal";
 import { useRouter } from "next/navigation";
 
 interface Props {
@@ -27,6 +26,7 @@ interface RegisterValues {
 
 const RegisterForm: FC<Props> = ({ setFormType }) => {
   const [apiError, setApiError] = useState<{ [key: string]: string } | null>(null);
+  const router = useRouter();
   const dispatch = useDispatch();
   const {
     mutate: localRegisterMutate,
@@ -35,10 +35,6 @@ const RegisterForm: FC<Props> = ({ setFormType }) => {
     data: me,
   } = useMutation(registerAPI, {
     onSuccess: (response) => {
-      toast.success(
-        `${response.user.displayName}님, 회원가입 되었습니다. 이메일 인증 후 정상 이용 가능합니다.`,
-        toastConfig,
-      );
       dispatch(SET_USER(response.user));
       setApiError(null);
     },
@@ -66,8 +62,20 @@ const RegisterForm: FC<Props> = ({ setFormType }) => {
     }
   };
 
+  const submitCallback = () => {
+    router.push("/");
+  };
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
+      {isLocalRegisterSuccess && (
+        <Modal
+          title='회원가입 완료'
+          description={`${me.user.displayName}님, 회원가입 되었습니다. 이메일 함에서 인증 후 정상 이용 가능합니다.`}
+          callback={submitCallback}
+          externalClick={false}
+        ></Modal>
+      )}
+
       <div className='lg:max-w-lg lg:mx-auto lg:me-0 ms-auto'>
         <div className='p-4 sm:p-7 flex flex-col bg-white rounded-2xl shadow-lg dark:bg-slate-900'>
           <div className='text-center'>

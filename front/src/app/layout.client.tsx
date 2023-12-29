@@ -18,7 +18,7 @@ export default function RootClientLayout({ children }: { children: React.ReactNo
   return (
     <Provider store={store}>
       <Navigation />
-      <div id='layout' className={(classNames(font.className), "mt-12")}>
+      <div id='layout' className={(classNames(font.className), "mt-16")}>
         {children}
       </div>
       <ToastContainer />

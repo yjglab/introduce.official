@@ -1,14 +1,25 @@
 import Link from "next/link";
-import { FC, memo, useCallback, useEffect } from "react";
+import { memo } from "react";
 import SiteMenu from "./SiteMenu";
 import ThemeSwitcher from "@app/ThemeSwitcher";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@/store";
-import useLogout from "@hooks/mutations/auth/useLogout";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { logoutAPI } from "@api/auth";
+import { LOGOUT } from "@/store/slices/user.slice";
+import Modal from "../Modal";
 
 const Navigation = memo(() => {
   const { authenticated } = useSelector((state: RootState) => state.user);
-  const { mutate: logoutMutate } = useLogout();
+  const dispatch = useDispatch();
+  const queryClient = useQueryClient();
+
+  const { mutate: logoutMutate, isSuccess: isLogoutSuccess } = useMutation(logoutAPI, {
+    onSuccess: () => {
+      dispatch(LOGOUT());
+      queryClient.clear();
+    },
+  });
 
   const handleLogout = () => {
     logoutMutate();
@@ -16,6 +27,8 @@ const Navigation = memo(() => {
 
   return (
     <header className='flex fixed top-0 flex-wrap md:justify-start md:flex-nowrap z-50 w-full bg-white text-sm py-3 md:py-0 dark:bg-gray-800'>
+      {isLogoutSuccess && <Modal description='로그아웃 되었습니다' externalClick={true}></Modal>}
+
       <nav className='max-w-[85rem] w-full mx-auto px-4 md:px-6 lg:px-8' aria-label='Global'>
         <div className='relative md:flex md:items-center md:justify-between'>
           <div className='flex items-center justify-between'>

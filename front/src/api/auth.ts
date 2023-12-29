@@ -9,3 +9,7 @@ export async function registerAPI(data: {
   const response = await api.post("/auth/local/register", data);
   return response.data;
 }
+
+export async function logoutAPI() {
+  return await api.delete("/auth/logout");
+}

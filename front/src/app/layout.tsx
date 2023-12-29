@@ -45,20 +45,20 @@ export default async function RootLayout({ children }: { children: React.ReactNo
   const dehydratedState = dehydrate(queryClient);
   queryClient.clear();
   return (
-    <html lang='en'>
+    <html lang='en' className='!overflow-clip'>
       <head>
         <link
           rel='stylesheet'
           href='https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.2/font/bootstrap-icons.css'
         />
       </head>
-      <body>
+      <body className=''>
+        <PrelineLoader />
         <Providers>
           <Hydrate state={dehydratedState}>
             <ClientLayout>{children}</ClientLayout>
           </Hydrate>
         </Providers>
-        <PrelineLoader />
       </body>
     </html>
   );
