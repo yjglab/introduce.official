@@ -83,6 +83,7 @@ const RegisterForm: FC<Props> = ({ setFormType }) => {
             <p className='mt-2 text-sm text-gray-600 dark:text-gray-400'>
               이미 계정이 있으신가요?
               <button
+                type='button'
                 onClick={() => setFormType("login")}
                 className='ml-1 text-blue-600 decoration-2 hover:underline font-medium dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600'
               >
@@ -97,8 +98,8 @@ const RegisterForm: FC<Props> = ({ setFormType }) => {
               Or
             </div>
 
-            {/* 이메일 */}
             <div className='grid grid-cols-2 gap-4'>
+              {/* 이메일 */}
               <div className='hs-tooltip [--placement:bottom] '>
                 <div className='hs-tooltip-toggle relative'>
                   <input
@@ -185,6 +186,7 @@ const RegisterForm: FC<Props> = ({ setFormType }) => {
                 </div>
               </div>
 
+              {/* 비밀번호 */}
               <div className='hs-tooltip [--placement:bottom] relative col-span-full'>
                 <div className='hs-tooltip-toggle relative'>
                   <input
@@ -443,7 +445,7 @@ const RegisterForm: FC<Props> = ({ setFormType }) => {
               >
                 회원가입
               </button>
-              {isLocalRegisterLoading && <LoadingSpinner background={true} />}
+              {isLocalRegisterLoading && <LoadingSpinner backdrop={true} />}
             </div>
           </div>
         </div>

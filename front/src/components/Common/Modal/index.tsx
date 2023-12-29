@@ -53,7 +53,7 @@ const Modal: FC<PropsWithChildren<Props>> = ({
             >
               <Dialog.Panel
                 style={{ maxHeight: "90vh" }}
-                className='mt-0 opacity-0 ease-out transition-all sm:max-w-lg w-full m-3 sm:mx-auto'
+                className='mt-0 opacity-0 ease-out transition-all sm:max-w-md w-full m-3 sm:mx-auto'
               >
                 <div className='relative flex flex-col bg-white shadow-lg rounded-xl dark:bg-gray-800'>
                   {externalClick && (
@@ -69,7 +69,7 @@ const Modal: FC<PropsWithChildren<Props>> = ({
                     </div>
                   )}
 
-                  <div className='p-4 sm:p-10 text-center overflow-y-auto'>
+                  <div className='p-4 sm:p-6 text-center overflow-y-auto'>
                     <span
                       className={classNames(
                         type === "general" &&
@@ -88,12 +88,12 @@ const Modal: FC<PropsWithChildren<Props>> = ({
                     </span>
 
                     <h3 className='mb-2 text-xl font-bold text-gray-800 dark:text-gray-200'>{title}</h3>
-                    <p className='text-gray-500'>{description}</p>
+                    <p className='text-gray-300'>{description}</p>
 
                     <div className='mt-6 flex justify-center gap-x-4'>
                       <button
                         type='button'
-                        onClick={callback}
+                        onClick={callback || closeModal}
                         className='py-2 px-3 inline-flex items-center gap-x-2 text-sm font-medium rounded-lg border border-gray-200 bg-white text-gray-800 shadow-sm hover:bg-gray-50 disabled:opacity-50 disabled:pointer-events-none dark:bg-slate-900 dark:border-gray-700 dark:text-white dark:hover:bg-gray-800 dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600'
                       >
                         확인

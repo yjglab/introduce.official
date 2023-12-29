@@ -1,12 +1,12 @@
 import { FC } from "react";
 
 interface Props {
-  background: boolean;
+  backdrop: boolean;
 }
-const LoadingSpinner: FC<Props> = ({ background }) => {
+const LoadingSpinner: FC<Props> = ({ backdrop }) => {
   return (
     <>
-      {background ? (
+      {backdrop ? (
         <>
           <div className='absolute top-0 start-0 w-full h-full bg-white/[.5] rounded-lg dark:bg-gray-800/[.4]' />
           <div className='absolute flex my-auto top-1/2 start-1/2 transform -translate-x-1/2 -translate-y-1/2'>

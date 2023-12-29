@@ -16,7 +16,7 @@ import { RedisService } from '@liaoliaots/nestjs-redis';
 import { Queue } from 'bull';
 import { InjectQueue } from '@nestjs/bull';
 import { AccountStatus, Providers } from '@common/enums';
-import { InvalidCredentials, SocialProvider } from '@common/exceptions';
+import { SocialProvider } from '@common/exceptions';
 import { Request } from 'express';
 import { nanoid } from 'nanoid';
 import { AuthHelpers } from '@shared/helpers/auth.helpers';
@@ -43,7 +43,6 @@ export class AuthService {
       await this.sendConfirmationToken(user);
       const [accessToken, refreshToken] = await this.generateTokens(user);
       await this.setTokens(req, { accessToken, refreshToken });
-
       return {
         user,
         accessToken,
@@ -77,6 +76,7 @@ export class AuthService {
         accessToken,
       };
     } catch (err) {
+      this.logger.debug(err);
       throw new HttpException(err.response, err.status);
     }
   }
@@ -169,16 +169,19 @@ export class AuthService {
     try {
       const user = await this.userService.getUserByField('email', email);
       if (!user) {
-        throw new InvalidCredentials();
+        this.logger.debug('존재하지 않는 이메일');
+        throw new BadRequestException({
+          email: '존재하지 않는 계정입니다.',
+        });
       }
-
       if (user.provider !== Providers.Local) {
         throw new SocialProvider();
       }
-
-      const isMatch = await AuthHelpers.hashVerified(user.password, password);
+      const isMatch = await AuthHelpers.hashVerified(password, user.password);
       if (!isMatch) {
-        throw new InvalidCredentials();
+        throw new BadRequestException({
+          password: '비밀번호가 일치하지 않습니다.',
+        });
       }
 
       return user;

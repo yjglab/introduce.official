@@ -2,9 +2,10 @@
 
 import { useState } from "react";
 import RegisterForm from "./RegisterForm";
+import LoginForm from "./LoginForm";
 
 const FormSection = () => {
-  const [formType, setFormType] = useState<"login" | "register">("register");
+  const [formType, setFormType] = useState<"login" | "register">("login");
 
   return (
     <div className='min-h-screen relative bg-gradient-to-bl from-blue-100 via-transparent dark:to-slate-900 dark:from-blue-950 dark:via-slate-900 '>
@@ -27,7 +28,13 @@ const FormSection = () => {
             </div>
           </div>
 
-          <div>{formType === "login" ? "" : <RegisterForm setFormType={setFormType} />}</div>
+          <div>
+            {formType === "login" ? (
+              <LoginForm setFormType={setFormType} />
+            ) : (
+              <RegisterForm setFormType={setFormType} />
+            )}
+          </div>
         </div>
         <div className='mt-6 md:mt-12 py-3 flex items-center text-sm text-gray-800 gap-x-1.5 after:flex-[1_1_0%] after:border-t after:border-gray-200 after:ms-6 dark:text-white dark:after:border-gray-700'>
           인트로듀스는 Nebaram과 함께합니다.

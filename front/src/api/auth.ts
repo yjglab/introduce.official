@@ -10,6 +10,11 @@ export async function registerAPI(data: {
   return response.data;
 }
 
+export async function loginAPI(data: { email: string; password: string }) {
+  const response = await api.post("/auth/local/login", data);
+  return response.data;
+}
+
 export async function logoutAPI() {
   return await api.delete("/auth/logout");
 }
