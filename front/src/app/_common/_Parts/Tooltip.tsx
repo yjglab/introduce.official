@@ -1,3 +1,5 @@
+"use client";
+
 const Tooltip = ({ content }: { content: string | undefined }) => {
   return (
     <>

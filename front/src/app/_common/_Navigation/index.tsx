@@ -1,20 +1,23 @@
+"use client";
+
 import Link from "next/link";
 import { memo } from "react";
 import SiteMenu from "./SiteMenu";
-import ThemeSwitcher from "@app/ThemeSwitcher";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@/store";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { logoutAPI } from "@api/auth";
 import { LOGOUT } from "@/store/slices/user.slice";
-import Modal from "../Modal";
+import Modal from "../_Modal";
+import ThemeSwitcher from "./ThemeSwitcher";
 
 const Navigation = memo(() => {
   const { authenticated } = useSelector((state: RootState) => state.user);
   const dispatch = useDispatch();
   const queryClient = useQueryClient();
 
-  const { mutate: logoutMutate, isSuccess: isLogoutSuccess } = useMutation(logoutAPI, {
+  const { mutate: logoutMutate, isSuccess: isLogoutSuccess } = useMutation({
+    mutationFn: logoutAPI,
     onSuccess: () => {
       dispatch(LOGOUT());
       queryClient.clear();

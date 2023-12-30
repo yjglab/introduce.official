@@ -1,15 +1,17 @@
+"use client";
+
 import { FC, useState } from "react";
 import { useForm } from "react-hook-form";
-import Tooltip from "@components/Common/Tooltip";
 import SocialAuth from "./SocialAuth";
-import LoadingSpinner from "@components/Common/LoadingSpinner";
 import { DEVELOPMENT } from "@/utils/constants";
-import axios from "axios";
+import axios, { AxiosError } from "axios";
 import { useMutation } from "@tanstack/react-query";
 import { loginAPI } from "@api/auth";
 import { useDispatch } from "react-redux";
 import { SET_USER } from "@/store/slices/user.slice";
 import { useRouter } from "next/navigation";
+import Tooltip from "@app/_common/_Parts/Tooltip";
+import LoadingSpinner from "@app/_common/_Parts/LoadingSpinner";
 
 interface Props {
   setFormType: (type: "login" | "register") => void;
@@ -25,9 +27,14 @@ const LoginForm: FC<Props> = ({ setFormType }) => {
   const router = useRouter();
   const {
     mutate: localLoginMutate,
-    isLoading: isLocalLoginLoading,
+    isPending: isLocalLoginPending,
     isSuccess: isLocalLoginSuccess,
-  } = useMutation(loginAPI, {
+  } = useMutation({
+    mutationFn: loginAPI,
+    onMutate: () => {},
+  });
+
+  useMutation(loginAPI, {
     onSuccess: (response) => {
       dispatch(SET_USER(response.user));
       setApiError(null);
@@ -173,12 +180,12 @@ const LoginForm: FC<Props> = ({ setFormType }) => {
             <div className='mt-5 relative'>
               <button
                 type='submit'
-                disabled={isLocalLoginLoading || isLocalLoginSuccess}
+                disabled={isLocalLoginPending || isLocalLoginSuccess}
                 className='w-full py-3 px-4 inline-flex justify-center items-center gap-x-2 text-sm font-semibold rounded-lg border border-transparent bg-blue-600 text-white hover:bg-blue-700 disabled:opacity-50 disabled:pointer-events-none dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600'
               >
                 로그인
               </button>
-              {isLocalLoginLoading && <LoadingSpinner backdrop={true} />}
+              {isLocalLoginPending && <LoadingSpinner backdrop={true} />}
             </div>
           </div>
         </div>

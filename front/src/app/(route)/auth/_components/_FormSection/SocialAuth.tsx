@@ -1,3 +1,5 @@
+"use client";
+
 const SocialAuth = () => {
   return (
     <button

@@ -1,32 +1,34 @@
 import "./globals.css";
-import type { Metadata } from "next";
-import { cache } from "react";
-import { Hydrate, QueryClient, dehydrate } from "@tanstack/react-query";
-import ClientLayout from "./layout.client";
-import Providers from "./providers.client";
+import type { Metadata, Viewport } from "next";
 import { CLIENT_URL, SERVICE_NAME } from "@/utils/constants";
-import PrelineLoader from "./prelineLoader";
-import { loadMeAPI } from "@api/auth";
+import { Provider } from "react-redux";
+import store from "@/store";
+import { Noto_Sans } from "next/font/google";
+import { ToastContainer } from "react-toastify";
+import classNames from "classnames";
+import QueryProvider from "./(providers)/QueryProvider";
+import PrelineLoader from "./(providers)/PrelineLoader";
+import Navigation from "./_common/_Navigation";
+import { ReduxProvider } from "./(providers)/ReduxProvider";
+import { NextThemeProvider } from "./(providers)/NextThemeProvider";
 
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+};
 export const metadata: Metadata = {
+  metadataBase: new URL(CLIENT_URL),
   title: {
     template: `%s | ${SERVICE_NAME}`,
     default: SERVICE_NAME,
   },
   description: "설명",
-  viewport: "width=device-width, initial-scale=1.0",
-  verification: {
-    google: "",
-  },
   manifest: "/manifest/manifest.json",
   openGraph: {
-    // sns platform share data
     title: SERVICE_NAME,
     description: "설명",
     url: CLIENT_URL,
     siteName: SERVICE_NAME,
-    type: "website",
-    locale: "ko_KR",
     images: [
       {
         url: "/manifest/icon-192x192.png",
@@ -39,12 +41,13 @@ export const metadata: Metadata = {
   icons: "/images/common/icon.png",
 };
 
-const getQueryClient = cache(() => new QueryClient());
+const font = Noto_Sans({
+  weight: ["300", "400", "500", "600", "700"],
+  subsets: ["latin"],
+  preload: true,
+});
 
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
-  const queryClient = getQueryClient();
-  const dehydratedState = dehydrate(queryClient);
-  queryClient.clear();
   return (
     <html lang='en' className='!overflow-clip'>
       <head>
@@ -55,11 +58,17 @@ export default async function RootLayout({ children }: { children: React.ReactNo
       </head>
       <body className=''>
         <PrelineLoader />
-        <Providers>
-          <Hydrate state={dehydratedState}>
-            <ClientLayout>{children}</ClientLayout>
-          </Hydrate>
-        </Providers>
+        <NextThemeProvider>
+          <QueryProvider>
+            <ReduxProvider>
+              <Navigation />
+              <div id='layout' className={(classNames(font.className), "mt-16")}>
+                {children}
+              </div>
+              <ToastContainer />
+            </ReduxProvider>
+          </QueryProvider>
+        </NextThemeProvider>
       </body>
     </html>
   );

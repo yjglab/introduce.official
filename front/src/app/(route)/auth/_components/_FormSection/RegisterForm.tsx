@@ -1,16 +1,18 @@
+"use client";
+
 import { FC, useState } from "react";
 import { useForm } from "react-hook-form";
-import Tooltip from "@components/Common/Tooltip";
 import SocialAuth from "./SocialAuth";
-import LoadingSpinner from "@components/Common/LoadingSpinner";
 import { DEVELOPMENT } from "@/utils/constants";
 import axios from "axios";
 import { useMutation } from "@tanstack/react-query";
 import { registerAPI } from "@api/auth";
 import { useDispatch } from "react-redux";
 import { SET_USER } from "@/store/slices/user.slice";
-import Modal from "@components/Common/Modal";
 import { useRouter } from "next/navigation";
+import Modal from "@app/_common/_Modal";
+import LoadingSpinner from "@app/_common/_Parts/LoadingSpinner";
+import Tooltip from "@app/_common/_Parts/Tooltip";
 
 interface Props {
   setFormType: (type: "login" | "register") => void;
