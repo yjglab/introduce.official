@@ -13,7 +13,7 @@ const font = Noto_Sans({
   subsets: ["latin"],
   preload: true,
 });
-
+//
 export default function RootClientLayout({ children }: { children: React.ReactNode }) {
   return (
     <Provider store={store}>
