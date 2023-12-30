@@ -1,6 +1,6 @@
 import React from "react";
 import { Metadata } from "next";
-import FormSection from "./_components/_FormSection";
+import ClientPage from "./page.client";
 
 export async function generateMetadata() {
   return {
@@ -13,14 +13,14 @@ export async function generateMetadata() {
   } as Metadata;
 }
 
-const AuthPage = async () => {
+const EntryPage = async () => {
   return (
-    <main id='AuthPage'>
-      <FormSection />
-    </main>
+    <>
+      <ClientPage />
+    </>
   );
 };
 
-export default AuthPage;
+export default EntryPage;
 
 // export default withAuth(AuthOption.FORBIDDEN, AuthClientPage);

@@ -31,10 +31,6 @@ const LoginForm: FC<Props> = ({ setFormType }) => {
     isSuccess: isLocalLoginSuccess,
   } = useMutation({
     mutationFn: loginAPI,
-    onMutate: () => {},
-  });
-
-  useMutation(loginAPI, {
     onSuccess: (response) => {
       dispatch(SET_USER(response.user));
       setApiError(null);

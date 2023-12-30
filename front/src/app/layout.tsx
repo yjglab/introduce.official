@@ -1,8 +1,6 @@
 import "./globals.css";
 import type { Metadata, Viewport } from "next";
 import { CLIENT_URL, SERVICE_NAME } from "@/utils/constants";
-import { Provider } from "react-redux";
-import store from "@/store";
 import { Noto_Sans } from "next/font/google";
 import { ToastContainer } from "react-toastify";
 import classNames from "classnames";
