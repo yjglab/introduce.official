@@ -6,6 +6,7 @@ import ClientLayout from "./layout.client";
 import Providers from "./providers.client";
 import { CLIENT_URL, SERVICE_NAME } from "@/utils/constants";
 import PrelineLoader from "./prelineLoader";
+import { loadMeAPI } from "@api/auth";
 
 export const metadata: Metadata = {
   title: {

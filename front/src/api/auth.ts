@@ -18,3 +18,8 @@ export async function loginAPI(data: { email: string; password: string }) {
 export async function logoutAPI() {
   return await api.delete("/auth/logout");
 }
+
+export async function loadMeAPI() {
+  const response = await api.get("/auth/me").then((response) => response.data);
+  return response.data;
+}
