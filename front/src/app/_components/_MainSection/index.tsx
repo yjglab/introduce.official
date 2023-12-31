@@ -1,7 +1,7 @@
 "use client";
 
 const MainSection = () => {
-  return <div>MainSection</div>;
+  return <div>main</div>;
 };
 
 export default MainSection;

@@ -4,8 +4,8 @@ import { FC, useState } from "react";
 import { useForm } from "react-hook-form";
 import SocialAuth from "./SocialAuth";
 import { DEVELOPMENT } from "@/utils/constants";
-import axios, { AxiosError } from "axios";
-import { useMutation } from "@tanstack/react-query";
+import axios from "axios";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { loginAPI } from "@api/auth";
 import { useDispatch } from "react-redux";
 import { SET_USER } from "@/store/slices/user.slice";
@@ -24,6 +24,7 @@ interface LoginValues {
 const LoginForm: FC<Props> = ({ setFormType }) => {
   const [apiError, setApiError] = useState<{ [key: string]: string } | null>(null);
   const dispatch = useDispatch();
+  const queryClient = useQueryClient();
   const router = useRouter();
   const {
     mutate: localLoginMutate,
@@ -32,14 +33,15 @@ const LoginForm: FC<Props> = ({ setFormType }) => {
   } = useMutation({
     mutationFn: loginAPI,
     onSuccess: (response) => {
+      queryClient.refetchQueries({
+        queryKey: ["data-me"],
+      });
       dispatch(SET_USER(response.user));
       setApiError(null);
       router.push("/");
     },
     onError: (error) => {
       if (axios.isAxiosError(error)) {
-        console.log(error.response?.data);
-
         setApiError(error.response?.data);
       }
     },

@@ -1,3 +1,4 @@
+import { AxiosRequestConfig } from "axios";
 import { api } from ".";
 
 export async function registerAPI(data: {
@@ -19,7 +20,7 @@ export async function logoutAPI() {
   return await api.delete("/auth/logout");
 }
 
-export async function loadMeAPI() {
-  const response = await api.get("/auth/me").then((response) => response.data);
+export async function loadMeAPI(options?: AxiosRequestConfig) {
+  const response = await api.get("/auth/me", options);
   return response.data;
 }

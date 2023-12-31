@@ -33,7 +33,7 @@ export class AuthService {
     @InjectQueue('mail-queue') private mailQueue: Queue,
   ) {}
 
-  public async register(registrationData: CreateAccountDto, req: Request) {
+  public async register(registrationData: CreateAccountDto) {
     try {
       const user = await this.userService.create({
         avatar: this.generateGravatarUrl(registrationData.email),
@@ -41,12 +41,8 @@ export class AuthService {
         ...registrationData,
       });
       await this.sendConfirmationToken(user);
-      const [accessToken, refreshToken] = await this.generateTokens(user);
-      await this.setTokens(req, { accessToken, refreshToken });
-      return {
-        user,
-        accessToken,
-      };
+
+      return true;
     } catch (err) {
       if (err.meta.target.includes('email')) {
         throw new BadRequestException({
@@ -126,14 +122,12 @@ export class AuthService {
       },
     );
     this.logger.log(`refresh-token:${user.id}:${jwtid}`);
-    await this.redisService
-      .getClient()
-      .set(
-        `refresh-token:${user.id}:${jwtid}`,
-        user.id,
-        'EX',
-        60 * 60 * 24 * 30,
-      );
+    await this.redisService.getClient().set(
+      `refresh-token:${user.id}:${jwtid}`,
+      user.id,
+      'EX',
+      60 * 60 * 24 * 30, // 30d
+    );
 
     return [accessToken, refreshToken];
   }
@@ -244,6 +238,18 @@ export class AuthService {
     };
   }
 
+  public async verifyAccessToken(token: string) {
+    const verifiedJWT = await this.jwtService.verifyAsync(token, {
+      secret: this.configService.get('JWT_ACCESS_SECRET_KEY'),
+    });
+
+    if (!verifiedJWT) {
+      return '일치합니다';
+    } else {
+      return '잘못되었습니다.';
+    }
+  }
+
   public async refreshTokens(req: Request) {
     const refreshTokenCookie = req.cookies['refresh_token'];
 
@@ -251,17 +257,18 @@ export class AuthService {
       throw new UnauthorizedException('Invalid cookie');
     }
 
-    const verifiedJWt = await this.jwtService.verifyAsync(refreshTokenCookie, {
+    const verifiedJWT = await this.jwtService.verifyAsync(refreshTokenCookie, {
       secret: this.configService.get('JWT_REFRESH_SECRET_KEY'),
     });
 
-    if (!verifiedJWt) {
+    if (!verifiedJWT) {
+      // 만료 or 잘못된 토큰
       throw new UnauthorizedException('Invalid refresh token');
     }
 
     const refreshTokenRedis = await this.redisService
       .getClient()
-      .get(`refresh-token:${verifiedJWt.id}:${verifiedJWt.jti}`);
+      .get(`refresh-token:${verifiedJWT.id}:${verifiedJWT.jti}`);
 
     if (!refreshTokenRedis) {
       throw new UnauthorizedException('Refresh token not found');
@@ -269,8 +276,8 @@ export class AuthService {
 
     const accessToken = await this.jwtService.signAsync(
       {
-        displayName: verifiedJWt.displayName,
-        id: verifiedJWt.id,
+        displayName: verifiedJWT.displayName,
+        id: verifiedJWT.id,
       },
       {
         issuer: 'TeamIntroduce',
@@ -280,25 +287,27 @@ export class AuthService {
     );
 
     await this.setTokens(req, { accessToken });
-    const user = await this.userService.getUserByField('id', verifiedJWt.id);
+    const user = await this.userService.getUserByField('id', verifiedJWT.id);
     return user;
   }
 
   public async getUserFromAccessToken(token: string) {
-    const verifiedJWt = await this.jwtService.verifyAsync(token, {
+    const verifiedJWT = await this.jwtService.verifyAsync(token, {
       secret: this.configService.get('JWT_ACCESS_SECRET_KEY'),
     });
 
-    if (!verifiedJWt) {
+    if (!verifiedJWT) {
       return undefined;
     }
 
-    return this.userService.getUserByField('id', verifiedJWt.id);
+    return this.userService.getUserByField('id', verifiedJWT.id);
   }
 
   public async getProfile(req: Request) {
+    const user = req.user;
+    this.logger.debug(user);
     return {
-      user: req.user,
+      user,
     };
   }
 

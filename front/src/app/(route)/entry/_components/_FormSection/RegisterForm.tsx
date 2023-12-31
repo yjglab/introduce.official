@@ -5,7 +5,7 @@ import { useForm } from "react-hook-form";
 import SocialAuth from "./SocialAuth";
 import { DEVELOPMENT } from "@/utils/constants";
 import axios from "axios";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { registerAPI } from "@api/auth";
 import { useDispatch } from "react-redux";
 import { SET_USER } from "@/store/slices/user.slice";
@@ -30,6 +30,7 @@ const RegisterForm: FC<Props> = ({ setFormType }) => {
   const [apiError, setApiError] = useState<{ [key: string]: string } | null>(null);
   const router = useRouter();
   const dispatch = useDispatch();
+  const queryClient = useQueryClient();
   const {
     mutate: localRegisterMutate,
     isPending: isLocalRegisterPending,
@@ -37,8 +38,7 @@ const RegisterForm: FC<Props> = ({ setFormType }) => {
     data: me,
   } = useMutation({
     mutationFn: registerAPI,
-    onSuccess: (response) => {
-      dispatch(SET_USER(response.user));
+    onSuccess: () => {
       setApiError(null);
     },
     onError: (error) => {
@@ -66,7 +66,7 @@ const RegisterForm: FC<Props> = ({ setFormType }) => {
   };
 
   const submitCallback = () => {
-    router.push("/");
+    router.push("/login");
   };
   return (
     <form onSubmit={handleSubmit(onSubmit)}>

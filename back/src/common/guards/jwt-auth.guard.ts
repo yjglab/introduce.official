@@ -14,6 +14,7 @@ export class JwtAuthGuard extends AuthGuard('jwt') {
         info instanceof TokenExpiredError &&
         context.getRequest().cookies['refresh_token']
       ) {
+        // AccessToken 만료
         return this.authService.refreshTokens(context.getRequest());
       }
       if (

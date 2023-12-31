@@ -4,6 +4,7 @@ import {
   Delete,
   Get,
   HttpCode,
+  Logger,
   Post,
   Query,
   Req,
@@ -31,14 +32,15 @@ import { Request } from 'express';
   version: '1',
 })
 export class AuthController {
+  private readonly logger: Logger = new Logger('AuthController');
   constructor(private authService: AuthService) {}
 
   @ApiCreatedResponse({
     description: '전달받은 사용자 정보가 올바르면 계정 생성',
   })
   @Post('local/register')
-  async register(@Body() credentials: CreateAccountDto, @Req() req: Request) {
-    return this.authService.register(credentials, req);
+  async register(@Body() credentials: CreateAccountDto) {
+    return this.authService.register(credentials);
   }
 
   @ApiOkResponse({
@@ -68,6 +70,7 @@ export class AuthController {
   @Get('me')
   @SkipThrottle({ default: false })
   getProfile(@Req() req: Request) {
+    this.logger.debug(req.user);
     return this.authService.getProfile(req);
   }
 

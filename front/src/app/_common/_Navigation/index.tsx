@@ -4,17 +4,21 @@ import Link from "next/link";
 import { memo } from "react";
 import SiteMenu from "./SiteMenu";
 import { useDispatch, useSelector } from "react-redux";
-import { RootState } from "@/store";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { logoutAPI } from "@api/auth";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { loadMeAPI, logoutAPI } from "@api/auth";
 import { LOGOUT } from "@/store/slices/user.slice";
 import Modal from "../_Modal";
 import ThemeSwitcher from "./ThemeSwitcher";
 
 const Navigation = memo(() => {
-  const { authenticated } = useSelector((state: RootState) => state.user);
   const dispatch = useDispatch();
   const queryClient = useQueryClient();
+  const { data: me } = useQuery({
+    queryKey: ["data-me"],
+    queryFn: loadMeAPI,
+    staleTime: Infinity,
+    gcTime: Infinity,
+  });
 
   const { mutate: logoutMutate, isSuccess: isLogoutSuccess } = useMutation({
     mutationFn: logoutAPI,
@@ -71,7 +75,7 @@ const Navigation = memo(() => {
                 </Link>
                 <SiteMenu />
                 <div className='pt-3 md:pt-0'>
-                  {authenticated ? (
+                  {me ? (
                     <button
                       onClick={handleLogout}
                       className='py-2.5 px-4 inline-flex items-center gap-x-2 text-sm font-semibold rounded-lg border border-transparent bg-blue-600 text-white hover:bg-blue-700 disabled:opacity-50 disabled:pointer-events-none dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600'
