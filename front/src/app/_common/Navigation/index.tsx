@@ -7,7 +7,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { loadMeAPI, logoutAPI } from "@api/auth";
 import { LOGOUT } from "@/store/slices/user.slice";
-import Modal from "../_Modal";
+import Modal from "../Modal";
 import ThemeSwitcher from "./ThemeSwitcher";
 
 const Navigation = memo(() => {

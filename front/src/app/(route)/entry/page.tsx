@@ -22,5 +22,3 @@ const EntryPage = async () => {
 };
 
 export default EntryPage;
-
-// export default withAuth(AuthOption.FORBIDDEN, AuthClientPage);

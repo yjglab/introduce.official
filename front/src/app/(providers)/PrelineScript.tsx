@@ -3,14 +3,16 @@
 import { usePathname } from "next/navigation";
 import { useEffect } from "react";
 
+import { IStaticMethods } from "preline/preline";
 declare global {
   interface Window {
-    HSStaticMethods: any;
+    HSStaticMethods: IStaticMethods;
   }
 }
 
-export default function PrelineLoader() {
+export default function PrelineScript() {
   const path = usePathname();
+
   useEffect(() => {
     import("preline/preline");
   }, []);
@@ -18,7 +20,7 @@ export default function PrelineLoader() {
   useEffect(() => {
     setTimeout(() => {
       window.HSStaticMethods.autoInit();
-    }, 1000);
+    }, 300);
   }, [path]);
 
   return null;

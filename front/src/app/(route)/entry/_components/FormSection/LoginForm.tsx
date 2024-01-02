@@ -10,8 +10,8 @@ import { loginAPI } from "@api/auth";
 import { useDispatch } from "react-redux";
 import { SET_USER } from "@/store/slices/user.slice";
 import { useRouter } from "next/navigation";
-import Tooltip from "@app/_common/_Parts/Tooltip";
-import LoadingSpinner from "@app/_common/_Parts/LoadingSpinner";
+import Tooltip from "@app/_common/Parts/Tooltip";
+import LoadingSpinner from "@app/_common/Parts/LoadingSpinner";
 
 interface Props {
   setFormType: (type: "login" | "register") => void;

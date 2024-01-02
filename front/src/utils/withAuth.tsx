@@ -1,7 +1,7 @@
 "use client";
 
 import { RootState } from "@/store";
-import { Container } from "@app/_common/_Parts/Container";
+import { Container } from "@app/_common/Parts/Container";
 import Head from "next/head";
 import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";

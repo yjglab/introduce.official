@@ -1,11 +1,9 @@
-import MainSection from "./_components/_MainSection";
+import RootClientPage from "./page.client";
 
 const RootPage = async () => {
-  return (
-    <main>
-      <MainSection />
-    </main>
-  );
+  // main data prefetch
+
+  return <RootClientPage />;
 };
 
 export default RootPage;

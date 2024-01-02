@@ -1,7 +1,7 @@
 "use client";
 
 import { AuthOption, withAuth } from "@/utils/withAuth";
-import FormSection from "./_components/_FormSection";
+import FormSection from "./_components/FormSection";
 
 const EntryClientPage = () => {
   return (

@@ -5,8 +5,8 @@ import { Noto_Sans } from "next/font/google";
 import { ToastContainer } from "react-toastify";
 import classNames from "classnames";
 import QueryProvider from "./(providers)/QueryProvider";
-import PrelineLoader from "./(providers)/PrelineLoader";
-import Navigation from "./_common/_Navigation";
+import PrelineScript from "./(providers)/PrelineScript";
+import Navigation from "./_common/Navigation";
 import { ReduxProvider } from "./(providers)/ReduxProvider";
 import { NextThemeProvider } from "./(providers)/NextThemeProvider";
 import { HydrationBoundary, QueryClient, dehydrate } from "@tanstack/react-query";
@@ -60,16 +60,14 @@ export default async function RootLayout({ children }: { children: React.ReactNo
 
   const dehydratedState = dehydrate(queryClient);
   return (
-    <html lang='en' className='!overflow-clip'>
+    <html lang='en' suppressHydrationWarning={true}>
       <head>
         <link
           rel='stylesheet'
           href='https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.2/font/bootstrap-icons.css'
         />
       </head>
-      <body className=''>
-        <PrelineLoader />
-
+      <body>
         <QueryProvider>
           <HydrationBoundary state={dehydratedState}>
             <ReduxProvider>
@@ -84,6 +82,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
           <ToastContainer />
         </QueryProvider>
       </body>
+      <PrelineScript />
     </html>
   );
 }

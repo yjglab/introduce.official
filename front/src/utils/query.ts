@@ -1,1 +1,1 @@
-export const setUser = "setUser";
+export const dataMeQuery = "data-me";
