@@ -9,8 +9,8 @@ export const GLOBAL_CONFIG: Config = {
   },
   swagger: {
     enabled: true,
-    title: 'Hoolter API 문서',
-    description: 'Hoolter API 문서입니다.',
+    title: 'Introduce API 문서',
+    description: 'Introduce API 문서입니다.',
     version: '1',
     path: '/api',
   },

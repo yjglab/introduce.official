@@ -2,20 +2,17 @@
 
 import { FC, useState } from "react";
 import { useForm } from "react-hook-form";
-import SocialAuth from "./SocialAuth";
 import { DEVELOPMENT } from "@/utils/constants";
 import axios from "axios";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useMutation } from "@tanstack/react-query";
 import { registerAPI } from "@api/auth";
-import { useDispatch } from "react-redux";
 import { useRouter } from "next/navigation";
 import Modal from "@app/_common/Modal";
 import LoadingSpinner from "@app/_common/Parts/LoadingSpinner";
 import Tooltip from "@app/_common/Parts/Tooltip";
+import SocialAuth from "@app/(route)/entry/_components/MainSection/SocialAuth";
 
-interface Props {
-  setFormType: (type: "login" | "register") => void;
-}
+interface Props {}
 interface RegisterValues {
   email: string;
   password: string;
@@ -25,7 +22,7 @@ interface RegisterValues {
   term: boolean;
 }
 
-const RegisterForm: FC<Props> = ({ setFormType }) => {
+const RegisterForm: FC<Props> = () => {
   const [apiError, setApiError] = useState<{ [key: string]: string } | null>(null);
   const router = useRouter();
 
@@ -76,36 +73,6 @@ const RegisterForm: FC<Props> = ({ setFormType }) => {
           externalClick={false}
         ></Modal>
       )}
-      <button
-        type='button'
-        className='py-3 px-4 inline-flex items-center gap-x-2 text-sm font-semibold rounded-lg border border-transparent bg-blue-600 text-white hover:bg-blue-700 disabled:opacity-50 disabled:pointer-events-none dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600'
-        data-hs-overlay='#hs-overlay-example'
-      >
-        Open offcanvas
-      </button>
-
-      <div
-        id='hs-overlay-example'
-        className='hs-overlay hs-overlay-open:translate-x-0  -translate-x-full fixed top-0 start-0 transition-all duration-300 transform h-full max-w-xs w-full z-[60] bg-white border-e dark:bg-gray-800 dark:border-gray-700 hidden'
-        tabIndex={-1}
-      >
-        <div className='flex justify-between items-center py-3 px-4 border-b dark:border-gray-700'>
-          <h3 className='font-bold text-gray-800 dark:text-white'>Offcanvas title</h3>
-          <button
-            type='button'
-            className='flex justify-center items-center w-7 h-7 text-sm font-semibold rounded-full border border-transparent text-gray-800 hover:bg-gray-100 disabled:opacity-50 disabled:pointer-events-none dark:text-white dark:hover:bg-gray-700 dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600'
-            data-hs-overlay='#hs-overlay-example'
-          >
-            <span className='sr-only'>Close modal</span>
-          </button>
-        </div>
-        <div className='p-4'>
-          <p className='text-gray-800 dark:text-gray-400'>
-            Some text as placeholder. In real life you can have the elements you have chosen. Like, text,
-            images, lists, etc.
-          </p>
-        </div>
-      </div>
 
       <div className='lg:max-w-lg lg:mx-auto lg:me-0 ms-auto'>
         <div className='p-4 sm:p-7 flex flex-col bg-white rounded-2xl shadow-lg dark:bg-slate-900'>
@@ -115,7 +82,6 @@ const RegisterForm: FC<Props> = ({ setFormType }) => {
               이미 계정이 있으신가요?
               <button
                 type='button'
-                onClick={() => setFormType("login")}
                 className='ml-1 text-blue-600 decoration-2 hover:underline font-medium dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600'
               >
                 로그인

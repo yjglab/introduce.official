@@ -1,6 +1,6 @@
 import React from "react";
 import { Metadata } from "next";
-import ClientPage from "./page.client";
+import EntryClientPage from "./page.client";
 
 export async function generateMetadata() {
   return {
@@ -14,11 +14,7 @@ export async function generateMetadata() {
 }
 
 const EntryPage = async () => {
-  return (
-    <>
-      <ClientPage />
-    </>
-  );
+  return <EntryClientPage />;
 };
 
 export default EntryPage;

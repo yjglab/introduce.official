@@ -4,7 +4,7 @@ import MainSection from "./_components/MainSection";
 
 const RootClientPage = () => {
   return (
-    <main className='!overflow-clip'>
+    <main id='Root-Client'>
       <MainSection />
     </main>
   );

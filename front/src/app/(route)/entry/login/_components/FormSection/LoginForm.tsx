@@ -2,7 +2,6 @@
 
 import { FC, useState } from "react";
 import { useForm } from "react-hook-form";
-import SocialAuth from "./SocialAuth";
 import { DEVELOPMENT } from "@/utils/constants";
 import axios from "axios";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
@@ -12,16 +11,15 @@ import { SET_USER } from "@/store/slices/user.slice";
 import { useRouter } from "next/navigation";
 import Tooltip from "@app/_common/Parts/Tooltip";
 import LoadingSpinner from "@app/_common/Parts/LoadingSpinner";
+import SocialAuth from "@app/(route)/entry/_components/MainSection/SocialAuth";
 
-interface Props {
-  setFormType: (type: "login" | "register") => void;
-}
+interface Props {}
 interface LoginValues {
   email: string;
   password: string;
 }
 
-const LoginForm: FC<Props> = ({ setFormType }) => {
+const LoginForm: FC<Props> = () => {
   const [apiError, setApiError] = useState<{ [key: string]: string } | null>(null);
   const dispatch = useDispatch();
   const queryClient = useQueryClient();
@@ -74,7 +72,6 @@ const LoginForm: FC<Props> = ({ setFormType }) => {
               계정이 없으신가요?
               <button
                 type='button'
-                onClick={() => setFormType("register")}
                 className='ml-1 text-blue-600 decoration-2 hover:underline font-medium dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600'
               >
                 회원가입

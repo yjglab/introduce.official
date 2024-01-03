@@ -33,10 +33,10 @@ const Navigation = memo(() => {
   };
 
   return (
-    <header className='flex fixed top-0 flex-wrap md:justify-start md:flex-nowrap z-50 w-full bg-white text-sm py-3 md:py-0 dark:bg-gray-800'>
+    <header className='flex fixed top-0 flex-wrap md:justify-start md:flex-nowrap z-100 w-full bg-white text-sm py-3 md:py-0 dark:bg-gray-800'>
       {isLogoutSuccess && <Modal description='로그아웃 되었습니다' externalClick={true}></Modal>}
 
-      <nav className='max-w-[85rem] w-full mx-auto px-4 md:px-6 lg:px-8' aria-label='Global'>
+      <nav className='max-w-7xl w-full mx-auto px-4' aria-label='Global'>
         <div className='relative md:flex md:items-center md:justify-between'>
           <div className='flex items-center justify-between'>
             <a

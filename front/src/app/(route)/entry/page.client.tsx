@@ -1,12 +1,12 @@
 "use client";
 
 import { AuthOption, withAuth } from "@/utils/withAuth";
-import FormSection from "./_components/FormSection";
+import MainSection from "./_components/MainSection";
 
 const EntryClientPage = () => {
   return (
-    <main id='EntryClientPage'>
-      <FormSection />
+    <main id='Entry-Client' className='min-h-screen'>
+      <MainSection />
     </main>
   );
 };
