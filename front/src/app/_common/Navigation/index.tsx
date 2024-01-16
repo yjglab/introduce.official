@@ -33,7 +33,7 @@ const Navigation = memo(() => {
   };
 
   return (
-    <header className='flex fixed top-0 flex-wrap md:justify-start md:flex-nowrap z-100 w-full bg-white text-sm py-3 md:py-0 dark:bg-gray-800'>
+    <header className='flex fixed top-0 flex-wrap md:justify-start md:flex-nowrap z-50 w-full bg-white text-sm py-3 md:py-0 dark:bg-gray-800'>
       {isLogoutSuccess && <Modal description='로그아웃 되었습니다' externalClick={true}></Modal>}
 
       <nav className='max-w-7xl w-full mx-auto px-4' aria-label='Global'>
@@ -78,14 +78,14 @@ const Navigation = memo(() => {
                   {me ? (
                     <button
                       onClick={handleLogout}
-                      className='py-2.5 px-4 inline-flex items-center gap-x-2 text-sm font-semibold rounded-lg border border-transparent bg-blue-600 text-white hover:bg-blue-700 disabled:opacity-50 disabled:pointer-events-none dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600'
+                      className='py-2.5 px-4 inline-flex items-center gap-x-2 text-sm font-semibold rounded-lg border border-transparent bg-primary-600 text-white hover:bg-primary-700 disabled:opacity-50 disabled:pointer-events-none dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600'
                     >
                       <i className='text-[16px] bi bi-door-closed-fill'></i>
                       로그아웃
                     </button>
                   ) : (
                     <Link
-                      className='py-2.5 px-4 inline-flex items-center gap-x-2 text-sm font-semibold rounded-lg border border-transparent bg-blue-600 text-white hover:bg-blue-700 disabled:opacity-50 disabled:pointer-events-none dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600'
+                      className='py-2.5 px-4 inline-flex items-center gap-x-2 text-sm font-semibold rounded-lg border border-transparent bg-primary-600 text-white hover:bg-primary-700 disabled:opacity-50 disabled:pointer-events-none dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600'
                       href='/entry'
                     >
                       <i className='text-[16px] bi bi-person-fill'></i>

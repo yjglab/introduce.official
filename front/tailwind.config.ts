@@ -10,6 +10,7 @@ const config: Config = {
         "gradient-conic": "conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))",
       },
       colors: {
+        primary: colors.indigo,
         general: colors.blue,
         success: colors.green,
         error: colors.red,

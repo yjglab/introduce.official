@@ -155,7 +155,7 @@ const SiteMenu = () => {
                 />
                 <div className='grow'>
                   <p className='text-sm text-gray-800 dark:text-slate-400'>GG</p>
-                  <p className='mt-3 inline-flex items-center gap-x-1 text-sm text-blue-600 decoration-2 hover:underline font-medium dark:text-blue-400 dark:hover:text-blue-500 dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-slate-600'>
+                  <p className='mt-3 inline-flex items-center gap-x-1 text-sm text-primary-600 decoration-2 hover:underline font-medium dark:text-primary-400 dark:hover:text-primary-500 dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-slate-600'>
                     More
                     <svg
                       className='flex-shrink-0 w-4 h-4 transition ease-in-out group-hover:translate-x-1'

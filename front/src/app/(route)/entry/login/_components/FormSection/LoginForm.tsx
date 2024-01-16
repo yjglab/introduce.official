@@ -71,7 +71,7 @@ const LoginForm: FC<Props> = () => {
               계정이 없으신가요?
               <button
                 type='button'
-                className='ml-1 text-blue-600 decoration-2 hover:underline font-medium dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600'
+                className='ml-1 text-primary-600 decoration-2 hover:underline font-medium dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600'
               >
                 회원가입
               </button>
@@ -98,7 +98,7 @@ const LoginForm: FC<Props> = () => {
                     defaultValue={DEVELOPMENT ? "yjgdesign@gmail.com" : ""}
                     disabled={isLocalLoginSuccess}
                     id='email'
-                    className='peer border p-4 block w-full border-gray-200 rounded-lg text-sm placeholder:text-transparent focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-slate-900 dark:border-gray-700 dark:text-gray-400 dark:focus:ring-gray-600
+                    className='peer border p-4 block w-full border-gray-200 rounded-lg text-sm placeholder:text-transparent focus:border-primary-500 focus:ring-primary-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-slate-900 dark:border-gray-700 dark:text-gray-400 dark:focus:ring-gray-600
           focus:pt-6
           focus:pb-2
           [&:not(:placeholder-shown)]:pt-6
@@ -108,7 +108,7 @@ const LoginForm: FC<Props> = () => {
                     placeholder=''
                   />
                   <label
-                    htmlFor='email'
+                    htmlhtmlFor='email'
                     className='absolute top-0 start-0 p-4 h-full text-sm truncate pointer-events-none transition ease-in-out duration-100 border border-transparent dark:text-white peer-disabled:opacity-50 peer-disabled:pointer-events-none
             peer-focus:text-xs
             peer-focus:-translate-y-1.5
@@ -138,7 +138,7 @@ const LoginForm: FC<Props> = () => {
                     defaultValue={DEVELOPMENT ? "Ab2@" : ""}
                     type='password'
                     id='password'
-                    className='peer border p-4 block w-full border-gray-200 rounded-lg text-sm placeholder:text-transparent focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-slate-900 dark:border-gray-700 dark:text-gray-400 dark:focus:ring-gray-600
+                    className='peer border p-4 block w-full border-gray-200 rounded-lg text-sm placeholder:text-transparent focus:border-primary-500 focus:ring-primary-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-slate-900 dark:border-gray-700 dark:text-gray-400 dark:focus:ring-gray-600
           focus:pt-6
           focus:pb-2
           [&:not(:placeholder-shown)]:pt-6
@@ -148,7 +148,7 @@ const LoginForm: FC<Props> = () => {
                     placeholder=''
                   />
                   <label
-                    htmlFor='password'
+                    htmlhtmlFor='password'
                     className='absolute top-0 start-0 p-4 h-full text-sm truncate pointer-events-none transition ease-in-out duration-100 border border-transparent dark:text-white peer-disabled:opacity-50 peer-disabled:pointer-events-none
             peer-focus:text-xs
             peer-focus:-translate-y-1.5
@@ -174,7 +174,7 @@ const LoginForm: FC<Props> = () => {
               <button
                 type='submit'
                 disabled={isLocalLoginPending || isLocalLoginSuccess}
-                className='w-full py-3 px-4 inline-flex justify-center items-center gap-x-2 text-sm font-semibold rounded-lg border border-transparent bg-blue-600 text-white hover:bg-blue-700 disabled:opacity-50 disabled:pointer-events-none dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600'
+                className='w-full py-3 px-4 inline-flex justify-center items-center gap-x-2 text-sm font-semibold rounded-lg border border-transparent bg-primary-600 text-white hover:bg-primary-700 disabled:opacity-50 disabled:pointer-events-none dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600'
               >
                 로그인
               </button>

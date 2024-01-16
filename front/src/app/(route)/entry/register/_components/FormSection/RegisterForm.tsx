@@ -10,8 +10,10 @@ import { useRouter } from "next/navigation";
 import Modal from "@app/_common/Modal";
 import LoadingSpinner from "@app/_common/Parts/LoadingSpinner";
 import Tooltip from "@app/_common/Parts/Tooltip";
-import { RiCheckLine, RiCloseLine } from "@remixicon/react";
+import { RiCheckLine, RiCloseLine, RiErrorWarningFill } from "@remixicon/react";
 import { RiSM } from "@constants";
+import { UserAvatar } from "@app/_common/Parts/UserAvatar";
+import Link from "next/link";
 
 interface Props {}
 interface RegisterValues {
@@ -23,6 +25,7 @@ interface RegisterValues {
   term: boolean;
 }
 
+// avatar svg hydration 불일치 문제 있음
 const RegisterForm: FC<Props> = () => {
   const [apiError, setApiError] = useState<{ [key: string]: string } | null>(null);
   const router = useRouter();
@@ -47,8 +50,8 @@ const RegisterForm: FC<Props> = () => {
   const {
     register,
     handleSubmit,
-    reset,
     getValues,
+    watch,
     formState: { errors },
   } = useForm<RegisterValues>();
 
@@ -64,8 +67,9 @@ const RegisterForm: FC<Props> = () => {
   const submitCallback = () => {
     router.push("/login");
   };
+
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
+    <div className='max-w-[85rem] mx-auto px-4 sm:px-6 lg:px-8 py-20'>
       {isLocalRegisterSuccess && (
         <Modal
           title='회원가입 완료'
@@ -74,376 +78,268 @@ const RegisterForm: FC<Props> = () => {
           externalClick={false}
         ></Modal>
       )}
+      <div className='relative mx-auto max-w-4xl grid'>
+        <div className='text-center'>
+          <p className='text-xs font-semibold text-gray-500 tracking-wide uppercase mb-3 dark:text-gray-200'>
+            REGISTER OUR MEMBERS
+          </p>
+          <h1 className='text-3xl text-gray-800 font-bold sm:text-5xl lg:text-6xl lg:leading-tight dark:text-gray-200'>
+            회원가입
+          </h1>
+        </div>
 
-      <div className='lg:max-w-lg lg:mx-auto lg:me-0 ms-auto'>
-        <div className='p-4 sm:p-7 flex flex-col bg-white rounded-2xl shadow-lg dark:bg-slate-900'>
-          <div className='text-center'>
-            <h1 className='block text-2xl font-bold text-gray-800 dark:text-white'>가입하기</h1>
-            <p className='mt-2 text-sm text-gray-600 dark:text-gray-400'>
-              이미 계정이 있으신가요?
-              <button
-                type='button'
-                className='ml-1 text-blue-600 decoration-2 hover:underline font-medium dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600'
-              >
-                로그인
-              </button>
-            </p>
+        <div className='sm:flex sm:justify-center sm:items-center text-center sm:text-start mt-12 mb-32'>
+          <div className='flex-shrink-0 pb-5 sm:flex sm:pb-0 sm:pe-5'>
+            <div className='flex justify-center -space-x-3'>
+              <UserAvatar displayName='a.com' />
+              <UserAvatar displayName='b.com' />
+              <UserAvatar displayName='c.com' />
+              <UserAvatar displayName='d.com' />
+              <span className='inline-flex items-center justify-center h-12 w-12 rounded-full ring-2 ring-white bg-gray-800 dark:bg-gray-900 dark:ring-gray-800'>
+                <span className='text-xs font-medium leading-none text-white uppercase'>10k+</span>
+              </span>
+            </div>
           </div>
 
-          <div className='mt-5'>
-            <div className='grid grid-cols-2 gap-4'>
-              {/* 이메일 */}
-              <div className='hs-tooltip [--placement:bottom] '>
-                <div className='hs-tooltip-toggle relative'>
-                  <input
-                    {...register("email", {
-                      required: "이메일을 입력해주세요.",
-                      pattern: {
-                        value: /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/i,
-                        message: "이메일 형식이 아닙니다.",
-                      },
-                    })}
-                    disabled={isLocalRegisterSuccess}
-                    id='email'
-                    className='peer border p-4 block w-full border-gray-200 rounded-lg text-sm placeholder:text-transparent focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-slate-900 dark:border-gray-700 dark:text-gray-400 dark:focus:ring-gray-600
-          focus:pt-6
-          focus:pb-2
-          [&:not(:placeholder-shown)]:pt-6
-          [&:not(:placeholder-shown)]:pb-2
-          autofill:pt-6
-          autofill:pb-2'
-                    placeholder=''
-                  />
-                  <label
-                    htmlFor='email'
-                    className='absolute top-0 start-0 p-4 h-full text-sm truncate pointer-events-none transition ease-in-out duration-100 border border-transparent dark:text-white peer-disabled:opacity-50 peer-disabled:pointer-events-none
-            peer-focus:text-xs
-            peer-focus:-translate-y-1.5
-            peer-focus:text-gray-500
-            peer-[:not(:placeholder-shown)]:text-xs
-            peer-[:not(:placeholder-shown)]:-translate-y-1.5
-            peer-[:not(:placeholder-shown)]:text-gray-500'
-                  >
-                    이메일
-                  </label>
-                  <Tooltip content={errors.email?.message || apiError?.email} />
-                  {(errors.email || apiError?.email) && (
-                    <div className='absolute inset-y-0 end-0 flex items-center pointer-events-none pe-3'>
-                      <i className='bi bi-exclamation-circle text-red-500 flex-shrink-0'></i>
-                    </div>
-                  )}
-                </div>
-              </div>
+          <div className='border-t sm:border-t-0 sm:border-s border-gray-200 w-32 h-px sm:w-auto sm:h-full mx-auto sm:mx-0'></div>
 
-              {/* 표시 이름 */}
-              <div className='hs-tooltip [--placement:bottom] '>
-                <div className='hs-tooltip-toggle relative'>
-                  <input
-                    {...register("displayName", {
-                      required: "표시 이름을 입력해주세요.",
-                      pattern: {
-                        value: /^(?=.*[a-zA-Z0-9가-힣])[a-zA-Z0-9가-힣]{3,12}$/,
-                        message: "3~12자 이하의 영문 소문자, 숫자 또는 한글로 구성되어야 합니다",
-                      },
-                    })}
-                    disabled={isLocalRegisterSuccess}
-                    type='text'
-                    id='displayName'
-                    className='peer border p-4 block w-full border-gray-200 rounded-lg text-sm placeholder:text-transparent focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-slate-900 dark:border-gray-700 dark:text-gray-400 dark:focus:ring-gray-600
-          focus:pt-6
-          focus:pb-2
-          [&:not(:placeholder-shown)]:pt-6
-          [&:not(:placeholder-shown)]:pb-2
-          autofill:pt-6
-          autofill:pb-2'
-                    placeholder=''
-                  />
-                  <label
-                    htmlFor='displayName'
-                    className='absolute top-0 start-0 p-4 h-full text-sm truncate pointer-events-none transition ease-in-out duration-100 border border-transparent dark:text-white peer-disabled:opacity-50 peer-disabled:pointer-events-none
-            peer-focus:text-xs
-            peer-focus:-translate-y-1.5
-            peer-focus:text-gray-500
-            peer-[:not(:placeholder-shown)]:text-xs
-            peer-[:not(:placeholder-shown)]:-translate-y-1.5
-            peer-[:not(:placeholder-shown)]:text-gray-500'
-                  >
-                    표시 이름
-                  </label>
-                  <Tooltip content={errors.displayName?.message || apiError?.displayName} />
-                  {(errors.displayName || apiError?.displayName) && (
-                    <div className='absolute inset-y-0 end-0 flex items-center pointer-events-none pe-3'>
-                      <i className='bi bi-exclamation-circle text-red-500 flex-shrink-0'></i>
-                    </div>
-                  )}
-                </div>
-              </div>
+          <div className='pt-5 sm:pt-0 sm:ps-5'>
+            <div className='text-lg font-semibold text-gray-800 dark:text-gray-200'>Let's Introduce!</div>
+            <div className='text-sm text-gray-400'>수많은 회원들에게 여러분을 인트로듀스 하세요!</div>
+          </div>
+        </div>
 
-              {/* 비밀번호 */}
-              <div className='hs-tooltip [--placement:bottom] relative col-span-full'>
-                <div className='hs-tooltip-toggle relative'>
-                  <input
-                    {...register("password", {
-                      required: "비밀번호를 입력해주세요.",
-                      pattern: {
-                        value:
-                          /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&#.~_-])[A-Za-z\d@$!%*?&#.~_-]{3,14}$/,
-                        message: "비밀번호 형식을 준수해주세요.",
-                      },
-                    })}
-                    disabled={isLocalRegisterSuccess}
-                    defaultValue={DEVELOPMENT ? "Ab2@" : ""}
-                    type='password'
-                    id='password'
-                    className='peer border p-4 block w-full border-gray-200 rounded-lg text-sm placeholder:text-transparent focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-slate-900 dark:border-gray-700 dark:text-gray-400 dark:focus:ring-gray-600
-          focus:pt-6
-          focus:pb-2
-          [&:not(:placeholder-shown)]:pt-6
-          [&:not(:placeholder-shown)]:pb-2
-          autofill:pt-6
-          autofill:pb-2'
-                    placeholder=''
-                  />
-
-                  <label
-                    htmlFor='password'
-                    className='absolute top-0 start-0 p-4 h-full text-sm truncate pointer-events-none transition ease-in-out duration-100 border border-transparent dark:text-white peer-disabled:opacity-50 peer-disabled:pointer-events-none
-            peer-focus:text-xs
-            peer-focus:-translate-y-1.5
-            peer-focus:text-gray-500
-            peer-[:not(:placeholder-shown)]:text-xs
-            peer-[:not(:placeholder-shown)]:-translate-y-1.5
-            peer-[:not(:placeholder-shown)]:text-gray-500'
-                  >
-                    비밀번호
-                  </label>
-                  <Tooltip content={errors.password?.message} />
-                  {errors.password && (
-                    <div className='absolute inset-y-0 end-0 flex items-center pointer-events-none pe-3'>
-                      <i className='bi bi-exclamation-circle text-red-500 flex-shrink-0'></i>
-                    </div>
-                  )}
-                </div>
-
-                <div
-                  id='password-popover'
-                  className='hidden absolute z-10 w-full bg-gray-50 rounded-lg p-4 dark:bg-gray-950'
-                >
-                  <div
-                    id='hs-strong-password-in-popover'
-                    data-hs-strong-password='{
-              "target": "#password",
-              "hints": "#password-popover",
-              "stripClasses": "hs-strong-password:opacity-100 hs-strong-password-accepted:bg-teal-500 h-2 flex-auto rounded-full bg-gray-500 opacity-50 mx-1",
-              "mode": "popover",
-              "minLength": "3"
-            }'
-                    className='flex mt-2 -mx-1'
-                  />
-
-                  <h4 className='mt-3 text-sm font-semibold text-gray-800 dark:text-white'>
-                    비밀번호는 다음의 규칙을 준수해야 합니다.
-                  </h4>
-
-                  <ul className='space-y-1 text-sm text-gray-500'>
-                    <li
-                      data-hs-strong-password-hints-rule-text='min-length'
-                      className='hs-strong-password-active:text-teal-500 flex items-center gap-x-2'
-                    >
-                      <span className='hidden' data-check>
-                        <RiCheckLine size={RiSM} />
-                      </span>
-                      <span data-uncheck>
-                        <RiCloseLine size={RiSM} />
-                      </span>
-                      최소 3~14자가 필요합니다.
-                    </li>
-                    <li
-                      data-hs-strong-password-hints-rule-text='lowercase'
-                      className='hs-strong-password-active:text-teal-500 flex items-center gap-x-2'
-                    >
-                      <span className='hidden' data-check>
-                        <RiCheckLine size={RiSM} />
-                      </span>
-                      <span data-uncheck>
-                        <RiCloseLine size={RiSM} />
-                      </span>
-                      영문 소문자를 포함해야 합니다.
-                    </li>
-                    <li
-                      data-hs-strong-password-hints-rule-text='uppercase'
-                      className='hs-strong-password-active:text-teal-500 flex items-center gap-x-2'
-                    >
-                      <span className='hidden' data-check>
-                        <RiCheckLine size={RiSM} />
-                      </span>
-                      <span data-uncheck>
-                        <RiCloseLine size={RiSM} />
-                      </span>
-                      영문 대문자를 포함해야 합니다.
-                    </li>
-                    <li
-                      data-hs-strong-password-hints-rule-text='numbers'
-                      className='hs-strong-password-active:text-teal-500 flex items-center gap-x-2'
-                    >
-                      <span className='hidden' data-check>
-                        <RiCheckLine size={RiSM} />
-                      </span>
-                      <span data-uncheck>
-                        <RiCloseLine size={RiSM} />
-                      </span>
-                      숫자를 포함해야 합니다.
-                    </li>
-                    <li
-                      data-hs-strong-password-hints-rule-text='special-characters'
-                      className='hs-strong-password-active:text-teal-500 flex items-center gap-x-2'
-                    >
-                      <span className='hidden' data-check>
-                        <RiCheckLine size={RiSM} />
-                      </span>
-                      <span data-uncheck>
-                        <RiCloseLine size={RiSM} />
-                      </span>
-                      특수문자를 포함해야 합니다.
-                    </li>
-                  </ul>
-                </div>
-              </div>
-
-              {/* 비밀번호 확인 */}
-              <div className='hs-tooltip [--placement:bottom] col-span-full'>
-                <div className='hs-tooltip-toggle relative'>
-                  <input
-                    {...register("passwordCheck", {
-                      validate: {
-                        matched: (value) =>
-                          value === getValues("password") || "비밀번호가 일치하지 않습니다.",
-                      },
-                      required: "비밀번호가 일치하지 않습니다.",
-                    })}
-                    disabled={isLocalRegisterSuccess}
-                    type='password'
-                    id='passwordCheck'
-                    defaultValue={DEVELOPMENT ? "Ab2@" : ""}
-                    className='peer border p-4 block w-full border-gray-200 rounded-lg text-sm placeholder:text-transparent focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-slate-900 dark:border-gray-700 dark:text-gray-400 dark:focus:ring-gray-600
-          focus:pt-6
-          focus:pb-2
-          [&:not(:placeholder-shown)]:pt-6
-          [&:not(:placeholder-shown)]:pb-2
-          autofill:pt-6
-          autofill:pb-2'
-                    placeholder=''
-                  />
-                  <Tooltip content={errors.passwordCheck?.message} />
-                  {errors.passwordCheck && (
-                    <div className='absolute inset-y-0 end-0 flex items-center pointer-events-none pe-3'>
-                      <i className='bi bi-exclamation-circle text-red-500 flex-shrink-0'></i>
-                    </div>
-                  )}
-                  <label
-                    htmlFor='passwordCheck'
-                    className='absolute top-0 start-0 p-4 h-full text-sm truncate pointer-events-none transition ease-in-out duration-100 border border-transparent dark:text-white peer-disabled:opacity-50 peer-disabled:pointer-events-none
-            peer-focus:text-xs
-            peer-focus:-translate-y-1.5
-            peer-focus:text-gray-500
-            peer-[:not(:placeholder-shown)]:text-xs
-            peer-[:not(:placeholder-shown)]:-translate-y-1.5
-            peer-[:not(:placeholder-shown)]:text-gray-500'
-                  >
-                    비밀번호 확인
-                  </label>
-                </div>
-              </div>
-
-              {/* Position 선택 */}
-              <div className='hs-tooltip [--placement:bottom] col-span-full'>
-                <div className='hs-tooltip-toggle relative'>
-                  <select
-                    {...register("position", {
-                      validate: {
-                        matched: (value) =>
-                          value === "개발자" || value === "디자이너" || "직무를 선택해주세요.",
-                      },
-                      required: "직무를 선택해주세요.",
-                    })}
-                    disabled={isLocalRegisterSuccess}
-                    id='position'
-                    className='peer p-4 pe-9 block w-full border border-gray-200 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-slate-900 dark:border-gray-700 dark:text-gray-400 dark:focus:ring-gray-600
-                    focus:pt-6
-                    focus:pb-2
-                    [&:not(:placeholder-shown)]:pt-6
-                    [&:not(:placeholder-shown)]:pb-2
-                    autofill:pt-6
-                    autofill:pb-2'
-                  >
-                    <option>직무를 선택해주세요</option>
-                    <option>개발자</option>
-                    <option>디자이너</option>
-                  </select>
-                  <label
-                    className='absolute top-0 start-0 p-4 h-full truncate pointer-events-none transition ease-in-out duration-100 border border-transparent dark:text-white peer-disabled:opacity-50 peer-disabled:pointer-events-none
-                    peer-focus:text-xs
-                    peer-focus:-translate-y-1.5
-                    peer-focus:text-gray-500
-                    peer-[:not(:placeholder-shown)]:text-xs
-                    peer-[:not(:placeholder-shown)]:-translate-y-1.5
-                    peer-[:not(:placeholder-shown)]:text-gray-500'
-                  >
-                    직무 선택
-                  </label>
-                  <Tooltip content={errors.position?.message} />
-                  {errors.position && (
-                    <div className='absolute inset-y-0 end-0 flex items-center pointer-events-none pe-3'>
-                      <i className='bi bi-exclamation-circle text-red-500 flex-shrink-0'></i>
-                    </div>
-                  )}
-                </div>
-              </div>
-            </div>
-
-            {/* 약관 확인 */}
-            <div className='mt-5 flex items-center'>
-              <label htmlFor='term' className='text-sm dark:text-white flex gap-1'>
-                <input
-                  {...register("term", { required: true })}
-                  disabled={isLocalRegisterSuccess}
-                  id='term'
-                  name='term'
-                  type='checkbox'
-                  className='shrink-0 mt-0.5 border-gray-200 rounded text-blue-600 pointer-events-none focus:ring-blue-500 dark:bg-slate-900 dark:border-gray-700 dark:checked:bg-gray-500 dark:checked:border-blue-500 dark:focus:ring-offset-gray-800'
-                />
-                <div className='ms-1 flex'>
-                  <a
-                    className='text-blue-600 decoration-2 hover:underline font-medium dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600'
-                    href='#'
-                  >
-                    개인정보수집 및 활용동의서
-                  </a>
-                  에 동의합니다
-                  {errors.term && (
-                    <div className='ml-1 inset-y-0 end-0 flex items-center pointer-events-none pe-3'>
-                      <i className='bi bi-exclamation-circle text-red-500 flex-shrink-0'></i>
-                    </div>
-                  )}
-                </div>
+        <form onSubmit={handleSubmit(onSubmit)}>
+          <div className=' flex flex-col items-center mb-10'>
+            <UserAvatar displayName={watch("displayName")} size='xl' />
+            <div className='hs-tooltip [--placement:bottom] relative mt-4'>
+              <label htmlFor='displayName' className='block text-sm font-medium'>
+                <span className='sr-only'>User Display Name</span>
               </label>
+              <div className='relative'>
+                <input
+                  {...register("displayName", {
+                    required: "표시 이름을 입력해주세요.",
+                    pattern: {
+                      value: /^(?=.*[a-zA-Z0-9가-힣])[a-zA-Z0-9가-힣]{3,12}$/,
+                      message: "3~12자 이하의 영문 소문자, 숫자 또는 한글로 구성되어야 합니다",
+                    },
+                  })}
+                  disabled={isLocalRegisterSuccess}
+                  type='text'
+                  id='displayName'
+                  className='hs-tooltip-toggle text-center block w-full bg-transparent border-t-transparent border-b-2 border-x-transparent border-b-gray-200 focus:border-t-transparent focus:border-x-transparent focus:ring-0 disabled:opacity-50 disabled:pointer-events-none dark:border-b-gray-700 dark:text-gray-200 dark:focus:ring-gray-600 dark:focus:border-b-gray-400'
+                  placeholder='표시 이름'
+                />
+              </div>
+              <Tooltip content={errors.displayName?.message || apiError?.displayName} />
+              {(errors.displayName || apiError?.displayName) && (
+                <RiErrorWarningFill size={RiSM} className='absolute my-auto inset-y-0 end-2.5 text-red-500' />
+              )}
+            </div>
+          </div>
+
+          <div className='mx-auto max-w-4xl sm:flex sm:space-x-3 p-3 bg-white border rounded-lg shadow-lg shadow-gray-100 dark:bg-slate-900 dark:border-gray-700 dark:shadow-gray-900/[.2]'>
+            <div className='hs-tooltip [--placement:bottom] relative pb-2 sm:pb-0 sm:flex-[1_0_0%]'>
+              <label htmlFor='email' className='block text-sm font-medium dark:text-white'>
+                <span className='sr-only'>User Email</span>
+              </label>
+
+              <input
+                type='text'
+                id='email'
+                className='hs-tooltip-toggle py-3 px-4 block w-full border-transparent rounded-lg text-sm focus:border-primary-500 focus:ring-primary-500 dark:bg-slate-900 dark:border-transparent dark:text-gray-400 dark:focus:ring-gray-600'
+                placeholder='이메일'
+                disabled={isLocalRegisterSuccess}
+                {...register("email", {
+                  required: "이메일을 입력해주세요.",
+                  pattern: {
+                    value: /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/i,
+                    message: "이메일 형식이 아닙니다.",
+                  },
+                })}
+              />
+              <Tooltip content={errors.email?.message || apiError?.email} />
+              {(errors.email || apiError?.email) && (
+                <RiErrorWarningFill size={RiSM} className='absolute my-auto inset-y-0 end-2.5 text-red-500' />
+              )}
             </div>
 
-            {/* 제출 */}
-            <div className='mt-5 relative'>
+            <div className='hs-tooltip [--placement:bottom] relative pt-2 sm:pt-0 sm:ps-3 border-t border-gray-200 sm:border-t-0 sm:border-s sm:flex-[1_0_0%] dark:border-gray-700'>
+              <label htmlFor='password' className='block text-sm font-medium dark:text-white'>
+                <span className='sr-only'>User Password</span>
+              </label>
+              <input
+                defaultValue={DEVELOPMENT ? "Ab2@" : ""}
+                type='password'
+                id='password'
+                className='hs-tooltip-toggle py-3 px-4 block w-full border-transparent rounded-lg text-sm focus:border-primary-500 focus:ring-primary-500 dark:bg-slate-900 dark:border-transparent dark:text-gray-400 dark:focus:ring-gray-600'
+                placeholder='비밀번호'
+                disabled={isLocalRegisterSuccess}
+                {...register("password", {
+                  required: "비밀번호를 입력해주세요.",
+                  pattern: {
+                    value: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&#.~_-])[A-Za-z\d@$!%*?&#.~_-]{3,14}$/,
+                    message: "비밀번호 형식을 준수해주세요.",
+                  },
+                })}
+              />
+              <Tooltip content={errors.password?.message} />
+              {errors.password && (
+                <RiErrorWarningFill size={RiSM} className='absolute my-auto inset-y-0 end-2.5 text-red-500' />
+              )}
+
+              <div
+                id='password-popover'
+                className='hidden absolute w-full z-10 bg-gray-50 rounded-lg p-4 dark:bg-slate-900'
+              >
+                <div
+                  data-hs-strong-password='{
+                        "target": "#password",
+                        "hints": "#password-popover",
+                        "stripClasses": "hs-strong-password:opacity-100 hs-strong-password-accepted:bg-teal-500 h-2 flex-auto rounded-full bg-gray-400 opacity-40 mx-1",
+                        "mode": "popover",
+                        "minLength": "3"
+                      }'
+                  className='flex -mx-1 mb-3'
+                />
+                <ul className='space-y-1 text-sm text-gray-500'>
+                  <li
+                    data-hs-strong-password-hints-rule-text='min-length'
+                    className='hs-strong-password-active:text-teal-500 flex items-center gap-x-2'
+                  >
+                    <span className='hidden' data-check>
+                      <RiCheckLine size={RiSM} />
+                    </span>
+                    <span data-uncheck>
+                      <RiCloseLine size={RiSM} />
+                    </span>
+                    최소 3~14자가 필요합니다.
+                  </li>
+                  <li
+                    data-hs-strong-password-hints-rule-text='lowercase'
+                    className='hs-strong-password-active:text-teal-500 flex items-center gap-x-2'
+                  >
+                    <span className='hidden' data-check>
+                      <RiCheckLine size={RiSM} />
+                    </span>
+                    <span data-uncheck>
+                      <RiCloseLine size={RiSM} />
+                    </span>
+                    영문 소문자를 포함해야 합니다.
+                  </li>
+                  <li
+                    data-hs-strong-password-hints-rule-text='uppercase'
+                    className='hs-strong-password-active:text-teal-500 flex items-center gap-x-2'
+                  >
+                    <span className='hidden' data-check>
+                      <RiCheckLine size={RiSM} />
+                    </span>
+                    <span data-uncheck>
+                      <RiCloseLine size={RiSM} />
+                    </span>
+                    영문 대문자를 포함해야 합니다.
+                  </li>
+                  <li
+                    data-hs-strong-password-hints-rule-text='numbers'
+                    className='hs-strong-password-active:text-teal-500 flex items-center gap-x-2'
+                  >
+                    <span className='hidden' data-check>
+                      <RiCheckLine size={RiSM} />
+                    </span>
+                    <span data-uncheck>
+                      <RiCloseLine size={RiSM} />
+                    </span>
+                    숫자를 포함해야 합니다.
+                  </li>
+                  <li
+                    data-hs-strong-password-hints-rule-text='special-characters'
+                    className='hs-strong-password-active:text-teal-500 flex items-center gap-x-2'
+                  >
+                    <span className='hidden' data-check>
+                      <RiCheckLine size={RiSM} />
+                    </span>
+                    <span data-uncheck>
+                      <RiCloseLine size={RiSM} />
+                    </span>
+                    특수문자를 포함해야 합니다.
+                  </li>
+                </ul>
+              </div>
+            </div>
+
+            <div className='hs-tooltip [--placement:bottom] relative pt-2 sm:pt-0 sm:ps-3 border-t border-gray-200 sm:border-t-0 sm:border-s sm:flex-[1_0_0%] dark:border-gray-700'>
+              <label htmlFor='position' className='block text-sm font-medium dark:text-white'>
+                <span className='sr-only'>User Position</span>
+              </label>
+              <select
+                {...register("position", {
+                  validate: {
+                    matched: (value) => value !== "직무 선택" || "직무를 선택해주세요.",
+                  },
+                  required: "직무를 선택해주세요.",
+                })}
+                disabled={isLocalRegisterSuccess}
+                id='position'
+                className='hs-tooltip-toggle py-3 px-4 block w-full border-transparent rounded-lg text-sm focus:border-primary-500 focus:ring-primary-500 dark:bg-slate-900 dark:border-transparent dark:text-gray-400 dark:focus:ring-gray-600'
+              >
+                <option>직무 선택</option>
+                <option>개발자</option>
+                <option>디자이너</option>
+              </select>
+              <Tooltip content={errors.position?.message} />
+              {errors.position && (
+                <RiErrorWarningFill size={RiSM} className='absolute my-auto inset-y-0 end-2.5 text-red-500' />
+              )}
+            </div>
+
+            <div className='pt-2 sm:pt-0 grid sm:block sm:flex-[0_0_auto] relative'>
               <button
+                className='py-3 px-4 inline-flex justify-center items-center gap-x-2 text-sm font-semibold rounded-lg border border-transparent bg-primary-600 text-white hover:bg-primary-700 disabled:opacity-50 disabled:pointer-events-none dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600'
                 type='submit'
                 disabled={isLocalRegisterPending || isLocalRegisterSuccess}
-                className='w-full py-3 px-4 inline-flex justify-center items-center gap-x-2 text-sm font-semibold rounded-lg border border-transparent bg-gray-600 text-white hover:bg-gray-700 disabled:opacity-50 disabled:pointer-events-none dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600'
               >
-                회원가입
+                등록하기
               </button>
               {isLocalRegisterPending && <LoadingSpinner backdrop={true} />}
             </div>
           </div>
-        </div>
+
+          <div className='mt-5 flex justify-between'>
+            <label htmlFor='term' className='text-sm dark:text-white flex gap-1'>
+              <input
+                {...register("term", { required: true })}
+                disabled={isLocalRegisterSuccess}
+                id='term'
+                name='term'
+                type='checkbox'
+                className='shrink-0 mt-0.5 border-gray-200 rounded text-primary-600 pointer-events-none focus:ring-primary-500 dark:bg-slate-900 dark:border-gray-700 dark:checked:bg-gray-500 dark:checked:border-primary-500 dark:focus:ring-offset-gray-800'
+              />
+              <div className='ms-1 flex'>
+                <a
+                  className='text-primary-500 decoration-2 hover:underline font-medium dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600'
+                  href='#'
+                >
+                  개인정보수집 및 활용동의서
+                </a>
+                에 동의합니다
+                {errors.term && <RiErrorWarningFill size={RiSM} className='ml-1.5 my-auto text-red-500' />}
+              </div>
+            </label>
+
+            <p className='text-sm text-gray-600 dark:text-gray-200'>
+              이미 계정이 있으신가요?
+              <Link
+                href={"/login"}
+                className='ml-1 text-primary-500 decoration-2 hover:underline font-medium dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600'
+              >
+                로그인
+              </Link>
+            </p>
+          </div>
+        </form>
       </div>
-    </form>
+    </div>
   );
 };
 

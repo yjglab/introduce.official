@@ -75,7 +75,7 @@ const Modal: FC<PropsWithChildren<Props>> = ({
                     <span
                       className={classNames(
                         type === "general" &&
-                          "border-general-50 bg-general-100 text-general-500 dark:bg-general-700 dark:border-general-600  dark:text-general-100",
+                          "border-primary-50 bg-primary-100 text-primary-500 dark:bg-primary-700 dark:border-primary-600  dark:text-primary-100",
                         type === "success" &&
                           "border-success-50 bg-success-100 text-success-500 dark:bg-success-700 dark:border-success-600  dark:text-success-100",
                         type === "error" &&
