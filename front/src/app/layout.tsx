@@ -2,7 +2,6 @@ import "./globals.css";
 import type { Metadata, Viewport } from "next";
 import { CLIENT_URL, SERVICE_NAME } from "@/utils/constants";
 import { Noto_Sans } from "next/font/google";
-import { ToastContainer } from "react-toastify";
 import classNames from "classnames";
 import QueryProvider from "./(providers)/QueryProvider";
 import PrelineScript from "./(providers)/PrelineScript";
@@ -61,12 +60,6 @@ export default async function RootLayout({ children }: { children: React.ReactNo
   const dehydratedState = dehydrate(queryClient);
   return (
     <html lang='en' suppressHydrationWarning={true} className='!overflow-clip'>
-      <head>
-        <link
-          rel='stylesheet'
-          href='https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.2/font/bootstrap-icons.css'
-        />
-      </head>
       <body className={(classNames(font.className), "mt-16 dark:bg-gray-800 min-h-screen w-full")}>
         <QueryProvider>
           <HydrationBoundary state={dehydratedState}>
@@ -79,7 +72,6 @@ export default async function RootLayout({ children }: { children: React.ReactNo
               </NextThemeProvider>
             </ReduxProvider>
           </HydrationBoundary>
-          {/* <ToastContainer /> */}
         </QueryProvider>
       </body>
       <PrelineScript />

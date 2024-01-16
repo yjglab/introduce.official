@@ -11,7 +11,6 @@ import { SET_USER } from "@/store/slices/user.slice";
 import { useRouter } from "next/navigation";
 import Tooltip from "@app/_common/Parts/Tooltip";
 import LoadingSpinner from "@app/_common/Parts/LoadingSpinner";
-import SocialAuth from "@app/(route)/entry/_components/MainSection/SocialAuth";
 
 interface Props {}
 interface LoginValues {
@@ -80,7 +79,6 @@ const LoginForm: FC<Props> = () => {
           </div>
 
           <div className='mt-5'>
-            <SocialAuth />
             <div className='py-3 flex items-center text-xs text-gray-400 uppercase before:flex-[1_1_0%] before:border-t before:border-gray-200 before:me-6 after:flex-[1_1_0%] after:border-t after:border-gray-200 after:ms-6 dark:text-gray-500 dark:before:border-gray-700 dark:after:border-gray-700'>
               Or
             </div>

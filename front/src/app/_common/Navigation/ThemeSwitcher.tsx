@@ -3,6 +3,8 @@
 import { useState, useEffect } from "react";
 import { useTheme } from "next-themes";
 import classNames from "classnames";
+import { RiContrast2Line } from "@remixicon/react";
+import { RiSM } from "@constants";
 
 const ThemeSwitcher = () => {
   const [mounted, setMounted] = useState(false);
@@ -23,14 +25,15 @@ const ThemeSwitcher = () => {
     if (!mounted) return null;
 
     return (
-      <i
-        className={classNames(
-          currentTheme === "dark" ? "text-gray-300 -rotate-180" : "text-gray-900 rotate-0",
-          "duration-500 text-[16px] bi bi-circle-half",
-        )}
-        role='button'
-        onClick={() => changeTheme()}
-      />
+      <button onClick={() => changeTheme()} type='button'>
+        <RiContrast2Line
+          size={RiSM}
+          className={classNames(
+            currentTheme === "dark" ? "text-gray-300 -rotate-180" : "text-gray-900 rotate-0",
+            "duration-500",
+          )}
+        />
+      </button>
     );
   };
 

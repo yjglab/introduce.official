@@ -10,7 +10,8 @@ import { useRouter } from "next/navigation";
 import Modal from "@app/_common/Modal";
 import LoadingSpinner from "@app/_common/Parts/LoadingSpinner";
 import Tooltip from "@app/_common/Parts/Tooltip";
-import SocialAuth from "@app/(route)/entry/_components/MainSection/SocialAuth";
+import { RiCheckLine, RiCloseLine } from "@remixicon/react";
+import { RiSM } from "@constants";
 
 interface Props {}
 interface RegisterValues {
@@ -90,11 +91,6 @@ const RegisterForm: FC<Props> = () => {
           </div>
 
           <div className='mt-5'>
-            <SocialAuth />
-            <div className='py-3 flex items-center text-xs text-gray-400 uppercase before:flex-[1_1_0%] before:border-t before:border-gray-200 before:me-6 after:flex-[1_1_0%] after:border-t after:border-gray-200 after:ms-6 dark:text-gray-500 dark:before:border-gray-700 dark:after:border-gray-700'>
-              Or
-            </div>
-
             <div className='grid grid-cols-2 gap-4'>
               {/* 이메일 */}
               <div className='hs-tooltip [--placement:bottom] '>
@@ -231,14 +227,14 @@ const RegisterForm: FC<Props> = () => {
 
                 <div
                   id='password-popover'
-                  className='hidden absolute z-10 w-full bg-blue-50 rounded-lg p-4 dark:bg-blue-950'
+                  className='hidden absolute z-10 w-full bg-gray-50 rounded-lg p-4 dark:bg-gray-950'
                 >
                   <div
                     id='hs-strong-password-in-popover'
                     data-hs-strong-password='{
               "target": "#password",
               "hints": "#password-popover",
-              "stripClasses": "hs-strong-password:opacity-100 hs-strong-password-accepted:bg-teal-500 h-2 flex-auto rounded-full bg-blue-500 opacity-50 mx-1",
+              "stripClasses": "hs-strong-password:opacity-100 hs-strong-password-accepted:bg-teal-500 h-2 flex-auto rounded-full bg-gray-500 opacity-50 mx-1",
               "mode": "popover",
               "minLength": "3"
             }'
@@ -255,10 +251,10 @@ const RegisterForm: FC<Props> = () => {
                       className='hs-strong-password-active:text-teal-500 flex items-center gap-x-2'
                     >
                       <span className='hidden' data-check>
-                        <i className='bi bi-check-lg text-teal-500'></i>
+                        <RiCheckLine size={RiSM} />
                       </span>
                       <span data-uncheck>
-                        <i className='bi bi-check-lg'></i>
+                        <RiCloseLine size={RiSM} />
                       </span>
                       최소 3~14자가 필요합니다.
                     </li>
@@ -267,10 +263,10 @@ const RegisterForm: FC<Props> = () => {
                       className='hs-strong-password-active:text-teal-500 flex items-center gap-x-2'
                     >
                       <span className='hidden' data-check>
-                        <i className='bi bi-check-lg text-teal-500'></i>
+                        <RiCheckLine size={RiSM} />
                       </span>
                       <span data-uncheck>
-                        <i className='bi bi-check-lg'></i>
+                        <RiCloseLine size={RiSM} />
                       </span>
                       영문 소문자를 포함해야 합니다.
                     </li>
@@ -279,10 +275,10 @@ const RegisterForm: FC<Props> = () => {
                       className='hs-strong-password-active:text-teal-500 flex items-center gap-x-2'
                     >
                       <span className='hidden' data-check>
-                        <i className='bi bi-check-lg text-teal-500'></i>
+                        <RiCheckLine size={RiSM} />
                       </span>
                       <span data-uncheck>
-                        <i className='bi bi-check-lg'></i>
+                        <RiCloseLine size={RiSM} />
                       </span>
                       영문 대문자를 포함해야 합니다.
                     </li>
@@ -291,10 +287,10 @@ const RegisterForm: FC<Props> = () => {
                       className='hs-strong-password-active:text-teal-500 flex items-center gap-x-2'
                     >
                       <span className='hidden' data-check>
-                        <i className='bi bi-check-lg text-teal-500'></i>
+                        <RiCheckLine size={RiSM} />
                       </span>
                       <span data-uncheck>
-                        <i className='bi bi-check-lg'></i>
+                        <RiCloseLine size={RiSM} />
                       </span>
                       숫자를 포함해야 합니다.
                     </li>
@@ -303,10 +299,10 @@ const RegisterForm: FC<Props> = () => {
                       className='hs-strong-password-active:text-teal-500 flex items-center gap-x-2'
                     >
                       <span className='hidden' data-check>
-                        <i className='bi bi-check-lg text-teal-500'></i>
+                        <RiCheckLine size={RiSM} />
                       </span>
                       <span data-uncheck>
-                        <i className='bi bi-check-lg'></i>
+                        <RiCloseLine size={RiSM} />
                       </span>
                       특수문자를 포함해야 합니다.
                     </li>
@@ -414,7 +410,7 @@ const RegisterForm: FC<Props> = () => {
                   id='term'
                   name='term'
                   type='checkbox'
-                  className='shrink-0 mt-0.5 border-gray-200 rounded text-blue-600 pointer-events-none focus:ring-blue-500 dark:bg-slate-900 dark:border-gray-700 dark:checked:bg-blue-500 dark:checked:border-blue-500 dark:focus:ring-offset-gray-800'
+                  className='shrink-0 mt-0.5 border-gray-200 rounded text-blue-600 pointer-events-none focus:ring-blue-500 dark:bg-slate-900 dark:border-gray-700 dark:checked:bg-gray-500 dark:checked:border-blue-500 dark:focus:ring-offset-gray-800'
                 />
                 <div className='ms-1 flex'>
                   <a
@@ -438,7 +434,7 @@ const RegisterForm: FC<Props> = () => {
               <button
                 type='submit'
                 disabled={isLocalRegisterPending || isLocalRegisterSuccess}
-                className='w-full py-3 px-4 inline-flex justify-center items-center gap-x-2 text-sm font-semibold rounded-lg border border-transparent bg-blue-600 text-white hover:bg-blue-700 disabled:opacity-50 disabled:pointer-events-none dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600'
+                className='w-full py-3 px-4 inline-flex justify-center items-center gap-x-2 text-sm font-semibold rounded-lg border border-transparent bg-gray-600 text-white hover:bg-gray-700 disabled:opacity-50 disabled:pointer-events-none dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600'
               >
                 회원가입
               </button>

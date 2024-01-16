@@ -26,7 +26,7 @@ const MainSection = () => {
           <h1 className='block text-5xl font-bold text-gray-800 sm:text-7xl dark:text-white'>안녕하세요</h1>
           <h1 className='block text-2xl font-bold text-white'></h1>
 
-          <p className='mt-4 text-gray-600 dark:text-gray-400'>간단히 인증하고 많은 기능을 이용해보세요</p>
+          <p className='mt-4 text-gray-600 dark:text-gray-400'>간편하게 인증하고 많은 기능을 이용해보세요</p>
           <div className='mt-5 flex flex-col justify-center items-center gap-2 sm:flex-row sm:gap-3'>
             <div className='py-3 sm:py-6 mt-10'>
               <div className='grid gap-2 sm:grid-cols-2 md:grid-cols-2'>
