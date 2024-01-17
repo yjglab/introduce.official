@@ -111,7 +111,10 @@ const RegisterForm: FC<Props> = () => {
 
         <form onSubmit={handleSubmit(onSubmit)}>
           <div className=' flex flex-col items-center mb-10'>
-            <UserAvatar displayName={watch("displayName")} size='xl' />
+            <div className='hs-tooltip hs-tooltip-toggle [--placement:top] '>
+              <UserAvatar displayName={watch("displayName")} size='xl' />
+              <Tooltip content='아바타는 프로필에서 커스텀 가능합니다' />
+            </div>
             <div className='hs-tooltip [--placement:bottom] relative mt-4'>
               <label htmlFor='displayName' className='block text-sm font-medium'>
                 <span className='sr-only'>User Display Name</span>
