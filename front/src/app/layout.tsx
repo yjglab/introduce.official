@@ -60,7 +60,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
 
   const dehydratedState = dehydrate(queryClient);
   return (
-    <html lang='en' suppressHydrationWarning={true} className='!overflow-clip'>
+    <html lang='en' suppressHydrationWarning={true}>
       <body className={(classNames(font.className), "mt-16 dark:bg-gray-800 min-h-screen w-full")}>
         <QueryProvider>
           <HydrationBoundary state={dehydratedState}>

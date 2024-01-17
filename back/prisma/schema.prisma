@@ -30,6 +30,8 @@ model UserProject {
   id          Int            @id @default(autoincrement())
   category    String
   title       String
+  subTitle    String
+  thumbnail   String
   description String
   source      ProjectSource?
   grades      Float          @default(0)

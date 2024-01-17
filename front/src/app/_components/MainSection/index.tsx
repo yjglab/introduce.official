@@ -1,54 +1,57 @@
 "use client";
 
-import Project from "./Project";
+import dataGenerator from "@/utils/dataGenerator";
+import ProjectThumb from "./ProjectThumb";
 
-const randomProjects = [
-  {
+const customProject = {
+  id: 1,
+  category: "web",
+  title: "Introduce",
+  subtitle: "Unleash your masterpiece for the world to see!",
+  thumbnail:
+    "https://images.unsplash.com/photo-1619839769929-49455e6b780b?q=80&w=2564&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+  description: "",
+  source: {
     id: 1,
-    category: "web",
-    title: "Introduce",
-    subtitle: "Unleash your masterpiece for the world to see!",
-    description: "",
-    source: {
-      id: 1,
-      name: "github",
-      link: "",
-      owner: "githubnickname",
-    },
-    grades: 4.7,
-    skills: ["react", "nestjs", "spring"],
-    likers: [{ id: 8, displayName: "jene" }],
-    markers: [{ id: 8, displayName: "jene" }],
-    sections: [
-      {
-        id: 1,
-        name: "Section 1",
-        description: "Section Desc 1",
-        images: [""],
-        keywords: [
-          {
-            id: 1,
-            name: "keyword 1",
-            image: "",
-          },
-        ],
-      },
-    ],
-    createdAt: "",
-    updatedAt: "",
-    user: {
-      id: 1,
-      displayName: "Jaekyeong Yuk",
-      // ...
-    },
+    name: "github",
+    link: "",
+    owner: "githubnickname",
   },
-];
+  grades: 4.7,
+  skills: ["react", "nestjs", "spring"],
+  likers: [{ id: 8, displayName: "jene" }],
+  markers: [{ id: 8, displayName: "jene" }],
+  sections: [
+    {
+      id: 1,
+      name: "Section 1",
+      description: "Section Desc 1",
+      images: [""],
+      keywords: [
+        {
+          id: 1,
+          name: "keyword 1",
+          image: "",
+        },
+      ],
+    },
+  ],
+  createdAt: "2024-01-17T14:51:32.983Z",
+  updatedAt: "",
+  user: {
+    id: 1,
+    displayName: "Jaekyeong Yuk",
+    // ...
+  },
+};
+
 const MainSection = () => {
   return (
     <div className='px-4 py-10 lg:py-14 mx-auto'>
       <div className='grid sm:grid-cols-2 lg:grid-cols-3 gap-6'>
-        {randomProjects.map((project) => (
-          <Project project={project} />
+        <ProjectThumb project={customProject} />
+        {dataGenerator(8).map((project) => (
+          <ProjectThumb key={project.id} project={project} />
         ))}
       </div>
     </div>
