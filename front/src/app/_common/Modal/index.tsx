@@ -3,6 +3,8 @@
 import React, { FC, Fragment, MouseEventHandler, PropsWithChildren, useState } from "react";
 import { Dialog, Transition } from "@headlessui/react";
 import classNames from "classnames";
+import { RiCheckFill, RiCheckLine, RiCloseFill, RiEmotionSadFill, RiInfoI } from "@remixicon/react";
+import { RiSize } from "@constants";
 
 interface Props {
   type?: "general" | "success" | "error";
@@ -55,7 +57,7 @@ const Modal: FC<PropsWithChildren<Props>> = ({
             >
               <Dialog.Panel
                 style={{ maxHeight: "90vh" }}
-                className='mt-0 opacity-0 ease-out transition-all sm:max-w-md w-full m-3 sm:mx-auto'
+                className='mt-0 opacity-0 ease-out transition-all sm:max-w-[30rem] w-full m-3 sm:mx-auto'
               >
                 <div className='relative flex flex-col bg-white shadow-lg rounded-xl dark:bg-gray-800'>
                   {externalClick && (
@@ -66,7 +68,7 @@ const Modal: FC<PropsWithChildren<Props>> = ({
                         className='flex justify-center items-center w-7 h-7 text-sm font-semibold rounded-lg border border-transparent text-gray-800 hover:bg-gray-100 disabled:opacity-50 disabled:pointer-events-none dark:text-white dark:border-transparent dark:hover:bg-gray-700 dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600'
                       >
                         <span className='sr-only'>Close</span>
-                        <i className='bi bi-x text-[20px]'></i>
+                        <RiCloseFill size={RiSize.sm} />
                       </button>
                     </div>
                   )}
@@ -84,9 +86,9 @@ const Modal: FC<PropsWithChildren<Props>> = ({
                         "mb-4 inline-flex justify-center items-center w-[46px] h-[46px] rounded-full border-4 ",
                       )}
                     >
-                      {type === "general" && <i className='bi bi-info-lg text-[25px]'></i>}
-                      {type === "success" && <i className='bi bi-exclamation-lg text-[25px]'></i>}
-                      {type === "error" && <i className='bi bi-exclamation-lg text-[25px]'></i>}
+                      {type === "general" && <RiInfoI size={RiSize.md} />}
+                      {type === "success" && <RiCheckFill size={RiSize.md} />}
+                      {type === "error" && <RiEmotionSadFill size={RiSize.md} />}
                     </span>
 
                     <h3 className='mb-2 text-xl font-bold text-gray-800 dark:text-gray-200'>{title}</h3>

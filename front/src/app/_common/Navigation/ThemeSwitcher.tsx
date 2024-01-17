@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import { useTheme } from "next-themes";
 import classNames from "classnames";
 import { RiContrast2Line } from "@remixicon/react";
-import { RiSM } from "@constants";
+import { RiSize } from "@constants";
 
 const ThemeSwitcher = () => {
   const [mounted, setMounted] = useState(false);
@@ -27,7 +27,7 @@ const ThemeSwitcher = () => {
     return (
       <button onClick={() => changeTheme()} type='button'>
         <RiContrast2Line
-          size={RiSM}
+          size={RiSize.sm}
           className={classNames(
             currentTheme === "dark" ? "text-gray-300 -rotate-180" : "text-gray-900 rotate-0",
             "duration-500",

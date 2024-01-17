@@ -9,6 +9,8 @@ import { loadMeAPI, logoutAPI } from "@api/auth";
 import { LOGOUT } from "@/store/slices/user.slice";
 import Modal from "../Modal";
 import ThemeSwitcher from "./ThemeSwitcher";
+import { RiUser3Line, RiUserShared2Line } from "@remixicon/react";
+import { RiSize } from "@constants";
 
 const Navigation = memo(() => {
   const dispatch = useDispatch();
@@ -80,7 +82,7 @@ const Navigation = memo(() => {
                       onClick={handleLogout}
                       className='py-2.5 px-4 inline-flex items-center gap-x-2 text-sm font-semibold rounded-lg border border-transparent bg-primary-600 text-white hover:bg-primary-700 disabled:opacity-50 disabled:pointer-events-none dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600'
                     >
-                      <i className='text-[16px] bi bi-door-closed-fill'></i>
+                      <RiUserShared2Line size={RiSize.sm} />
                       로그아웃
                     </button>
                   ) : (
@@ -88,7 +90,7 @@ const Navigation = memo(() => {
                       className='py-2.5 px-4 inline-flex items-center gap-x-2 text-sm font-semibold rounded-lg border border-transparent bg-primary-600 text-white hover:bg-primary-700 disabled:opacity-50 disabled:pointer-events-none dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600'
                       href='/entry'
                     >
-                      <i className='text-[16px] bi bi-person-fill'></i>
+                      <RiUser3Line size={RiSize.sm} />
                       로그인 / 회원가입
                     </Link>
                   )}

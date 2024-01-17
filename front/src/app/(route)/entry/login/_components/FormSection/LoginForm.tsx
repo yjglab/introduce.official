@@ -11,6 +11,9 @@ import { SET_USER } from "@/store/slices/user.slice";
 import { useRouter } from "next/navigation";
 import Tooltip from "@app/_common/Parts/Tooltip";
 import LoadingSpinner from "@app/_common/Parts/LoadingSpinner";
+import { RiErrorWarningFill } from "@remixicon/react";
+import { RiSize } from "@constants";
+import EntryHeader from "@app/(route)/entry/_components/EntryHeader";
 
 interface Props {}
 interface LoginValues {
@@ -23,6 +26,7 @@ const LoginForm: FC<Props> = () => {
   const dispatch = useDispatch();
   const queryClient = useQueryClient();
   const router = useRouter();
+
   const {
     mutate: localLoginMutate,
     isPending: isLocalLoginPending,
@@ -47,8 +51,6 @@ const LoginForm: FC<Props> = () => {
   const {
     register,
     handleSubmit,
-    reset,
-    getValues,
     formState: { errors },
   } = useForm<LoginValues>();
 
@@ -62,128 +64,80 @@ const LoginForm: FC<Props> = () => {
   };
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
-      <div className='lg:max-w-lg lg:mx-auto lg:me-0 ms-auto'>
-        <div className='p-4 sm:p-7 flex flex-col bg-white rounded-2xl shadow-lg dark:bg-slate-900'>
-          <div className='text-center'>
-            <h1 className='block text-2xl font-bold text-gray-800 dark:text-white'>로그인</h1>
-            <p className='mt-2 text-sm text-gray-600 dark:text-gray-400'>
-              계정이 없으신가요?
-              <button
-                type='button'
-                className='ml-1 text-primary-600 decoration-2 hover:underline font-medium dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600'
-              >
-                회원가입
-              </button>
-            </p>
-          </div>
+    <>
+      <div className='max-w-[85rem] mx-auto px-4 sm:px-6 lg:px-8 py-20'>
+        <div className='relative mx-auto max-w-4xl grid'>
+          <EntryHeader role='login' />
+          <form onSubmit={handleSubmit(onSubmit)}>
+            <div className='mx-auto max-w-3xl sm:flex sm:space-x-3 p-3 bg-white border rounded-lg shadow-lg shadow-gray-100 dark:bg-slate-900 dark:border-gray-700 dark:shadow-gray-900/[.2]'>
+              <div className='hs-tooltip [--placement:bottom] relative pb-2 sm:pb-0 sm:flex-[1_0_0%]'>
+                <label htmlFor='email' className='block text-sm font-medium dark:text-white'>
+                  <span className='sr-only'>User Email</span>
+                </label>
 
-          <div className='mt-5'>
-            <div className='py-3 flex items-center text-xs text-gray-400 uppercase before:flex-[1_1_0%] before:border-t before:border-gray-200 before:me-6 after:flex-[1_1_0%] after:border-t after:border-gray-200 after:ms-6 dark:text-gray-500 dark:before:border-gray-700 dark:after:border-gray-700'>
-              Or
-            </div>
-
-            {/* 이메일 */}
-            <div className='grid grid-cols-2 gap-4'>
-              <div className='hs-tooltip [--placement:bottom] relative col-span-full'>
-                <div className='hs-tooltip-toggle relative'>
-                  <input
-                    {...register("email", {
-                      required: "이메일을 입력해주세요.",
-                      pattern: {
-                        value: /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/i,
-                        message: "이메일 형식이 아닙니다.",
-                      },
-                    })}
-                    defaultValue={DEVELOPMENT ? "yjgdesign@gmail.com" : ""}
-                    disabled={isLocalLoginSuccess}
-                    id='email'
-                    className='peer border p-4 block w-full border-gray-200 rounded-lg text-sm placeholder:text-transparent focus:border-primary-500 focus:ring-primary-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-slate-900 dark:border-gray-700 dark:text-gray-400 dark:focus:ring-gray-600
-          focus:pt-6
-          focus:pb-2
-          [&:not(:placeholder-shown)]:pt-6
-          [&:not(:placeholder-shown)]:pb-2
-          autofill:pt-6
-          autofill:pb-2'
-                    placeholder=''
+                <input
+                  type='text'
+                  id='email'
+                  className='hs-tooltip-toggle py-3 px-4 block w-full border-transparent rounded-lg text-sm focus:border-primary-500 focus:ring-primary-500 dark:bg-slate-900 dark:border-transparent dark:text-gray-400 dark:focus:ring-gray-600'
+                  placeholder='이메일'
+                  disabled={isLocalLoginSuccess}
+                  defaultValue={DEVELOPMENT ? "yjgdesign@gmail.com" : ""}
+                  {...register("email", {
+                    required: "이메일을 입력해주세요.",
+                    pattern: {
+                      value: /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/i,
+                      message: "이메일 형식이 아닙니다.",
+                    },
+                  })}
+                />
+                <Tooltip content={errors.email?.message || apiError?.email} />
+                {(errors.email || apiError?.email) && (
+                  <RiErrorWarningFill
+                    size={RiSize.sm}
+                    className='absolute my-auto inset-y-0 end-2.5 text-red-500'
                   />
-                  <label
-                    htmlhtmlFor='email'
-                    className='absolute top-0 start-0 p-4 h-full text-sm truncate pointer-events-none transition ease-in-out duration-100 border border-transparent dark:text-white peer-disabled:opacity-50 peer-disabled:pointer-events-none
-            peer-focus:text-xs
-            peer-focus:-translate-y-1.5
-            peer-focus:text-gray-500
-            peer-[:not(:placeholder-shown)]:text-xs
-            peer-[:not(:placeholder-shown)]:-translate-y-1.5
-            peer-[:not(:placeholder-shown)]:text-gray-500'
-                  >
-                    이메일
-                  </label>
-                  <Tooltip content={errors.email?.message || apiError?.email} />
-                  {(errors.email || apiError?.email) && (
-                    <div className='absolute inset-y-0 end-0 flex items-center pointer-events-none pe-3'>
-                      <i className='bi bi-exclamation-circle text-red-500 flex-shrink-0'></i>
-                    </div>
-                  )}
-                </div>
+                )}
               </div>
 
-              <div className='hs-tooltip [--placement:bottom] relative col-span-full'>
-                <div className='hs-tooltip-toggle relative'>
-                  <input
-                    {...register("password", {
-                      required: "비밀번호를 입력해주세요.",
-                    })}
-                    disabled={isLocalLoginSuccess}
-                    defaultValue={DEVELOPMENT ? "Ab2@" : ""}
-                    type='password'
-                    id='password'
-                    className='peer border p-4 block w-full border-gray-200 rounded-lg text-sm placeholder:text-transparent focus:border-primary-500 focus:ring-primary-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-slate-900 dark:border-gray-700 dark:text-gray-400 dark:focus:ring-gray-600
-          focus:pt-6
-          focus:pb-2
-          [&:not(:placeholder-shown)]:pt-6
-          [&:not(:placeholder-shown)]:pb-2
-          autofill:pt-6
-          autofill:pb-2'
-                    placeholder=''
+              <div className='hs-tooltip [--placement:bottom] relative pt-2 sm:pt-0 sm:ps-3 border-t border-gray-200 sm:border-t-0 sm:border-s sm:flex-[1_0_0%] dark:border-gray-700'>
+                <label htmlFor='password' className='block text-sm font-medium dark:text-white'>
+                  <span className='sr-only'>User Password</span>
+                </label>
+                <input
+                  type='password'
+                  id='password'
+                  className='hs-tooltip-toggle py-3 px-4 block w-full border-transparent rounded-lg text-sm focus:border-primary-500 focus:ring-primary-500 dark:bg-slate-900 dark:border-transparent dark:text-gray-400 dark:focus:ring-gray-600'
+                  placeholder='비밀번호'
+                  disabled={isLocalLoginSuccess}
+                  defaultValue={DEVELOPMENT ? "Ab2@" : ""}
+                  {...register("password", {
+                    required: "비밀번호를 입력해주세요.",
+                  })}
+                />
+                <Tooltip content={errors.password?.message} />
+                {errors.password && (
+                  <RiErrorWarningFill
+                    size={RiSize.sm}
+                    className='absolute my-auto inset-y-0 end-2.5 text-red-500'
                   />
-                  <label
-                    htmlhtmlFor='password'
-                    className='absolute top-0 start-0 p-4 h-full text-sm truncate pointer-events-none transition ease-in-out duration-100 border border-transparent dark:text-white peer-disabled:opacity-50 peer-disabled:pointer-events-none
-            peer-focus:text-xs
-            peer-focus:-translate-y-1.5
-            peer-focus:text-gray-500
-            peer-[:not(:placeholder-shown)]:text-xs
-            peer-[:not(:placeholder-shown)]:-translate-y-1.5
-            peer-[:not(:placeholder-shown)]:text-gray-500'
-                  >
-                    비밀번호
-                  </label>
-                  <Tooltip content={errors.password?.message || apiError?.password} />
-                  {(errors.password || apiError?.password) && (
-                    <div className='absolute inset-y-0 end-0 flex items-center pointer-events-none pe-3'>
-                      <i className='bi bi-exclamation-circle text-red-500 flex-shrink-0'></i>
-                    </div>
-                  )}
-                </div>
+                )}
+              </div>
+
+              <div className='pt-2 sm:pt-0 grid sm:block sm:flex-[0_0_auto] relative'>
+                <button
+                  className='py-3 px-4 inline-flex justify-center items-center gap-x-2 text-sm font-semibold rounded-lg border border-transparent bg-primary-600 text-white hover:bg-primary-700 disabled:opacity-50 disabled:pointer-events-none dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600'
+                  type='submit'
+                  disabled={isLocalLoginPending || isLocalLoginSuccess}
+                >
+                  로그인
+                </button>
+                {isLocalLoginPending && <LoadingSpinner backdrop={true} />}
               </div>
             </div>
-
-            {/* 제출 */}
-            <div className='mt-5 relative'>
-              <button
-                type='submit'
-                disabled={isLocalLoginPending || isLocalLoginSuccess}
-                className='w-full py-3 px-4 inline-flex justify-center items-center gap-x-2 text-sm font-semibold rounded-lg border border-transparent bg-primary-600 text-white hover:bg-primary-700 disabled:opacity-50 disabled:pointer-events-none dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600'
-              >
-                로그인
-              </button>
-              {isLocalLoginPending && <LoadingSpinner backdrop={true} />}
-            </div>
-          </div>
+          </form>
         </div>
       </div>
-    </form>
+    </>
   );
 };
 

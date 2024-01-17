@@ -1,7 +1,7 @@
-import { RiSM } from "@constants";
 import Link from "next/link";
 import { FC } from "react";
 import { RiGoogleFill, RiKakaoTalkFill, RiMailAddLine, RiMailCheckLine } from "@remixicon/react";
+import { RiSize } from "@constants";
 
 interface Props {
   name: string;
@@ -18,10 +18,10 @@ const EntryLinkButton: FC<Props> = ({ name, href, role }) => {
       <div className='flex items-center'>
         <div className='flex justify-center flex-shrink-0 rounded-s-xl'>
           <div className='mr-2 text-gray-800 dark:text-gray-200'>
-            {role === "login" && <RiMailCheckLine size={RiSM} />}
-            {role === "register" && <RiMailAddLine size={RiSM} />}
-            {role === "google" && <RiGoogleFill size={RiSM} />}
-            {role === "kakao" && <RiKakaoTalkFill size={RiSM} />}
+            {role === "login" && <RiMailCheckLine size={RiSize.sm} />}
+            {role === "register" && <RiMailAddLine size={RiSize.sm} />}
+            {role === "google" && <RiGoogleFill size={RiSize.sm} />}
+            {role === "kakao" && <RiKakaoTalkFill size={RiSize.sm} />}
           </div>
         </div>
 
