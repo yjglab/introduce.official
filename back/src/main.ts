@@ -19,7 +19,7 @@ import helmet from 'helmet';
 import * as express from 'express';
 import * as cookieParser from 'cookie-parser';
 import * as compression from 'compression';
-import { RedisIoAdapter } from '@modules/chat/chat.adapter';
+import { RedisIoAdapter } from '@modules/models/chat/chat.adapter';
 
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(

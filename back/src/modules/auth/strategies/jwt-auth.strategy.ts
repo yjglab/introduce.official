@@ -3,7 +3,7 @@ import { PassportStrategy } from '@nestjs/passport';
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { Request } from 'express';
-import { UserService } from '@modules/user/user.service';
+import { UserService } from '@modules/models/user/user.service';
 
 export type JwtAccessPayload = {
   id: string | number;

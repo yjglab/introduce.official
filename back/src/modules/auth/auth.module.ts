@@ -3,7 +3,6 @@ import { JwtModule } from '@nestjs/jwt';
 import { AuthController } from './auth.controller';
 import { AuthService } from './auth.service';
 import { ConfigModule, ConfigService } from '@nestjs/config';
-import { UserModule } from '@modules/user/user.module';
 import { BullModule, BullModuleOptions } from '@nestjs/bull';
 import {
   FacebookOauthStrategy,
@@ -12,6 +11,7 @@ import {
 } from './strategies';
 import { PrismaModule } from '@modules/prisma/prisma.module';
 import { PrismaService } from '@modules/prisma/prisma.service';
+import { UserModule } from '@modules/models/user/user.module';
 
 @Module({
   imports: [

@@ -6,8 +6,9 @@ export enum AccountStatus {
 
 export enum Role {
   USER = "user",
-  PREMIUM = "premium",
-  MODERATOR = "moderator",
+  PRO = "pro",
+  EXPERT = "expert",
+  MANAGER = "manager",
   ADMIN = "admin",
 }
 
@@ -19,14 +20,15 @@ export enum Providers {
 
 export interface User {
   id: string;
-  createdAt: string;
-  updatedAt: string;
-  provider: Providers;
   email: string;
   displayName: string;
   avatar: string;
   role: Role;
+  roleExpiry: Date;
   position: string;
-  projectPosts: object;
+  projects: object;
   accountStatus: AccountStatus;
+  provider: Providers;
+  createdAt: string;
+  updatedAt: string;
 }

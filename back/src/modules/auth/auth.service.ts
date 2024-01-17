@@ -9,7 +9,6 @@ import {
 import { User } from '@prisma/client';
 
 import { CreateAccountDto, LoginDto } from './auth.dto';
-import { UserService } from '@modules/user/user.service';
 import { JwtService } from '@nestjs/jwt';
 import { ConfigService } from '@nestjs/config';
 import { RedisService } from '@liaoliaots/nestjs-redis';
@@ -20,6 +19,7 @@ import { SocialProvider } from '@common/exceptions';
 import { Request } from 'express';
 import { nanoid } from 'nanoid';
 import { AuthHelpers } from '@shared/helpers/auth.helpers';
+import { UserService } from '@modules/models/user/user.service';
 
 @Injectable()
 export class AuthService {
@@ -36,7 +36,7 @@ export class AuthService {
   public async register(registrationData: CreateAccountDto) {
     try {
       const user = await this.userService.create({
-        avatar: this.generateGravatarUrl(registrationData.email),
+        // avatar: await this.generateGravatarUrl(registrationData.email),
         provider: Providers.Local,
         ...registrationData,
       });
@@ -154,8 +154,8 @@ export class AuthService {
     }
   }
 
-  private generateGravatarUrl(email: string) {
-    const hashedEmail = AuthHelpers.hash(email);
+  private async generateGravatarUrl(email: string) {
+    const hashedEmail = await AuthHelpers.hash(email);
     return `https://www.gravatar.com/avatar/${hashedEmail}`;
   }
 

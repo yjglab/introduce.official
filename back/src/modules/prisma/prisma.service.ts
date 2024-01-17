@@ -1,4 +1,4 @@
-import { UserListener } from '@modules/user/user.listener';
+import { UserListener } from '@modules/models/user/user.listener';
 import { Injectable, OnModuleDestroy, OnModuleInit } from '@nestjs/common';
 import { PrismaClient } from '@prisma/client';
 

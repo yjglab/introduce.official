@@ -44,7 +44,7 @@ Author/Developer: Jaekyeong Yuk
    5-1. 업로드 승인 시 페이지에 기재
    5-2. 업로드 반려 시 대기 상태 유지. 대기 상태의 포스트 정보 수정 가능. 재요청 시도 가능. 재요청 후 제출 버튼 비활성.
 
-> 프로젝트 포스트 기능
+> 프로젝트 기능
 
 - 찜 기능
 - 추천 기능
@@ -66,7 +66,7 @@ Author/Developer: Jaekyeong Yuk
 
 > 사용자 프로필
 
-- 아바타 gravatar 기본사용 및 별도 수정
+- 아바타 랜덤시드 기본사용 및 커스텀 수정
 - 표시 이름
 - 포지션 (1회 변경 제한)
 - 비밀번호 (bcrypt, 단방향 암호화-DB)
@@ -106,7 +106,8 @@ model User {
   displayName    String        @unique
   password       String
   position       String
-  role           UserRole?
+  role           UserRole      @default(user)
+  expiry         DateTime?
   accountStatus  AccountStatus @default(pending)
   avatar         String?       @default("")
   projects       UserProject[]
@@ -160,18 +161,10 @@ model ProjectSource {
   projectId Int         @unique
 }
 
-model UserRole {
-  id     Int       @id @default(autoincrement())
-  name   Role      @default(user)
-  expiry DateTime?
-  user   User      @relation(fields: [userId], references: [id])
-  userId Int       @unique
-}
-
-enum Role {
+enum UserRole {
   user
   pro
-  expoert
+  expert
   manager
   admin
 }
@@ -188,6 +181,7 @@ enum AccountStatus {
   verified
   banned
 }
+
 
 ```
 

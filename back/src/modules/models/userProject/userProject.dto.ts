@@ -1,6 +1,6 @@
 import { IsArray, IsEmail, IsObject, IsString } from 'class-validator';
 
-export class RegisterProjectPostDTO {
+export class RegisterUserProjectDTO {
   @IsEmail()
   userEmail: string;
 

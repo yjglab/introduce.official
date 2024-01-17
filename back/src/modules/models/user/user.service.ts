@@ -61,7 +61,7 @@ export class UserService {
         [field]: value,
       },
       include: {
-        projectPosts: true,
+        projects: true,
       },
     });
     return user;
