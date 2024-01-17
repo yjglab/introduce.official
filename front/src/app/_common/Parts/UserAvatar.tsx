@@ -13,7 +13,7 @@ export const UserAvatar: React.FC<Props> = ({ displayName, size = "sm" }) => {
     <Avatar
       className={classNames(
         size === "sm" ? "w-12 h-12" : size === "md" ? "w-16 h-16" : size === "xl" ? "w-36 h-36" : null,
-        "border-4 border-gray-200 dark:border-white",
+        "border-2 border-gray-200 dark:border-white",
       )}
       {...genConfig(displayName)}
     />
