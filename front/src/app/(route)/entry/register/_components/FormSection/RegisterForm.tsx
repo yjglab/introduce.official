@@ -2,7 +2,7 @@
 
 import { FC, useState } from "react";
 import { useForm } from "react-hook-form";
-import { DEVELOPMENT } from "@/utils/constants";
+
 import axios from "axios";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { loadMeAPI, registerAPI } from "@api/auth";
@@ -14,7 +14,8 @@ import { RiCheckLine, RiCloseLine, RiErrorWarningFill } from "@remixicon/react";
 import { UserAvatar } from "@app/_common/Parts/UserAvatar";
 import Link from "next/link";
 import EntryHeader from "@app/(route)/entry/_components/EntryHeader";
-import { RiSize } from "@constants";
+import { RiSize } from "@constants/styles";
+import { DEVELOPMENT } from "@constants/service";
 
 interface Props {}
 interface RegisterValues {

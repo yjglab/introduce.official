@@ -1,6 +1,5 @@
 import "./globals.css";
 import type { Metadata, Viewport } from "next";
-import { CLIENT_URL, SERVICE_NAME } from "@/utils/constants";
 import { Noto_Sans } from "next/font/google";
 import classNames from "classnames";
 import QueryProvider from "./(providers)/QueryProvider";
@@ -11,6 +10,8 @@ import { NextThemeProvider } from "./(providers)/NextThemeProvider";
 import { HydrationBoundary, QueryClient, dehydrate } from "@tanstack/react-query";
 import { headers } from "next/headers";
 import { loadMeAPI } from "@api/auth";
+import { loadMyDataKey } from "@constants/queryKey";
+import { CLIENT_URL, SERVICE_NAME } from "@constants/service";
 
 const font = Noto_Sans({
   weight: ["300", "400", "500", "600", "700"],
@@ -52,7 +53,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
   const cookie = header.get("Cookie");
   if (cookie) {
     await queryClient.prefetchQuery({
-      queryKey: ["data-me"],
+      queryKey: [loadMyDataKey],
       queryFn: () => loadMeAPI({ headers: { cookie } }),
     });
   }

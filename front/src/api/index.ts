@@ -1,4 +1,4 @@
-import { SERVER_URL } from "@/utils/constants";
+import { SERVER_URL } from "@constants/service";
 import axios from "axios";
 
 export const api = axios.create({

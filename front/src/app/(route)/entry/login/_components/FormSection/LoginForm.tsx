@@ -2,7 +2,6 @@
 
 import { FC, useState } from "react";
 import { useForm } from "react-hook-form";
-import { DEVELOPMENT } from "@/utils/constants";
 import axios from "axios";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { loginAPI } from "@api/auth";
@@ -12,9 +11,11 @@ import { useRouter } from "next/navigation";
 import Tooltip from "@app/_common/Parts/Tooltip";
 import LoadingSpinner from "@app/_common/Parts/LoadingSpinner";
 import { RiErrorWarningFill } from "@remixicon/react";
-import { RiSize } from "@constants";
+import { RiSize } from "@constants/styles";
 import EntryHeader from "@app/(route)/entry/_components/EntryHeader";
 import Link from "next/link";
+import { loadMyDataKey } from "@constants/queryKey";
+import { DEVELOPMENT } from "@constants/service";
 
 interface Props {}
 interface LoginValues {
@@ -36,7 +37,7 @@ const LoginForm: FC<Props> = () => {
     mutationFn: loginAPI,
     onSuccess: (response) => {
       queryClient.refetchQueries({
-        queryKey: ["data-me"],
+        queryKey: [loadMyDataKey],
       });
       dispatch(SET_USER(response.user));
       setApiError(null);

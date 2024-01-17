@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { FC } from "react";
 import { RiGoogleFill, RiKakaoTalkFill, RiMailAddLine, RiMailCheckLine } from "@remixicon/react";
-import { RiSize } from "@constants";
+import { RiSize } from "@constants/styles";
 
 interface Props {
   name: string;

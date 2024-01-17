@@ -4,7 +4,7 @@ import React, { FC, Fragment, MouseEventHandler, PropsWithChildren, useState } f
 import { Dialog, Transition } from "@headlessui/react";
 import classNames from "classnames";
 import { RiCheckFill, RiCheckLine, RiCloseFill, RiEmotionSadFill, RiInfoI } from "@remixicon/react";
-import { RiSize } from "@constants";
+import { RiSize } from "@constants/styles";
 
 interface Props {
   type?: "general" | "success" | "error";

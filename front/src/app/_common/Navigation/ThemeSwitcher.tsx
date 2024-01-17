@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import { useTheme } from "next-themes";
 import classNames from "classnames";
 import { RiContrast2Line } from "@remixicon/react";
-import { RiSize } from "@constants";
+import { RiSize } from "@constants/styles";
 
 const ThemeSwitcher = () => {
   const [mounted, setMounted] = useState(false);

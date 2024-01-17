@@ -10,13 +10,14 @@ import { LOGOUT } from "@/store/slices/user.slice";
 import Modal from "../Modal";
 import ThemeSwitcher from "./ThemeSwitcher";
 import { RiUser3Line, RiUserShared2Line } from "@remixicon/react";
-import { RiSize } from "@constants";
+import { RiSize } from "@constants/styles";
+import { loadMyDataKey } from "@constants/queryKey";
 
 const Navigation = memo(() => {
   const dispatch = useDispatch();
   const queryClient = useQueryClient();
   const { data: me } = useQuery({
-    queryKey: ["data-me"],
+    queryKey: [loadMyDataKey],
     queryFn: loadMeAPI,
     staleTime: Infinity,
     gcTime: Infinity,
