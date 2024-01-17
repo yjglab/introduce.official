@@ -14,6 +14,7 @@ import LoadingSpinner from "@app/_common/Parts/LoadingSpinner";
 import { RiErrorWarningFill } from "@remixicon/react";
 import { RiSize } from "@constants";
 import EntryHeader from "@app/(route)/entry/_components/EntryHeader";
+import Link from "next/link";
 
 interface Props {}
 interface LoginValues {
@@ -134,6 +135,16 @@ const LoginForm: FC<Props> = () => {
                 {isLocalLoginPending && <LoadingSpinner backdrop={true} />}
               </div>
             </div>
+
+            <p className='max-w-3xl mx-auto flex justify-end mt-5 text-sm text-gray-600 dark:text-gray-200'>
+              아직 계정이 없으신가요?
+              <Link
+                href={"/entry/register"}
+                className='ml-1 text-primary-500 decoration-2 hover:underline font-medium dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600'
+              >
+                회원가입
+              </Link>
+            </p>
           </form>
         </div>
       </div>

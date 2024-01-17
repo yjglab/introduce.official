@@ -99,104 +99,88 @@ datasource db {
 }
 
 model User {
-  provider           Provider?
-  providerId         String?
-  id                 Int           @id @default(autoincrement())
-  email              String        @unique
-  displayName        String        @unique
-  password           String
-  position           String
-  role               UserRole      @default(user)
-  accountStatus      AccountStatus @default(pending)
-  avatar             String?       @default("")
-  projectPosts       ProjectPost[]
-  findingPosts       FindingPost[]
-  likedProjectPosts  ProjectPost[] @relation("UserLikedProjectPosts")
-  likedFindingPosts  FindingPost[] @relation("UserLikedFindingPosts")
-  markedProjectPosts ProjectPost[] @relation("UserMarkedProjectPosts")
-  markedFindingPosts FindingPost[] @relation("UserMarkedFindingPosts")
-  createdAt          DateTime      @default(now())
-  updatedAt          DateTime      @default(now())
+  provider       Provider
+  providerId     String?
+  id             Int           @id @default(autoincrement())
+  email          String        @unique
+  displayName    String        @unique
+  password       String
+  position       String
+  role           UserRole?
+  accountStatus  AccountStatus @default(pending)
+  avatar         String?       @default("")
+  projects       UserProject[]
+  likedProjects  UserProject[] @relation("UserLikedProjects")
+  markedProjects UserProject[] @relation("UserMarkedProjects")
+  createdAt      DateTime      @default(now())
+  updatedAt      DateTime      @default(now())
 }
 
-model ProjectPost {
-  id          Int                  @id @default(autoincrement())
+model UserProject {
+  id          Int            @id @default(autoincrement())
   category    String
   title       String
   description String
   source      ProjectSource?
-  grades      Float                @default(0)
-  user        User                 @relation(fields: [userId], references: [id])
-  userId      Int
+  grades      Float          @default(0)
   skills      String[]
-  likers      User[]               @relation("UserLikedProjectPosts")
-  markers     User[]               @relation("UserMarkedProjectPosts")
-  sections    ProjectPostSection[]
+  likers      User[]         @relation("UserLikedProjects")
+  markers     User[]         @relation("UserMarkedProjects")
+  sections    Section[]
+  createdAt   DateTime       @default(now())
+  updatedAt   DateTime       @updatedAt
+  user        User           @relation(fields: [userId], references: [id])
+  userId      Int
+}
 
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+model Section {
+  id          Int         @id @default(autoincrement())
+  name        String
+  description String
+  images      String[]
+  keywords    Keyword[]
+  project     UserProject @relation(fields: [projectId], references: [id])
+  projectId   Int
+}
+
+model Keyword {
+  id        Int     @id @default(autoincrement())
+  name      String
+  image     String
+  section   Section @relation(fields: [sectionId], references: [id])
+  sectionId Int
 }
 
 model ProjectSource {
-  id     Int         @id @default(autoincrement())
-  name   String
-  link   String
-  owner  String
-  post   ProjectPost @relation(fields: [postId], references: [id])
-  postId Int         @unique
+  id        Int         @id @default(autoincrement())
+  name      String
+  link      String
+  owner     String
+  project   UserProject @relation(fields: [projectId], references: [id])
+  projectId Int         @unique
 }
 
-model FindingPost {
-  id          Int                  @id @default(autoincrement())
-  category    String
-  title       String
-  description String
-  deadline    String
-  user        User                 @relation(fields: [userId], references: [id])
-  userId      Int
-  skills      String[]
-  likers      User[]               @relation("UserLikedFindingPosts")
-  markers     User[]               @relation("UserMarkedFindingPosts")
-  sections    FindingPostSection[]
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+model UserRole {
+  id     Int       @id @default(autoincrement())
+  name   Role      @default(user)
+  expiry DateTime?
+  user   User      @relation(fields: [userId], references: [id])
+  userId Int       @unique
 }
 
-model ProjectPostSection {
-  id          Int         @id @default(autoincrement())
-  header      String
-  description String
-  images      String[]
-  post        ProjectPost @relation(fields: [postId], references: [id])
-  postId      Int
-}
-
-model FindingPostSection {
-  id          Int         @id @default(autoincrement())
-  header      String
-  description String
-  images      String[]
-  post        FindingPost @relation(fields: [postId], references: [id])
-  postId      Int
-}
-
-enum UserClass {
-  normal
-  pro
-}
-
-enum UserRole {
+enum Role {
   user
-  premium
-  moderator
+  pro
+  expoert
+  manager
   admin
 }
 
 enum Provider {
+  local
   google
   facebook
-  local
+  kakao
 }
 
 enum AccountStatus {
