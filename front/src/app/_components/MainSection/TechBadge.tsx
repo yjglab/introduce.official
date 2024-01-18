@@ -1,3 +1,5 @@
+"use client";
+
 import TechIcon from "@app/_common/Parts/TechIcon";
 import { FC } from "react";
 

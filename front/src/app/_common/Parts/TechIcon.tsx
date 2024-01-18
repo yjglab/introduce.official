@@ -1,3 +1,5 @@
+"use client";
+
 import techImages from "@/utils/techImages";
 import { FC } from "react";
 

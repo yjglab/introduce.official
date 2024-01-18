@@ -1,7 +1,9 @@
+"use client";
+
 import Link from "next/link";
 import TechBadge from "./TechBadge";
 import { UserAvatar } from "@app/_common/Parts/UserAvatar";
-import { FC } from "react";
+import { FC, Suspense } from "react";
 import dateFormatter from "@/utils/dateFormatter";
 
 interface Props {

@@ -1,7 +1,9 @@
 "use client";
 
 import dataGenerator from "@/utils/dataGenerator";
-import ProjectThumb from "./ProjectThumb";
+import Skeleton from "@app/_common/Parts/Skeleton";
+import dynamic from "next/dynamic";
+import { useEffect, useState } from "react";
 
 const customProject = {
   id: 1,
@@ -45,12 +47,22 @@ const customProject = {
   },
 };
 
+const ProjectThumb = dynamic(() => import("./ProjectThumb"), {
+  loading: () => <Skeleton />,
+});
+
 const MainSection = () => {
+  const [projectThumbs, setProjectThumbs] = useState<any>([]);
+
+  useEffect(() => {
+    setProjectThumbs(dataGenerator(8));
+  }, []);
+
   return (
     <div className='px-4 py-10 lg:py-14 mx-auto'>
       <div className='grid sm:grid-cols-2 lg:grid-cols-3 gap-6'>
         <ProjectThumb project={customProject} />
-        {dataGenerator(8).map((project) => (
+        {projectThumbs.map((project: any) => (
           <ProjectThumb key={project.id} project={project} />
         ))}
       </div>
