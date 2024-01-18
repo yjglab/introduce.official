@@ -12,10 +12,10 @@ import Tooltip from "@app/_common/Parts/Tooltip";
 import LoadingSpinner from "@app/_common/Parts/LoadingSpinner";
 import { RiErrorWarningFill } from "@remixicon/react";
 import { RiSize } from "@constants/styles";
-import EntryHeader from "@app/(route)/entry/_components/EntryHeader";
 import Link from "next/link";
 import { loadMyDataKey } from "@constants/queryKey";
 import { DEVELOPMENT } from "@constants/service";
+import EntryHeader from "@app/entry/_components/EntryHeader";
 
 interface Props {}
 interface LoginValues {

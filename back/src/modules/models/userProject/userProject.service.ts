@@ -24,6 +24,8 @@ export class UserProjectService {
       data: {
         category: data.category,
         title: data.title,
+        subTitle: data.subTitle,
+        thumbnail: data.thumbnail,
         description: data.description,
         user: {
           connect: {

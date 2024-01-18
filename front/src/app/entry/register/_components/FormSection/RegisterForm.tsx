@@ -7,15 +7,15 @@ import axios from "axios";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { loadMeAPI, registerAPI } from "@api/auth";
 import { useRouter } from "next/navigation";
-import Modal from "@app/_common/Modal";
 import LoadingSpinner from "@app/_common/Parts/LoadingSpinner";
 import Tooltip from "@app/_common/Parts/Tooltip";
 import { RiCheckLine, RiCloseLine, RiErrorWarningFill } from "@remixicon/react";
 import { UserAvatar } from "@app/_common/Parts/UserAvatar";
 import Link from "next/link";
-import EntryHeader from "@app/(route)/entry/_components/EntryHeader";
 import { RiSize } from "@constants/styles";
 import { DEVELOPMENT } from "@constants/service";
+import NoticeBox from "@app/_common/NoticeBox";
+import EntryHeader from "@app/entry/_components/EntryHeader";
 
 interface Props {}
 interface RegisterValues {
@@ -71,12 +71,12 @@ const RegisterForm: FC<Props> = () => {
   return (
     <div className='max-w-[85rem] mx-auto px-4 sm:px-6 lg:px-8 py-20'>
       {isLocalRegisterSuccess && (
-        <Modal
+        <NoticeBox
           title='회원가입 완료'
           description='회원가입 되었습니다. 이메일 함에서 인증 후 정상 이용 가능합니다.'
           callback={submitCallback}
           externalClick={false}
-        ></Modal>
+        ></NoticeBox>
       )}
       <div className='relative mx-auto max-w-4xl grid'>
         <EntryHeader role='register' />

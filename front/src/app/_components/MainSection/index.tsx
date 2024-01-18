@@ -1,9 +1,7 @@
-"use client";
-
 import dataGenerator from "@/utils/dataGenerator";
 import Skeleton from "@app/_common/Parts/Skeleton";
 import dynamic from "next/dynamic";
-import { useEffect, useState } from "react";
+// import { useEffect, useState } from "react";
 
 const customProject = {
   id: 1,
@@ -52,11 +50,12 @@ const ProjectThumb = dynamic(() => import("./ProjectThumb"), {
 });
 
 const MainSection = () => {
-  const [projectThumbs, setProjectThumbs] = useState<any>([]);
+  // const [projectThumbs, setProjectThumbs] = useState<any>([]);
 
-  useEffect(() => {
-    setProjectThumbs(dataGenerator(8));
-  }, []);
+  // useEffect(() => {
+  //   setProjectThumbs(dataGenerator(8));
+  // }, []);
+  const projectThumbs = dataGenerator(8);
 
   return (
     <div className='px-4 py-10 lg:py-14 mx-auto'>

@@ -47,7 +47,13 @@ export const metadata: Metadata = {
   icons: "/images/common/icon.png",
 };
 
-export default async function RootLayout({ children }: { children: React.ReactNode }) {
+export default async function RootLayout({
+  children,
+  modal,
+}: {
+  children: React.ReactNode;
+  modal: React.ReactNode;
+}) {
   const queryClient = new QueryClient();
   const header = headers();
   const cookie = header.get("Cookie");
@@ -70,6 +76,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
                 <div id='Root-Layout' className='max-w-7xl mx-auto'>
                   {children}
                 </div>
+                {modal}
               </NextThemeProvider>
             </ReduxProvider>
           </HydrationBoundary>

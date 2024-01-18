@@ -11,6 +11,12 @@ export class RegisterUserProjectDTO {
   title: string;
 
   @IsString()
+  subTitle: string;
+
+  @IsString()
+  thumbnail: string;
+
+  @IsString()
   description: string;
 
   @IsObject()

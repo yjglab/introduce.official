@@ -1,6 +1,6 @@
 import React from "react";
 import { Metadata } from "next";
-import EntryClientPage from "./page.client";
+import MainSection from "./_components/MainSection";
 
 export async function generateMetadata() {
   return {
@@ -14,7 +14,11 @@ export async function generateMetadata() {
 }
 
 const EntryPage = async () => {
-  return <EntryClientPage />;
+  return (
+    <main id='Entry-Client' className='min-h-screen'>
+      <MainSection />
+    </main>
+  );
 };
 
 export default EntryPage;

@@ -1,5 +1,3 @@
-"use client";
-
 import Link from "next/link";
 import TechBadge from "./TechBadge";
 import { UserAvatar } from "@app/_common/Parts/UserAvatar";
@@ -13,7 +11,8 @@ const ProjectThumb: FC<Props> = ({ project }) => {
   return (
     <Link
       className='group relative block rounded-xl dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600'
-      href='#'
+      href={`/project/${project.title.replace(/ /g, "_")}`}
+      scroll={false}
     >
       <div className='flex group-hover:flex absolute w-32 h-16 z-10 justify-end space-x-1 right-5'>
         {/* anim: 순차로 등장하도록 */}

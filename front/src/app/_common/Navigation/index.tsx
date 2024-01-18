@@ -7,11 +7,11 @@ import { useDispatch, useSelector } from "react-redux";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { loadMeAPI, logoutAPI } from "@api/auth";
 import { LOGOUT } from "@/store/slices/user.slice";
-import Modal from "../Modal";
 import ThemeSwitcher from "./ThemeSwitcher";
-import { RiUser3Line, RiUserShared2Line } from "@remixicon/react";
+import { RiCloseFill, RiMenu3Line, RiUser3Line, RiUserShared2Line } from "@remixicon/react";
 import { RiSize } from "@constants/styles";
 import { loadMyDataKey } from "@constants/queryKey";
+import NoticeBox from "../NoticeBox";
 
 const Navigation = memo(() => {
   const dispatch = useDispatch();
@@ -36,8 +36,8 @@ const Navigation = memo(() => {
   };
 
   return (
-    <header className='flex fixed top-0 flex-wrap md:justify-start md:flex-nowrap z-50 w-full bg-white text-sm py-3 md:py-0 dark:bg-gray-800'>
-      {isLogoutSuccess && <Modal description='로그아웃 되었습니다' externalClick={true}></Modal>}
+    <header className='flex fixed top-0 flex-wrap md:justify-start md:flex-nowrap z-50 bg-white text-sm py-3 md:py-0 dark:bg-gray-800 w-screen sm:pr-[15px]'>
+      {isLogoutSuccess && <NoticeBox description='로그아웃 되었습니다' externalClick={true}></NoticeBox>}
 
       <nav className='max-w-7xl w-full mx-auto px-4' aria-label='Global'>
         <div className='relative md:flex md:items-center md:justify-between'>
@@ -57,8 +57,12 @@ const Navigation = memo(() => {
                 aria-controls='navbar-collapse-with-animation'
                 aria-label='Toggle navigation'
               >
-                <i className='text-[18px] bi bi-list hs-collapse-open:hidden'></i>
-                <i className='text-[22px] bi bi-x hs-collapse-open:block hidden'></i>
+                <span className='hs-collapse-open:hidden'>
+                  <RiMenu3Line size={RiSize.sm} />
+                </span>
+                <span className='hs-collapse-open:block hidden'>
+                  <RiCloseFill size={RiSize.sm} />
+                </span>
               </button>
             </div>
           </div>

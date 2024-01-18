@@ -14,7 +14,7 @@ interface Props {
   externalClick?: boolean;
   textAlign?: "center" | "left";
 }
-const Modal: FC<PropsWithChildren<Props>> = ({
+const NoticeBox: FC<PropsWithChildren<Props>> = ({
   children,
   type = "general",
   title,
@@ -25,13 +25,13 @@ const Modal: FC<PropsWithChildren<Props>> = ({
 }) => {
   let [isOpen, setIsOpen] = useState(true);
 
-  function closeModal() {
+  function closeNoticeBox() {
     setIsOpen(false);
   }
 
   return (
     <Transition appear show={isOpen} as={Fragment}>
-      <Dialog as='div' className='relative z-10' onClose={externalClick ? closeModal : () => {}}>
+      <Dialog as='div' className='relative z-10' onClose={externalClick ? closeNoticeBox : () => {}}>
         <Transition.Child
           as={Fragment}
           enter='ease-out duration-300'
@@ -64,7 +64,7 @@ const Modal: FC<PropsWithChildren<Props>> = ({
                     <div className='absolute top-2 end-2'>
                       <button
                         type='button'
-                        onClick={closeModal}
+                        onClick={closeNoticeBox}
                         className='flex justify-center items-center w-7 h-7 text-sm font-semibold rounded-lg border border-transparent text-gray-800 hover:bg-gray-100 disabled:opacity-50 disabled:pointer-events-none dark:text-white dark:border-transparent dark:hover:bg-gray-700 dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600'
                       >
                         <span className='sr-only'>Close</span>
@@ -97,7 +97,7 @@ const Modal: FC<PropsWithChildren<Props>> = ({
                     <div className='mt-6 flex justify-center gap-x-4'>
                       <button
                         type='button'
-                        onClick={callback || closeModal}
+                        onClick={callback || closeNoticeBox}
                         className='py-2 px-3 inline-flex items-center gap-x-2 text-sm font-medium rounded-lg border border-gray-200 bg-white text-gray-800 shadow-sm hover:bg-gray-50 disabled:opacity-50 disabled:pointer-events-none dark:bg-slate-900 dark:border-gray-700 dark:text-white dark:hover:bg-gray-800 dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600'
                       >
                         확인
@@ -114,4 +114,4 @@ const Modal: FC<PropsWithChildren<Props>> = ({
   );
 };
 
-export default Modal;
+export default NoticeBox;
