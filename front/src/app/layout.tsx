@@ -63,8 +63,8 @@ export default async function RootLayout({
       queryFn: () => loadMeAPI({ headers: { cookie } }),
     });
   }
-
   const dehydratedState = dehydrate(queryClient);
+
   return (
     <html lang='en' suppressHydrationWarning={true}>
       <body className={(classNames(font.className), "mt-16 dark:bg-gray-800 min-h-screen w-full")}>
@@ -76,7 +76,7 @@ export default async function RootLayout({
                 <div id='Root-Layout' className='max-w-7xl mx-auto'>
                   {children}
                 </div>
-                {modal}
+                {/* {modal} */}
               </NextThemeProvider>
             </ReduxProvider>
           </HydrationBoundary>
