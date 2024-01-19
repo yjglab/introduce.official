@@ -1,10 +1,11 @@
+import SectionContainer from "@app/_common/Container/SectionContainer";
 import RegisterForm from "./RegisterForm";
 
 const FormSection = () => {
   return (
-    <section>
+    <SectionContainer>
       <RegisterForm />
-    </section>
+    </SectionContainer>
   );
 };
 

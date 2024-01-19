@@ -1,5 +1,6 @@
 import React from "react";
 import { Metadata } from "next";
+import PageContainer from "@app/_common/Container/PageContainer";
 
 export async function generateMetadata() {
   return {
@@ -13,7 +14,7 @@ export async function generateMetadata() {
 }
 
 const ProfilePage = async () => {
-  return <main id='ProfilePage'>Profile</main>;
+  return <PageContainer pageName='Profile Page'>profile</PageContainer>;
 };
 
 export default ProfilePage;

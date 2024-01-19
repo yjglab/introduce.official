@@ -3,12 +3,13 @@
 import { useState } from "react";
 import Link from "next/link";
 import EntryLinkButton from "./EntryLinkButton";
+import SectionContainer from "@app/_common/Container/SectionContainer";
 
 const MainSection = () => {
   const [formType, setFormType] = useState<"login" | "register">("register");
 
   return (
-    <section className='flex mt-24 md:mt-36'>
+    <SectionContainer>
       <div className='max-w-[50rem] flex flex-col mx-auto w-full h-full'>
         <div className='flex justify-center w-full py-4'>
           <div className='px-4 sm:px-6 lg:px-8' aria-label='Global'>
@@ -39,7 +40,7 @@ const MainSection = () => {
           </div>
         </div>
       </div>
-    </section>
+    </SectionContainer>
   );
 };
 

@@ -1,6 +1,5 @@
 import React, { FC } from "react";
-
-import OverlayContainer from "@app/_common/Parts/OverlayContainer";
+import OverlayContainer from "@app/_common/Container/OverlayContainer";
 
 interface Props {
   params: {

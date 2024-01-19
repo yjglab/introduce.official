@@ -1,10 +1,11 @@
+import PageContainer from "@app/_common/Container/PageContainer";
 import FormSection from "./_components/FormSection";
 
 const RegisterPage = () => {
   return (
-    <main id='Register-Client'>
+    <PageContainer pageName='Register Page'>
       <FormSection />
-    </main>
+    </PageContainer>
   );
 };
 

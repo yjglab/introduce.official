@@ -1,12 +1,13 @@
+import PageContainer from "./_common/Container/PageContainer";
 import MainSection from "./_components/MainSection";
 
 const RootPage = async () => {
   // main data prefetch
 
   return (
-    <main id='Root-Client'>
+    <PageContainer pageName='Root Page'>
       <MainSection />
-    </main>
+    </PageContainer>
   );
 };
 

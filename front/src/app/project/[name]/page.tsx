@@ -1,3 +1,5 @@
+import PageContainer from "@app/_common/Container/PageContainer";
+
 interface Props {
   params: {
     name: string;
@@ -5,7 +7,7 @@ interface Props {
 }
 
 const ProjectPage = ({ params }: Props) => {
-  return <div className='w-full h-full bg-red-500/40'>{params.name}</div>;
+  return <PageContainer pageName={`Project: ${params.name}`}>{params.name}</PageContainer>;
 };
 
 export default ProjectPage;

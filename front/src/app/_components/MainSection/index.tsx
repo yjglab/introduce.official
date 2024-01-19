@@ -1,4 +1,5 @@
 import dataGenerator from "@/utils/dataGenerator";
+import SectionContainer from "@app/_common/Container/SectionContainer";
 import Skeleton from "@app/_common/Parts/Skeleton";
 import dynamic from "next/dynamic";
 // import { useEffect, useState } from "react";
@@ -50,22 +51,17 @@ const ProjectThumb = dynamic(() => import("./ProjectThumb"), {
 });
 
 const MainSection = () => {
-  // const [projectThumbs, setProjectThumbs] = useState<any>([]);
-
-  // useEffect(() => {
-  //   setProjectThumbs(dataGenerator(8));
-  // }, []);
   const projectThumbs = dataGenerator(8);
 
   return (
-    <div className='px-4 py-10 lg:py-14 mx-auto'>
-      <div className='grid sm:grid-cols-2 lg:grid-cols-3 gap-6'>
+    <SectionContainer>
+      <div className='grid sm:grid-cols-2 lg:grid-cols-3 gap-6 w-full'>
         <ProjectThumb project={customProject} />
         {projectThumbs.map((project: any) => (
           <ProjectThumb key={project.id} project={project} />
         ))}
       </div>
-    </div>
+    </SectionContainer>
   );
 };
 

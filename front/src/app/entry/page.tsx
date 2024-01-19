@@ -1,6 +1,7 @@
 import React from "react";
 import { Metadata } from "next";
 import MainSection from "./_components/MainSection";
+import PageContainer from "@app/_common/Container/PageContainer";
 
 export async function generateMetadata() {
   return {
@@ -15,9 +16,9 @@ export async function generateMetadata() {
 
 const EntryPage = async () => {
   return (
-    <main id='Entry-Client' className='min-h-screen'>
+    <PageContainer pageName='Entry Page'>
       <MainSection />
-    </main>
+    </PageContainer>
   );
 };
 

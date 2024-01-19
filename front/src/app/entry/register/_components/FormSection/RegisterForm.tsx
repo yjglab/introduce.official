@@ -69,7 +69,7 @@ const RegisterForm: FC<Props> = () => {
   };
 
   return (
-    <div className='max-w-[85rem] mx-auto px-4 sm:px-6 lg:px-8 py-20'>
+    <>
       {isLocalRegisterSuccess && (
         <NoticeBox
           title='회원가입 완료'
@@ -329,7 +329,7 @@ const RegisterForm: FC<Props> = () => {
           </div>
         </form>
       </div>
-    </div>
+    </>
   );
 };
 
