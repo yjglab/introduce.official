@@ -80,6 +80,12 @@ const Navigation = memo(() => {
                 >
                   홈
                 </Link>
+                <Link
+                  className='font-medium text-gray-900 hover:text-gray-500 py-3 md:py-6 dark:text-gray-300 dark:hover:text-gray-500 dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600'
+                  href='/upgrades'
+                >
+                  Upgrade Plans
+                </Link>
                 <SiteMenu />
                 <div className='pt-3 md:pt-0'>
                   {me ? (

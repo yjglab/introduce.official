@@ -29,23 +29,23 @@ const OverlayContainer: FC<PropsWithChildren<Props>> = ({ children }) => {
           leaveFrom='opacity-100'
           leaveTo='opacity-0'
         >
-          <div className='fixed inset-0 bg-black/25' />
+          <div className='fixed inset-0 bg-black/70' />
         </Transition.Child>
 
         <div className='fixed inset-0 overflow-y-auto w-screen'>
           <div className='flex min-h-full items-center justify-center p-4'>
             <Transition.Child
               as={Fragment}
-              enter='ease-out duration-300'
-              enterFrom='opacity-0 scale-95'
-              enterTo='opacity-100 scale-100'
-              leave='ease-in duration-200'
-              leaveFrom='opacity-100 scale-100'
-              leaveTo='opacity-0 scale-95'
+              enter='transition ease-out duration-300 transform'
+              enterFrom='opacity-0 translate-y-full'
+              enterTo='opacity-100 translate-y-0'
+              leave='ease-in duration-200 transition transform'
+              leaveFrom='opacity-100 translate-y-0'
+              leaveTo='opacity-0 translate-y-full'
             >
               <Dialog.Panel
                 style={{ maxHeight: "90vh" }}
-                className='mt-0 opacity-0 ease-out transition-all w-full max-w-4xl m-3 sm:mx-auto'
+                className='mt-0 opacity-0 ease-out w-full max-w-[1100px] m-3 sm:mx-auto'
               >
                 <div className='relative flex flex-col bg-white shadow-lg rounded-xl dark:bg-gray-800'>
                   <div className='absolute top-2 end-2'>

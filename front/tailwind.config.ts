@@ -15,6 +15,19 @@ const config: Config = {
         success: colors.green,
         error: colors.red,
       },
+      animation: {
+        shine: "shineKey 2s ease-in-out infinite alternate",
+      },
+      keyframes: {
+        shineKey: {
+          from: {
+            backgroundPosition: "0% 50%",
+          },
+          to: {
+            backgroundPosition: "100% 50%",
+          },
+        },
+      },
     },
   },
   darkMode: "class",

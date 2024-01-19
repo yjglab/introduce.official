@@ -15,7 +15,7 @@ const TechIcon: FC<Props> = ({ name }) => {
     <img
       src={images[name]}
       alt='tech-icon-image'
-      className='object-cover rounded-full w-8 h-8 absolute bottom-1.5'
+      className='object-cover rounded-full w-7 h-7 absolute bottom-1.5'
     />
   );
 };
