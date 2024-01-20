@@ -4,21 +4,23 @@ import { UserAvatar } from "@app/_common/Parts/UserAvatar";
 import { FC } from "react";
 import dateFormatter from "@/utils/dateFormatter";
 import { motion } from "framer-motion";
+import { UserProjectType } from "@/utils/dataGenerator";
 
 interface Props {
-  project: any; // type
+  project: UserProjectType; // type
 }
 const ProjectThumb: FC<Props> = ({ project }) => {
   return (
     <Link
       className='group relative block rounded-xl dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600'
-      href={`/project/${project.title.replace(/ /g, "_")}/${project.id}`}
+      href={`/project/${project.title.replace(/ /g, "_")}/${project.projectId}`}
       scroll={false}
     >
       <div className='flex absolute w-32 h-14 z-10 justify-end space-x-1 right-5'>
         {/* anim: 순차로 등장하도록 */}
         {project.skills.map((skill: string, index: number) => (
           <motion.div
+            key={skill}
             initial={{ opacity: 0, y: -30 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ type: "tween", duration: 0.3, delay: index * 0.05 }}
@@ -42,10 +44,10 @@ const ProjectThumb: FC<Props> = ({ project }) => {
         <div className='p-4 flex flex-col h-full sm:p-6'>
           <div className='flex items-center'>
             <div className='flex-shrink-0'>
-              <UserAvatar displayName={project.user.displayName} />
+              <UserAvatar displayName={project.userDisplayName} />
             </div>
             <div className='ms-2.5 sm:ms-4'>
-              <h4 className='font-semibold text-white'>{project.user.displayName}</h4>
+              <h4 className='font-semibold text-white'>{project.userDisplayName}</h4>
               <p className='text-xs text-white/[.8]'>{dateFormatter(project.createdAt)}</p>
             </div>
           </div>

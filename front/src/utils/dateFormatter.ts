@@ -1,6 +1,5 @@
-export default (dateTime: string) => {
-  const dateObject = new Date(dateTime);
+export default (dateTime: Date) => {
   const options: Intl.DateTimeFormatOptions = { year: "numeric", month: "short", day: "numeric" };
-  const formattedDate = dateObject.toLocaleDateString("en-US", options);
+  const formattedDate = dateTime?.toLocaleDateString("en-US", options);
   return formattedDate;
 };

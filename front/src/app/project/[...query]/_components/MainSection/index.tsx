@@ -1,5 +1,6 @@
 "use client";
 
+import { UserProjectType } from "@/utils/dataGenerator";
 import dateFormatter from "@/utils/dateFormatter";
 import { loadMainProjects } from "@api/project";
 import { UserAvatar } from "@app/_common/Parts/UserAvatar";
@@ -15,6 +16,7 @@ import {
 } from "@remixicon/react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { FC, useEffect, useState } from "react";
+import Section from "./Section";
 
 interface Props {
   params: {
@@ -22,14 +24,14 @@ interface Props {
   };
 }
 const MainSection: FC<Props> = ({ params }) => {
-  const [project, setProject] = useState<any>({});
+  const [project, setProject] = useState<UserProjectType>();
   const queryClient = useQueryClient();
 
   // 나중에 project 1개 로드 api로 바꾸고 서버컴포넌트로 교체
   // 현재 새로고침 시 데이터 클라이언트 측 로드
   useEffect(() => {
-    const mainProjects: any = queryClient.getQueryData([loadMainProjectsKey]);
-    setProject(mainProjects.find((v: any) => v.id === params.query[1]));
+    const mainProjects: UserProjectType[] | undefined = queryClient.getQueryData([loadMainProjectsKey]);
+    setProject(mainProjects?.find((v) => v.projectId === params.query[1]));
     window.scrollTo(0, 0);
   }, []);
 
@@ -40,7 +42,7 @@ const MainSection: FC<Props> = ({ params }) => {
           <div className='flex justify-between items-center mb-6'>
             <div className='flex w-full sm:items-center gap-x-5 sm:gap-x-3'>
               <div className='flex-shrink-0'>
-                <UserAvatar displayName={project?.user?.displayName} />
+                <UserAvatar displayName={project?.userDisplayName!} />
               </div>
 
               <div className='grow'>
@@ -49,7 +51,7 @@ const MainSection: FC<Props> = ({ params }) => {
                     <div className='hs-tooltip inline-block [--trigger:hover] [--placement:bottom]'>
                       <div className='hs-tooltip-toggle sm:mb-1 block text-start cursor-pointer'>
                         <span className='font-semibold text-gray-800 dark:text-gray-200'>
-                          {project?.user?.displayName}
+                          {project?.userDisplayName}
                         </span>
 
                         <div
@@ -59,12 +61,12 @@ const MainSection: FC<Props> = ({ params }) => {
                           <div className='p-4 sm:p-5'>
                             <div className='mb-2 flex w-full sm:items-center gap-x-5 sm:gap-x-3'>
                               <div className='flex-shrink-0'>
-                                <UserAvatar displayName={project?.user?.displayName} size='xs' />
+                                <UserAvatar displayName={project?.userDisplayName!} size='xs' />
                               </div>
 
                               <div className='grow'>
                                 <p className='text-lg font-semibold text-gray-200'>
-                                  {project?.user?.displayName}
+                                  {project?.userDisplayName}
                                 </p>
                               </div>
                             </div>
@@ -89,7 +91,7 @@ const MainSection: FC<Props> = ({ params }) => {
 
                     <ul className='text-xs text-gray-500'>
                       <li className='inline-block relative pe-6 last:pe-0 last-of-type:before:hidden before:absolute before:top-1/2 before:end-2 before:-translate-y-1/2 before:w-1 before:h-1 before:bg-gray-300 before:rounded-full dark:text-gray-400 dark:before:bg-gray-600'>
-                        {dateFormatter(project?.createdAt)}
+                        {dateFormatter(project?.createdAt!)}
                       </li>
                       <li className='inline-block relative pe-6 last:pe-0 last-of-type:before:hidden before:absolute before:top-1/2 before:end-2 before:-translate-y-1/2 before:w-1 before:h-1 before:bg-gray-300 before:rounded-full dark:text-gray-400 dark:before:bg-gray-600'>
                         {/* ..분전 표시 */}
@@ -118,19 +120,9 @@ const MainSection: FC<Props> = ({ params }) => {
               <p className='text-lg text-gray-800 dark:text-gray-200 break-words'>{project?.description}</p>
             </div>
 
-            <div className='space-y-3'>
-              <h3 className='text-2xl font-semibold dark:text-white'>섹션1 타이틀</h3>
-              <p className='text-lg text-gray-800 dark:text-gray-200'>섹션1 디스크립션</p>
-            </div>
-
-            <figure>
-              <img
-                className='w-full object-cover rounded-xl'
-                src='https://images.unsplash.com/photo-1619839769929-49455e6b780b?q=80&w=2564&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'
-                alt='섹션1 이미지 설명'
-              />
-              <figcaption className='mt-3 text-sm text-center text-gray-500'>섹션1 이미지 설명</figcaption>
-            </figure>
+            {project?.Sections.map((section) => (
+              <Section key={section.sectionId} section={section} />
+            ))}
 
             <div>
               <button
