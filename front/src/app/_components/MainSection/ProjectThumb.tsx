@@ -1,8 +1,9 @@
 import Link from "next/link";
 import TechBadge from "./TechBadge";
 import { UserAvatar } from "@app/_common/Parts/UserAvatar";
-import { FC, Suspense } from "react";
+import { FC } from "react";
 import dateFormatter from "@/utils/dateFormatter";
+import { motion } from "framer-motion";
 
 interface Props {
   project: any; // type
@@ -14,10 +15,18 @@ const ProjectThumb: FC<Props> = ({ project }) => {
       href={`/project/${project.title.replace(/ /g, "_")}/${project.id}`}
       scroll={false}
     >
-      <div className='flex group-hover:flex absolute w-32 h-16 z-10 justify-end space-x-1 right-5'>
+      <div className='flex absolute w-32 h-14 z-10 justify-end space-x-1 right-5'>
         {/* anim: 순차로 등장하도록 */}
-        {project.skills.map((skill: string) => (
-          <TechBadge key={skill} name={skill} />
+        {project.skills.map((skill: string, index: number) => (
+          <motion.div
+            initial={{ opacity: 0, y: -30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ type: "tween", duration: 0.3, delay: index * 0.05 }}
+            viewport={{ amount: 0.5 }}
+            className='hidden group-hover:flex'
+          >
+            <TechBadge key={skill} name={skill} index={index} />
+          </motion.div>
         ))}
       </div>
 

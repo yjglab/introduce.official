@@ -1,8 +1,13 @@
+"use client";
+
+import { loadMeAPI } from "@api/auth";
+import { loadMyDataKey } from "@constants/queryKey";
 import { RiSize } from "@constants/styles";
 import { RiCheckFill } from "@remixicon/react";
+import { useQuery } from "@tanstack/react-query";
 import classNames from "classnames";
 import Link from "next/link";
-import { FC } from "react";
+import { FC, useEffect } from "react";
 
 interface Plan {
   value: string;
@@ -17,6 +22,8 @@ interface Props {
 }
 
 const PriceCard: FC<Props> = ({ plan }) => {
+  const { data: me } = useQuery({ queryKey: [loadMyDataKey], queryFn: loadMeAPI });
+
   return (
     <div
       className={classNames(
@@ -54,7 +61,13 @@ const PriceCard: FC<Props> = ({ plan }) => {
         )}
         disabled
       >
-        Upgrade
+        {me
+          ? me.user.plan === plan.value
+            ? "이용중인 플랜"
+            : plan.value !== "user"
+            ? `Upgrade ${plan.value.toUpperCase()}`
+            : `현재 ${me.user.plan} 플랜입니다.`
+          : "회원 가입이 필요합니다"}
       </button>
     </div>
   );

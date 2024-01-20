@@ -49,7 +49,8 @@ Author/Developer: Jaekyeong Yuk
 1. 추천/찜/평점 입력
 2. 단일 프로젝트 대상 실시간 채팅
 3. 단일 프로젝트 대상 코멘트
-4. 프라이빗 프로젝트 (Pro Plan Only)
+4. 섹션별 키워드 모달 (10회, Free Plan / 100회, Pro Plan)
+5. 프라이빗 프로젝트 (Pro Plan Only)
 
 - REMOVE
 
