@@ -20,6 +20,7 @@ import { Request } from 'express';
 import { nanoid } from 'nanoid';
 import { AuthHelpers } from '@shared/helpers/auth.helpers';
 import { UserService } from '@modules/models/user/user.service';
+import { uuid } from 'uuidv4';
 
 @Injectable()
 export class AuthService {
@@ -39,6 +40,7 @@ export class AuthService {
       const user = await this.userService.create({
         // avatar: await this.generateGravatarUrl(registrationData.email),
         provider: Providers.Local,
+        id: uuid(),
         ...registrationData,
       });
       await this.sendConfirmationToken(user);
@@ -202,7 +204,7 @@ export class AuthService {
 
     if (!accountId) {
       if (
-        parseInt(accountId) === user.id &&
+        accountId === user.id &&
         user.accountStatus === AccountStatus.VERIFIED
       ) {
         return {
@@ -217,7 +219,7 @@ export class AuthService {
       };
     }
 
-    if (user.id === parseInt(accountId)) {
+    if (user.id === accountId) {
       await this.userService.update(user.id, {
         accountStatus: AccountStatus.VERIFIED,
       });

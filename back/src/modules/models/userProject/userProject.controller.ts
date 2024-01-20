@@ -10,12 +10,12 @@ export class UserProjectController {
   constructor(private userProjectService: UserProjectService) {}
 
   @Get('userProject/:id')
-  async getPostById(@Param('id') id: number): Promise<UserProject> {
-    return this.userProjectService.findOne({ id });
+  async getProjectById(@Param('id') projectId: string): Promise<UserProject> {
+    return this.userProjectService.findOne({ projectId });
   }
 
   @Post('register')
-  async registerPost(
+  async registerProject(
     @Body()
     data: RegisterUserProjectDTO,
   ): Promise<UserProject> {
@@ -31,7 +31,7 @@ export class UserProjectController {
       sections,
     } = data;
 
-    return this.userProjectService.createPost({
+    return this.userProjectService.createProject({
       userEmail,
       category,
       title,
@@ -45,7 +45,7 @@ export class UserProjectController {
   }
 
   @Delete('userProject/:id')
-  async deletePost(@Param('id') id: string): Promise<UserProject> {
-    return this.userProjectService.deletePost({ id: Number(id) });
+  async deleteProject(@Param('id') projectId: string): Promise<UserProject> {
+    return this.userProjectService.deleteProject({ projectId });
   }
 }

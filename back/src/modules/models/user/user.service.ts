@@ -8,6 +8,7 @@ import {
   Logger,
 } from '@nestjs/common';
 import { Prisma } from '@prisma/client';
+import { uuid } from 'uuidv4';
 
 @Injectable()
 export class UserService {
@@ -19,7 +20,7 @@ export class UserService {
     return user;
   }
 
-  public async update(userId: number, values: Prisma.UserUpdateInput) {
+  public async update(userId: string, values: Prisma.UserUpdateInput) {
     this.prisma.user.update({
       where: {
         id: userId,
@@ -28,7 +29,7 @@ export class UserService {
     });
   }
 
-  public async updateProfile(userId: number, values: Prisma.UserUpdateInput) {
+  public async updateProfile(userId: string, values: Prisma.UserUpdateInput) {
     try {
       this.prisma.user.update({
         where: {
@@ -61,7 +62,7 @@ export class UserService {
         [field]: value,
       },
       include: {
-        projects: true,
+        Projects: true,
       },
     });
     return user;
@@ -88,6 +89,7 @@ export class UserService {
         data: {
           provider: req.user.provider,
           providerId: req.user.providerId,
+          id: uuid(),
           email: req.user.email,
           position: req.user.position,
           password: req.user.password,

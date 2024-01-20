@@ -14,7 +14,7 @@ export const UserAvatar: React.FC<Props> = ({ displayName, size = "sm" }) => {
       className={classNames(
         size === "xs"
           ? "w-9 h-9"
-          : "sm"
+          : size === "sm"
           ? "w-12 h-12"
           : size === "md"
           ? "w-16 h-16"

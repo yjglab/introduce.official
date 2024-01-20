@@ -3,6 +3,7 @@ import { Injectable, Logger } from '@nestjs/common';
 import { Prisma, UserProject } from '@prisma/client';
 import { RegisterUserProjectDTO } from './userProject.dto';
 import { UserService } from '../user/user.service';
+import { uuid } from 'uuidv4';
 
 @Injectable()
 export class UserProjectService {
@@ -17,22 +18,23 @@ export class UserProjectService {
     });
   }
 
-  async createPost(data: RegisterUserProjectDTO): Promise<UserProject> {
+  async createProject(data: RegisterUserProjectDTO): Promise<UserProject> {
     const user = await this.userService.getUserByField('email', data.userEmail);
 
     return this.prisma.userProject.create({
       data: {
+        projectId: uuid(),
         category: data.category,
         title: data.title,
         subTitle: data.subTitle,
         thumbnail: data.thumbnail,
         description: data.description,
-        user: {
+        User: {
           connect: {
             id: user.id,
           },
         },
-        source: {
+        Source: {
           create: {
             link: data.source.link,
             name: data.source.name,
@@ -46,7 +48,7 @@ export class UserProjectService {
     });
   }
 
-  async updatePost(params: {
+  async updateProject(params: {
     where: Prisma.UserProjectWhereUniqueInput;
     data: Prisma.UserProjectUpdateInput;
   }) {
@@ -57,7 +59,7 @@ export class UserProjectService {
     });
   }
 
-  async deletePost(where: Prisma.UserProjectWhereUniqueInput) {
+  async deleteProject(where: Prisma.UserProjectWhereUniqueInput) {
     return this.prisma.userProject.delete({
       where,
     });
