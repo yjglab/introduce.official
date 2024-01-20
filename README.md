@@ -1,7 +1,5 @@
 # Introduce V0.0 (2024.02 서비스 예정)
 
-##### Server 개발 작업이 예정보다 늦어지고 있어 추가로 미뤄질 수 있습니다.
-
 ![image](https://github.com/yjglab/Hoolter/assets/70316567/110aaf64-15c3-4e6b-babd-d673f98d4294)
 
 Author/Developer: Jaekyeong Yuk
@@ -99,69 +97,79 @@ datasource db {
 }
 
 model User {
-  provider       Provider
-  providerId     String?
-  id             Int           @id @default(autoincrement())
-  email          String        @unique
-  displayName    String        @unique
-  password       String
-  position       String
-  role           UserRole      @default(user)
-  expiry         DateTime?
-  accountStatus  AccountStatus @default(pending)
-  avatar         String?       @default("")
-  projects       UserProject[]
-  likedProjects  UserProject[] @relation("UserLikedProjects")
-  markedProjects UserProject[] @relation("UserMarkedProjects")
-  createdAt      DateTime      @default(now())
-  updatedAt      DateTime      @default(now())
+  provider      Provider
+  providerId    String?
+  id            String            @id
+  email         String            @unique
+  displayName   String            @unique
+  password      String
+  position      String
+  about         String            @default("")
+  plan          UserPlan          @default(user)
+  planExpiry    DateTime?
+  accountStatus AccountStatus     @default(pending)
+  avatar        String?           @default("")
+  Projects      UserProject[]
+  LikedProjects UserProjectLike[]
+  createdAt     DateTime          @default(now())
+  updatedAt     DateTime          @default(now())
 }
 
 model UserProject {
-  id          Int            @id @default(autoincrement())
+  projectId   String            @id
   category    String
   title       String
+  subTitle    String
+  thumbnail   String
   description String
-  source      ProjectSource?
-  grades      Float          @default(0)
+  Source      ProjectSource?
+  grades      Float             @default(0)
   skills      String[]
-  likers      User[]         @relation("UserLikedProjects")
-  markers     User[]         @relation("UserMarkedProjects")
-  sections    Section[]
-  createdAt   DateTime       @default(now())
-  updatedAt   DateTime       @updatedAt
-  user        User           @relation(fields: [userId], references: [id])
-  userId      Int
+  Likers      UserProjectLike[]
+  Sections    Section[]
+  private     Boolean           @default(false)
+  createdAt   DateTime          @default(now())
+  updatedAt   DateTime          @updatedAt
+  User        User              @relation(fields: [userId], references: [id])
+  userId      String
+}
+
+model UserProjectLike {
+  userId      String
+  projectId   String
+  User        User        @relation(fields: [userId], references: [id])
+  UserProject UserProject @relation(fields: [projectId], references: [projectId])
+  createdAt   DateTime    @default(now())
+
+  @@id([projectId, userId])
 }
 
 model Section {
-  id          Int         @id @default(autoincrement())
+  sectionId   Int         @id @default(autoincrement())
   name        String
   description String
-  images      String[]
-  keywords    Keyword[]
-  project     UserProject @relation(fields: [projectId], references: [id])
-  projectId   Int
+  images      Json[] // { src, alt }[]
+  Keywords    Keyword[]
+  Project     UserProject @relation(fields: [projectId], references: [projectId])
+  projectId   String
 }
 
 model Keyword {
-  id        Int     @id @default(autoincrement())
-  name      String
-  image     String
-  section   Section @relation(fields: [sectionId], references: [id])
+  name      String  @id
+  image     Json // { src, alt }
+  Section   Section @relation(fields: [sectionId], references: [sectionId])
   sectionId Int
 }
 
 model ProjectSource {
-  id        Int         @id @default(autoincrement())
   name      String
-  link      String
+  link      String      @id
   owner     String
-  project   UserProject @relation(fields: [projectId], references: [id])
-  projectId Int         @unique
+  Project   UserProject @relation(fields: [projectId], references: [projectId])
+  projectId String      @unique
 }
 
-enum UserRole {
+enum UserPlan {
   user
   pro
   expert
@@ -181,8 +189,6 @@ enum AccountStatus {
   verified
   banned
 }
-
-
 ```
 
 ### References

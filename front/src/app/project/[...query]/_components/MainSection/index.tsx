@@ -53,13 +53,13 @@ const MainSection: FC<Props> = ({ params }) => {
                         </span>
 
                         <div
-                          className='hs-tooltip-content hs-tooltip-shown:opacity-100 hs-tooltip-shown:visible opacity-0 transition-opacity inline-block absolute invisible z-10 min-w-[300px] cursor-default bg-gray-900 divide-y divide-gray-700 shadow-lg rounded-xl dark:bg-black'
+                          className='hs-tooltip-content hs-tooltip-shown:opacity-100 hs-tooltip-shown:visible opacity-0 transition-opacity inline-block absolute invisible z-10 min-w-[250px] cursor-default bg-gray-900 divide-y divide-gray-700 shadow-lg rounded-xl dark:bg-black'
                           role='tooltip'
                         >
                           <div className='p-4 sm:p-5'>
                             <div className='mb-2 flex w-full sm:items-center gap-x-5 sm:gap-x-3'>
                               <div className='flex-shrink-0'>
-                                <UserAvatar displayName={project?.user?.displayName} />
+                                <UserAvatar displayName={project?.user?.displayName} size='xs' />
                               </div>
 
                               <div className='grow'>
@@ -113,7 +113,8 @@ const MainSection: FC<Props> = ({ params }) => {
 
           <div className='space-y-5 md:space-y-8'>
             <div className='space-y-3'>
-              <h2 className='text-2xl font-bold md:text-3xl dark:text-white'>{project?.title}</h2>
+              <h1 className='text-2xl font-bold md:text-3xl dark:text-white'>{project?.title}</h1>
+              <h2 className='text-gray-500 dark:text-gray-400'>{project?.subtitle}</h2>
               <p className='text-lg text-gray-800 dark:text-gray-200 break-words'>{project?.description}</p>
             </div>
 

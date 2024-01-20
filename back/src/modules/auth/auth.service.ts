@@ -35,6 +35,7 @@ export class AuthService {
 
   public async register(registrationData: CreateAccountDto) {
     try {
+      this.logger.debug(registrationData);
       const user = await this.userService.create({
         // avatar: await this.generateGravatarUrl(registrationData.email),
         provider: Providers.Local,

@@ -1,13 +1,8 @@
-"use client";
-
-import { useState } from "react";
 import Link from "next/link";
 import EntryLinkButton from "./EntryLinkButton";
 import SectionContainer from "@app/_common/Container/SectionContainer";
 
 const MainSection = () => {
-  const [formType, setFormType] = useState<"login" | "register">("register");
-
   return (
     <SectionContainer>
       <div className='max-w-[50rem] flex flex-col mx-auto w-full h-full'>

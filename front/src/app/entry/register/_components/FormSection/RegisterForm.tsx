@@ -4,8 +4,8 @@ import { FC, useState } from "react";
 import { useForm } from "react-hook-form";
 
 import axios from "axios";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { loadMeAPI, registerAPI } from "@api/auth";
+import { useMutation } from "@tanstack/react-query";
+import { registerAPI } from "@api/auth";
 import { useRouter } from "next/navigation";
 import LoadingSpinner from "@app/_common/Parts/LoadingSpinner";
 import Tooltip from "@app/_common/Parts/Tooltip";

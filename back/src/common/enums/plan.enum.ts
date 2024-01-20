@@ -1,4 +1,4 @@
-export enum Role {
+export enum Plan {
   USER = 'user',
   PRO = 'pro',
   EXPERT = 'expert',

@@ -20,9 +20,9 @@ import { SkipThrottle } from '@nestjs/throttler';
 
 import { CreateAccountDto, LoginDto } from './auth.dto';
 import { AuthService } from './auth.service';
-import { JwtAuthGuard, RolesGuard, VerifiedGuard } from '@common/guards';
-import { Roles, CurrentUser, Verified as Status } from '@common/decorators';
-import { Role, AccountStatus } from '@common/enums';
+import { JwtAuthGuard, PlansGuard, VerifiedGuard } from '@common/guards';
+import { Plans, CurrentUser, Verified as Status } from '@common/decorators';
+import { Plan, AccountStatus } from '@common/enums';
 import { User } from '@prisma/client';
 import { Request } from 'express';
 
@@ -98,8 +98,8 @@ export class AuthController {
   @ApiOkResponse({
     description: '어드민 제한 API',
   })
-  @UseGuards(JwtAuthGuard, RolesGuard)
-  @Roles(Role.ADMIN)
+  @UseGuards(JwtAuthGuard, PlansGuard)
+  @Plans(Plan.ADMIN)
   @Get('admin')
   getAdminData() {
     return '어드민만 접근 가능한 경로입니다';

@@ -4,7 +4,6 @@ const dbProjects = dataGenerator(8);
 
 export async function loadMainProjects() {
   const response = [...dbProjects];
-  console.log(response[0].title);
   return response;
 }
 
