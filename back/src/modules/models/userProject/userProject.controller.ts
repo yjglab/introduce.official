@@ -19,29 +19,7 @@ export class UserProjectController {
     @Body()
     data: RegisterUserProjectDTO,
   ): Promise<UserProject> {
-    const {
-      userEmail,
-      category,
-      title,
-      subTitle,
-      thumbnail,
-      description,
-      source,
-      skills,
-      sections,
-    } = data;
-
-    return this.userProjectService.createProject({
-      userEmail,
-      category,
-      title,
-      subTitle,
-      thumbnail,
-      description,
-      source,
-      skills,
-      sections,
-    });
+    return this.userProjectService.createProject(data);
   }
 
   @Delete('userProject/:id')

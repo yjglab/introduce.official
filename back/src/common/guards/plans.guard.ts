@@ -1,4 +1,4 @@
-import { PLANS_KEY } from '@common/decorators';
+import { PLANS_KEY } from '@common/decorators/plans.decorator';
 import { Plan } from '@common/enums';
 import { CanActivate, ExecutionContext, Injectable } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';

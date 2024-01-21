@@ -1,38 +1,51 @@
-import { IsArray, IsEmail, IsObject, IsString } from 'class-validator';
+import {
+  IsArray,
+  IsBoolean,
+  IsObject,
+  IsString,
+  IsUUID,
+} from 'class-validator';
 
 export class RegisterUserProjectDTO {
-  @IsEmail()
-  userEmail: string;
-
   @IsString()
   category: string;
-
   @IsString()
   title: string;
-
   @IsString()
-  subTitle: string;
-
+  subtitle: string;
   @IsString()
   thumbnail: string;
-
   @IsString()
   description: string;
-
   @IsObject()
-  source: {
-    name: string;
+  Source: {
     link: string;
+    name: string;
     owner: string;
   };
-
   @IsArray()
   skills: string[];
 
   @IsArray()
-  sections: {
-    header: string;
+  Sections: {
+    name: string;
     description: string;
-    images: string[];
+    SectionImages?: {
+      src: string;
+      alt: string;
+    }[];
+    Keywords?: {
+      name: string;
+      image?: {
+        src: string;
+        alt: string;
+      };
+    }[];
   }[];
+
+  @IsBoolean()
+  private: boolean;
+
+  @IsUUID()
+  userId: string;
 }

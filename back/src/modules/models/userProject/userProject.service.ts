@@ -19,31 +19,59 @@ export class UserProjectService {
   }
 
   async createProject(data: RegisterUserProjectDTO): Promise<UserProject> {
-    const user = await this.userService.getUserByField('email', data.userEmail);
+    const user = await this.userService.getUserByField('id', data.userId);
 
     return this.prisma.userProject.create({
       data: {
         projectId: uuid(),
         category: data.category,
         title: data.title,
-        subTitle: data.subTitle,
+        subTitle: data.subtitle,
         thumbnail: data.thumbnail,
         description: data.description,
+        Source: {
+          create: {
+            link: data.Source.link,
+            name: data.Source.name,
+            owner: data.Source.owner,
+          },
+        },
+        skills: {
+          set: data.skills,
+        },
+        Sections: {
+          create: data.Sections.map((section) => ({
+            sectionId: uuid(),
+            name: section.name,
+            description: section.description,
+            Images: {
+              create: section.SectionImages?.map((image) => ({
+                src: image.src,
+                alt: image.alt,
+              })),
+            },
+            Keywords: {
+              create: section.Keywords?.map((keyword) => ({
+                keywordId: uuid(),
+                name: keyword.name,
+                image: keyword.image
+                  ? {
+                      create: {
+                        src: keyword.image.src,
+                        alt: keyword.image.alt,
+                      },
+                    }
+                  : undefined,
+              })),
+            },
+          })),
+        },
         User: {
           connect: {
             id: user.id,
+            displayName: user.displayName,
           },
         },
-        Source: {
-          create: {
-            link: data.source.link,
-            name: data.source.name,
-            owner: data.source.owner,
-          },
-        },
-        // sections: {
-        //   create: data.sections,
-        // },
       },
     });
   }

@@ -32,7 +32,7 @@ const ProjectThumb: FC<Props> = ({ project }) => {
         ))}
       </div>
 
-      <div className='flex-shrink-0 relative rounded-xl overflow-hidden w-full h-[350px] before:absolute before:inset-x-0 before:w-full before:h-full before:bg-gradient-to-t before:from-gray-900/[.7] before:z-[1]'>
+      <div className='flex-shrink-0 relative rounded-lg overflow-hidden w-full h-[300px] before:absolute before:inset-x-0 before:w-full before:h-full before:bg-gradient-to-t before:from-gray-900/[.7] before:z-[1]'>
         <img
           className='w-full h-full absolute top-0 start-0 object-cover'
           src={project.thumbnail}
@@ -44,10 +44,10 @@ const ProjectThumb: FC<Props> = ({ project }) => {
         <div className='p-4 flex flex-col h-full sm:p-6'>
           <div className='flex items-center'>
             <div className='flex-shrink-0'>
-              <UserAvatar displayName={project.userDisplayName} />
+              <UserAvatar displayName={project.User.displayName} />
             </div>
             <div className='ms-2.5 sm:ms-4'>
-              <h4 className='font-semibold text-white'>{project.userDisplayName}</h4>
+              <h4 className='font-semibold text-white'>{project.User.displayName}</h4>
               <p className='text-xs text-white/[.8]'>{dateFormatter(project.createdAt)}</p>
             </div>
           </div>

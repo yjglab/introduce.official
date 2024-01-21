@@ -63,7 +63,7 @@ const MainSection = () => {
 
   return (
     <SectionContainer>
-      <div className='grid sm:grid-cols-2 lg:grid-cols-3 gap-6 w-full'>
+      <div className='grid sm:grid-cols-2 lg:grid-cols-3 gap-5 w-full'>
         {/* <ProjectThumb project={customProject} /> */}
         {mainProjects?.map((project: any) => (
           <ProjectThumb key={project.projectId} project={project} />

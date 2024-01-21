@@ -2,7 +2,6 @@
 
 import { UserProjectType } from "@/utils/dataGenerator";
 import dateFormatter from "@/utils/dateFormatter";
-import { loadMainProjects } from "@api/project";
 import { UserAvatar } from "@app/_common/Parts/UserAvatar";
 import { loadMainProjectsKey } from "@constants/queryKey";
 import { RiSize } from "@constants/styles";
@@ -14,7 +13,7 @@ import {
   RiSendPlaneFill,
   RiShare2Line,
 } from "@remixicon/react";
-import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { useQueryClient } from "@tanstack/react-query";
 import { FC, useEffect, useState } from "react";
 import Section from "./Section";
 
@@ -42,7 +41,7 @@ const MainSection: FC<Props> = ({ params }) => {
           <div className='flex justify-between items-center mb-6'>
             <div className='flex w-full sm:items-center gap-x-5 sm:gap-x-3'>
               <div className='flex-shrink-0'>
-                <UserAvatar displayName={project?.userDisplayName!} />
+                <UserAvatar displayName={project?.User.displayName!} />
               </div>
 
               <div className='grow'>
@@ -51,7 +50,7 @@ const MainSection: FC<Props> = ({ params }) => {
                     <div className='hs-tooltip inline-block [--trigger:hover] [--placement:bottom]'>
                       <div className='hs-tooltip-toggle sm:mb-1 block text-start cursor-pointer'>
                         <span className='font-semibold text-gray-800 dark:text-gray-200'>
-                          {project?.userDisplayName}
+                          {project?.User.displayName}
                         </span>
 
                         <div
@@ -61,12 +60,12 @@ const MainSection: FC<Props> = ({ params }) => {
                           <div className='p-4 sm:p-5'>
                             <div className='mb-2 flex w-full sm:items-center gap-x-5 sm:gap-x-3'>
                               <div className='flex-shrink-0'>
-                                <UserAvatar displayName={project?.userDisplayName!} size='xs' />
+                                <UserAvatar displayName={project?.User.displayName!} size='xs' />
                               </div>
 
                               <div className='grow'>
                                 <p className='text-lg font-semibold text-gray-200'>
-                                  {project?.userDisplayName}
+                                  {project?.User.displayName}
                                 </p>
                               </div>
                             </div>

@@ -23,7 +23,7 @@ export interface UserProjectType {
     sectionId: string;
     name: string;
     description: string;
-    images: {
+    Images: {
       src: string;
       alt: string;
     }[];
@@ -39,8 +39,10 @@ export interface UserProjectType {
   private: boolean;
   createdAt: Date;
   updatedAt: Date;
-  userId: string;
-  userDisplayName: string;
+  User: {
+    id: string;
+    displayName: string;
+  };
 }
 function generateProject() {
   return {
@@ -66,8 +68,10 @@ function generateProject() {
     private: false,
     createdAt: faker.date.past(),
     updatedAt: faker.date.past(),
-    userId: faker.string.uuid(),
-    userDisplayName: faker.internet.displayName(),
+    User: {
+      id: faker.string.uuid(),
+      displayName: faker.internet.displayName(),
+    },
   };
 }
 
@@ -79,7 +83,7 @@ function generateSection() {
     sectionId: faker.string.uuid(),
     name: `Section ${faker.vehicle.bicycle()}`,
     description: faker.string.alpha(100),
-    images: faker.helpers.multiple(generateImage, {
+    Images: faker.helpers.multiple(generateImage, {
       count: 2,
     }),
     Keywords: Array(4).fill({
