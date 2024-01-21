@@ -48,7 +48,7 @@ const MainSection: FC<Props> = ({ params }) => {
                 <div className='flex justify-between items-center gap-x-2'>
                   <div>
                     <div className='hs-tooltip inline-block [--trigger:hover] [--placement:bottom]'>
-                      <div className='hs-tooltip-toggle sm:mb-1 block text-start cursor-pointer'>
+                      <div className='hs-tooltip-toggle sm:mb-1 text-start cursor-pointer'>
                         <span className='font-semibold text-gray-800 dark:text-gray-200'>
                           {project?.User.displayName}
                         </span>
@@ -112,31 +112,16 @@ const MainSection: FC<Props> = ({ params }) => {
             </div>
           </div>
 
-          <div className='space-y-5 md:space-y-8'>
+          <div className='space-y-5 md:space-y-20'>
             <div className='space-y-3'>
               <h1 className='text-2xl font-bold md:text-3xl dark:text-white'>{project?.title}</h1>
-              <h2 className='text-gray-500 dark:text-gray-400'>{project?.subtitle}</h2>
+              <h2 className='text-gray-500 dark:text-gray-400 break-words'>{project?.subtitle}</h2>
               <p className='text-lg text-gray-800 dark:text-gray-200 break-words'>{project?.description}</p>
             </div>
 
             {project?.Sections.map((section) => (
               <Section key={section.sectionId} section={section} />
             ))}
-
-            <div>
-              <button
-                type='button'
-                className='m-1 inline-flex items-center gap-1.5 py-2 px-3 rounded-full text-sm bg-gray-100 text-gray-800 hover:bg-gray-200 dark:bg-gray-800 dark:hover:bg-gray-700 dark:text-gray-200 dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600'
-              >
-                키워드 1
-              </button>
-              <button
-                type='button'
-                className='m-1 inline-flex items-center gap-1.5 py-2 px-3 rounded-full text-sm bg-gray-100 text-gray-800 hover:bg-gray-200 dark:bg-gray-800 dark:hover:bg-gray-700 dark:text-gray-200 dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600'
-              >
-                키워드 2
-              </button>
-            </div>
           </div>
         </div>
       </div>

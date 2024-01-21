@@ -54,6 +54,7 @@ export class UserProjectService {
               create: section.Keywords?.map((keyword) => ({
                 keywordId: uuid(),
                 name: keyword.name,
+                description: keyword.description,
                 image: keyword.image
                   ? {
                       create: {

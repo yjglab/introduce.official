@@ -30,6 +30,7 @@ export interface UserProjectType {
     Keywords: {
       keywordId: string;
       name: string;
+      description: string;
       image: {
         src: string;
         alt: string;
@@ -89,6 +90,7 @@ function generateSection() {
     Keywords: Array(4).fill({
       keywordId: faker.string.uuid(),
       name: faker.animal.dog(),
+      description: faker.string.alpha(50),
       image: { src: faker.image.url(), alt: faker.string.alpha(10) },
     }),
   };

@@ -75,11 +75,12 @@ model SectionImage {
 }
 
 model Keyword {
-  keywordId String  @id
-  name      String
-  image     Json // { src, alt }
-  Section   Section @relation(fields: [sectionId], references: [sectionId])
-  sectionId String
+  keywordId   String  @id
+  name        String
+  image       Json // { src, alt }
+  description String
+  Section     Section @relation(fields: [sectionId], references: [sectionId])
+  sectionId   String
 
   // @@id
 }

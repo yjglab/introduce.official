@@ -36,6 +36,7 @@ export class RegisterUserProjectDTO {
     }[];
     Keywords?: {
       name: string;
+      description: string;
       image?: {
         src: string;
         alt: string;

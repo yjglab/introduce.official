@@ -29,23 +29,20 @@ const OverlayContainer: FC<PropsWithChildren<Props>> = ({ children }) => {
           leaveFrom='opacity-100'
           leaveTo='opacity-0'
         >
-          <div className='fixed inset-0 bg-black/70' />
+          <div className='fixed inset-0 bg-black/30' />
         </Transition.Child>
 
         <div className='fixed inset-0 overflow-y-auto w-screen'>
-          <div className='flex min-h-full items-center justify-center p-4'>
+          <div className='flex min-h-full items-center justify-center'>
             <Transition.Child
               as={Fragment}
-              enter='transition ease-out duration-300 transform'
-              enterFrom='opacity-0 translate-y-full'
+              enter='transition ease-out duration-[0.8s] transform'
+              enterFrom='opacity-0 translate-y-10'
               enterTo='opacity-100 translate-y-0'
-              leave='ease-in duration-200 transition transform'
-              leaveFrom='opacity-100 translate-y-0'
-              leaveTo='opacity-0 translate-y-full'
             >
               <Dialog.Panel
                 style={{ maxHeight: "90vh" }}
-                className='mt-0 opacity-0 ease-out w-full max-w-[1100px] m-3 sm:mx-auto'
+                className='mt-28 opacity-0 ease-out max-w-[85%] lg:max-w-[1100px] sm:mx-auto'
               >
                 <div className='relative flex flex-col bg-white shadow-lg rounded-xl dark:bg-gray-800'>
                   <div className='absolute top-2 end-2'>
@@ -59,8 +56,10 @@ const OverlayContainer: FC<PropsWithChildren<Props>> = ({ children }) => {
                     </button>
                   </div>
 
-                  <div className='p-4 sm:p-6 text-center overflow-y-auto'>{children}</div>
+                  <div className='px-4 py-10 overflow-y-auto'>{children}</div>
                 </div>
+
+                <div className='mt-40 sr-only' />
               </Dialog.Panel>
             </Transition.Child>
           </div>
