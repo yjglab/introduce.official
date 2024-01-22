@@ -74,7 +74,7 @@ function generateProject() {
     User: {
       id: faker.string.uuid(),
       displayName: faker.internet.displayName(),
-      plan: ["user", "pro"][randomNumber(2)],
+      plan: ["user", "pro", "expert"][randomNumber(3)],
     },
   };
 }

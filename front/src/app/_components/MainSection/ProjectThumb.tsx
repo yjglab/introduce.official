@@ -5,6 +5,8 @@ import { FC } from "react";
 import dateFormatter from "@/utils/dateFormatter";
 import { motion } from "framer-motion";
 import { UserProjectType } from "@/utils/dataGenerator";
+import { RiMedal2Line, RiMedalFill, RiMedalLine } from "@remixicon/react";
+import { RiSize } from "@constants/styles";
 
 interface Props {
   project: UserProjectType; // type
@@ -17,7 +19,6 @@ const ProjectThumb: FC<Props> = ({ project }) => {
       scroll={false}
     >
       <div className='flex absolute w-32 h-14 z-10 justify-end space-x-1 right-5'>
-        {/* anim: 순차로 등장하도록 */}
         {project.skills.map((skill: string, index: number) => (
           <motion.div
             key={skill}
@@ -56,7 +57,14 @@ const ProjectThumb: FC<Props> = ({ project }) => {
 
       <div className='absolute bottom-0 inset-x-0 z-10'>
         <div className='flex flex-col h-full p-4 sm:p-6'>
-          <h3 className='text-2xl font-semibold text-white group-hover:text-white/[.8]'>{project.title}</h3>
+          <h3 className='text-2xl flex gap-1 items-center font-semibold text-white group-hover:text-white/[.8]'>
+            {project.title}
+            {project.User.plan === "expert" && (
+              <span className='text-gray-300'>
+                <RiMedalFill size={RiSize.sm} />
+              </span>
+            )}
+          </h3>
           <p className='mt-2 text-white/[.8] truncate'>{project.subtitle}</p>
         </div>
       </div>
