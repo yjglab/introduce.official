@@ -1,4 +1,5 @@
 import { faker } from "@faker-js/faker";
+import techImages from "./techImages";
 
 export interface UserProjectType {
   projectId: string;
@@ -60,7 +61,7 @@ function generateProject() {
       owner: "githubnickname",
     },
     grades: 4.7,
-    skills: ["react", "nestjs", "spring"],
+    skills: generateSkills(3),
     Likers: faker.helpers.multiple(generateLiker, {
       count: 3,
     }),
@@ -106,6 +107,21 @@ function generateLiker() {
     projectId: faker.string.uuid(),
     createdAt: faker.date.past(),
   };
+}
+
+function generateSkills(n: number) {
+  const skills: string[] = [];
+  const techImagesKeys = Object.keys(techImages);
+  let newSkill;
+  while (n > 0) {
+    newSkill = techImagesKeys[randomNumber(techImagesKeys.length)];
+    if (skills.includes(newSkill)) {
+      continue;
+    }
+    skills.push(newSkill);
+    n -= 1;
+  }
+  return skills;
 }
 export default (count: number) =>
   faker.helpers.multiple(generateProject, {

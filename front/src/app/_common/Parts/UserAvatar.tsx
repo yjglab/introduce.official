@@ -12,7 +12,6 @@ interface Props {
 }
 
 export const UserAvatar: React.FC<Props> = ({ displayName, plan, size = "sm" }) => {
-  console.log(plan);
   return (
     <>
       {plan === "pro" ? (
