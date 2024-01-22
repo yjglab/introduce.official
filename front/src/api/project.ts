@@ -1,6 +1,6 @@
 import dataGenerator from "@/utils/dataGenerator";
 
-const dbProjects = dataGenerator(8);
+const dbProjects = dataGenerator(15);
 
 export async function loadMainProjects() {
   const response = [...dbProjects];

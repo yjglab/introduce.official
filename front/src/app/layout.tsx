@@ -76,7 +76,7 @@ export default async function RootLayout({
                 <div id='Root-Layout' className='max-w-7xl mx-auto'>
                   {children}
                 </div>
-                {/* {modal} */}
+                {modal}
               </NextThemeProvider>
             </ReduxProvider>
           </HydrationBoundary>

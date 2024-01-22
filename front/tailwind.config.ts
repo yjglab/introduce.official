@@ -17,6 +17,8 @@ const config: Config = {
       },
       animation: {
         shine: "shineKey 2s ease-in-out infinite alternate",
+        flip: "flip 4s infinite steps(2, end)",
+        rotate: "rotate 2s linear infinite both",
       },
       keyframes: {
         shineKey: {
@@ -25,6 +27,16 @@ const config: Config = {
           },
           to: {
             backgroundPosition: "100% 50%",
+          },
+        },
+        flip: {
+          to: {
+            transform: "rotate(360deg)",
+          },
+        },
+        rotate: {
+          to: {
+            transform: "rotate(90deg)",
           },
         },
       },

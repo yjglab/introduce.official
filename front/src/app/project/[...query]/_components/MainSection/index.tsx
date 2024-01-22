@@ -31,17 +31,17 @@ const MainSection: FC<Props> = ({ params }) => {
   useEffect(() => {
     const mainProjects: UserProjectType[] | undefined = queryClient.getQueryData([loadMainProjectsKey]);
     setProject(mainProjects?.find((v) => v.projectId === params.query[1]));
-    window.scrollTo(0, 0);
+    // window.scrollTo(0, 0);
   }, []);
 
   return (
     <>
-      <div className='max-w-4xl px-4 pb-12 sm:px-6 lg:px-8 mx-auto'>
+      <div className='max-w-4xl px-4 pb-12 sm:px-8 lg:px-12 mx-auto'>
         <div className='w-full'>
           <div className='flex justify-between items-center mb-6'>
             <div className='flex w-full sm:items-center gap-x-5 sm:gap-x-3'>
               <div className='flex-shrink-0'>
-                <UserAvatar displayName={project?.User.displayName!} />
+                <UserAvatar displayName={project?.User.displayName!} plan={project?.User.plan!} />
               </div>
 
               <div className='grow'>
@@ -60,7 +60,11 @@ const MainSection: FC<Props> = ({ params }) => {
                           <div className='p-4 sm:p-5'>
                             <div className='mb-2 flex w-full sm:items-center gap-x-5 sm:gap-x-3'>
                               <div className='flex-shrink-0'>
-                                <UserAvatar displayName={project?.User.displayName!} size='xs' />
+                                <UserAvatar
+                                  displayName={project?.User.displayName!}
+                                  plan={project?.User.plan!}
+                                  size='xs'
+                                />
                               </div>
 
                               <div className='grow'>

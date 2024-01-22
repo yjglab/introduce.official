@@ -44,7 +44,7 @@ const ProjectThumb: FC<Props> = ({ project }) => {
         <div className='p-4 flex flex-col h-full sm:p-6'>
           <div className='flex items-center'>
             <div className='flex-shrink-0'>
-              <UserAvatar displayName={project.User.displayName} />
+              <UserAvatar displayName={project.User.displayName} plan={project.User.plan} />
             </div>
             <div className='ms-2.5 sm:ms-4'>
               <h4 className='font-semibold text-white'>{project.User.displayName}</h4>

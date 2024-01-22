@@ -43,6 +43,7 @@ export interface UserProjectType {
   User: {
     id: string;
     displayName: string;
+    plan: string;
   };
 }
 function generateProject() {
@@ -72,10 +73,14 @@ function generateProject() {
     User: {
       id: faker.string.uuid(),
       displayName: faker.internet.displayName(),
+      plan: ["user", "pro"][randomNumber(2)],
     },
   };
 }
 
+function randomNumber(n: number) {
+  return Math.floor(Math.random() * n);
+}
 function generateImage() {
   return { src: faker.image.url(), alt: faker.string.alpha(10) };
 }
