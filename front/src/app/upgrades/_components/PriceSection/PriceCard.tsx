@@ -27,7 +27,9 @@ const PriceCard: FC<Props> = ({ plan }) => {
   return (
     <div
       className={classNames(
-        plan.recommend ? "border-2 shadow-xl border-indigo-700" : "border border-gray-700",
+        plan.recommend
+          ? "border-2 shadow-xl border-indigo-600"
+          : "border border-gray-400 dark:border-gray-700",
         "flex flex-col text-center rounded-xl p-8 ",
       )}
     >
@@ -38,8 +40,8 @@ const PriceCard: FC<Props> = ({ plan }) => {
           </span>
         </p>
       )}
-      <h4 className='font-medium text-lg text-gray-200'>{plan.name}</h4>
-      <span className='mt-5 font-bold text-5xl text-gray-200'>
+      <h4 className='font-medium text-lg dark:text-gray-200'>{plan.name}</h4>
+      <span className='mt-5 font-bold text-5xl text-gray-700 dark:text-gray-200'>
         <span className='font-bold text-2xl'>₩</span>
         {plan.price}
       </span>
@@ -49,7 +51,7 @@ const PriceCard: FC<Props> = ({ plan }) => {
         {plan.auths.map((auth, idx) => (
           <li key={idx} className='flex space-x-2 text-indigo-500'>
             <RiCheckFill size={RiSize.sm} />
-            <span className='text-gray-400'>{auth}</span>
+            <span className='dark:text-gray-400 text-gray-900'>{auth}</span>
           </li>
         ))}
       </ul>

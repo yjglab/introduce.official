@@ -1,3 +1,4 @@
+import SectionContainer from "@app/_common/Container/SectionContainer";
 import PriceCard from "./PriceCard";
 
 const plans = [
@@ -28,10 +29,10 @@ const plans = [
 ];
 const PriceSection = () => {
   return (
-    <>
+    <SectionContainer>
       <div className='max-w-2xl mx-auto text-center mb-10 lg:mb-14'>
-        <h2 className='text-2xl font-bold md:text-4xl md:leading-tight text-white'>Pricing</h2>
-        <p className='mt-1 text-gray-400'>인트로듀스는 회원님의 플랜에 따른 맞춤형 혜택을 제공합니다.</p>
+        <h2 className='text-2xl font-bold md:text-4xl md:leading-tight dark:text-white'>Pricing</h2>
+        <p className='mt-1 dark:text-gray-400'>인트로듀스는 회원님의 플랜에 따른 맞춤형 혜택을 제공합니다.</p>
       </div>
 
       <div className='mt-12 grid sm:grid-cols-2 lg:grid-cols-3 gap-6 lg:items-center'>
@@ -39,7 +40,7 @@ const PriceSection = () => {
           <PriceCard key={idx} plan={plan} />
         ))}
       </div>
-    </>
+    </SectionContainer>
   );
 };
 
