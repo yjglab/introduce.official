@@ -1,6 +1,7 @@
 "use client";
 
 import TechIcon from "@app/_common/Parts/TechIcon";
+import Tooltip from "@app/_common/Parts/Tooltip";
 import { FC } from "react";
 
 interface Props {

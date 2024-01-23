@@ -123,6 +123,98 @@ function generateSkills(n: number) {
   }
   return skills;
 }
+
+export const staticProject: UserProjectType = {
+  projectId: "staticProjectId",
+  category: "web",
+  title: "인트로듀스",
+  subtitle: "인트로듀스 서브타이틀입니다. ".repeat(2),
+  thumbnail:
+    "https://images.unsplash.com/photo-1705866649609-9ea7159fe1ea?q=80&w=1470&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+  description: "인트로듀스 설명입니다. ".repeat(15),
+  Source: {
+    link: "https://github.com/yjglab",
+    name: "github",
+    owner: "yjglab",
+  },
+  grades: 4.3,
+  skills: ["React", "Nest.js", "React"],
+  Likers: [
+    {
+      userId: "dqwdqwe",
+      projectId: "qwdqwrqwdqw",
+      createdAt: new Date(),
+    },
+    {
+      userId: "dqawdwdqwe",
+      projectId: "qwdqwdqwqweqwerqwdqw",
+      createdAt: new Date(),
+    },
+  ],
+  Sections: [
+    {
+      sectionId: "adwdqpwld[qwk",
+      name: `Section 1번 섹션`,
+      description: "1번 섹션 설명입니다. ".repeat(12),
+      Images: [
+        {
+          src: "https://images.unsplash.com/photo-1682686581498-5e85c7228119?q=80&w=1470&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDF8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+          alt: "1번 이미지 설명입니다.".repeat(2),
+        },
+        {
+          src: "https://images.unsplash.com/photo-1682686581498-5e85c7228119?q=80&w=1470&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDF8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+          alt: "2번 이미지 설명입니다.".repeat(2),
+        },
+      ],
+      Keywords: [
+        {
+          keywordId: "awdwqdljqwoipr",
+          name: "1번키워드",
+          description: "1번 키워드 설명입니다. ".repeat(5),
+          image: {
+            src: "https://images.unsplash.com/photo-1705917677386-d6e882e29e6e?q=80&w=1587&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+            alt: "1번 키워드 이미지 설명입니다.".repeat(2),
+          },
+        },
+      ],
+    },
+    {
+      sectionId: "adwdqpwld[qwk",
+      name: `Section 2번 섹션`,
+      description: "2번 섹션 설명입니다. ".repeat(12),
+      Images: [
+        {
+          src: "https://images.unsplash.com/photo-1682686581498-5e85c7228119?q=80&w=1470&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDF8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+          alt: "1번 이미지 설명입니다.".repeat(2),
+        },
+        {
+          src: "https://images.unsplash.com/photo-1682686581498-5e85c7228119?q=80&w=1470&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDF8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+          alt: "2번 이미지 설명입니다.".repeat(2),
+        },
+      ],
+      Keywords: [
+        {
+          keywordId: "awddwqwdwqdljqwoipr",
+          name: "1번키워드",
+          description: "1번 키워드 설명입니다. ".repeat(5),
+          image: {
+            src: "https://images.unsplash.com/photo-1705917677386-d6e882e29e6e?q=80&w=1587&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+            alt: "1번 키워드 이미지 설명입니다.".repeat(2),
+          },
+        },
+      ],
+    },
+  ],
+  private: false,
+  createdAt: new Date(),
+  updatedAt: new Date(),
+  User: {
+    id: "wdqwdqweqwr",
+    displayName: "인트로듀스 제작자",
+    plan: "expert",
+  },
+};
+
 export default (count: number) =>
   faker.helpers.multiple(generateProject, {
     count,
