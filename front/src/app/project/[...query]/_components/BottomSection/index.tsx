@@ -18,7 +18,7 @@ const BottomSection: FC<Props> = ({ project }) => {
               className='hs-tooltip-toggle flex items-center gap-x-2 text-sm text-gray-500 hover:text-gray-800 dark:text-gray-400 dark:hover:text-gray-200 dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600'
             >
               <RiHeart2Line size={RiSize.sm} />
-              10
+              {project?.Likers.designers + project?.Likers.developers}
               <span
                 className='hs-tooltip-content hs-tooltip-shown:opacity-100 hs-tooltip-shown:visible opacity-0 transition-opacity inline-block absolute invisible z-10 py-1 px-2 bg-gray-900 text-xs font-medium text-white rounded shadow-sm dark:bg-black'
                 role='tooltip'

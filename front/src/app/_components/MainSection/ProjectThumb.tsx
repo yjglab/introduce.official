@@ -5,8 +5,7 @@ import { FC } from "react";
 import dateFormatter from "@/utils/dateFormatter";
 import { motion } from "framer-motion";
 import { UserProjectType } from "@/utils/dataGenerator";
-import { RiMedal2Line, RiMedalFill, RiMedalLine } from "@remixicon/react";
-import { RiSize } from "@constants/styles";
+import ProjectPickers from "@app/_common/Parts/ProjectPickers";
 
 interface Props {
   project: UserProjectType; // type
@@ -18,7 +17,7 @@ const ProjectThumb: FC<Props> = ({ project }) => {
       href={`/project/${project.title.replace(/ /g, "_")}/${project.projectId}`}
       scroll={false}
     >
-      <div className='flex absolute w-32 h-14 z-10 justify-end space-x-1 right-5'>
+      <div className='flex absolute w-30 px-0.5 h-12 z-10 justify-end space-x-1 right-5'>
         {project.skills.map((skill: string, index: number) => (
           <motion.div
             key={skill}
@@ -28,7 +27,7 @@ const ProjectThumb: FC<Props> = ({ project }) => {
             viewport={{ amount: 0.5 }}
             className='hidden group-hover:flex'
           >
-            <TechBadge key={skill} name={skill} index={index} />
+            <TechBadge key={skill} name={skill} />
           </motion.div>
         ))}
       </div>
@@ -57,13 +56,11 @@ const ProjectThumb: FC<Props> = ({ project }) => {
 
       <div className='absolute bottom-0 inset-x-0 z-10'>
         <div className='flex flex-col h-full p-4 sm:p-6'>
-          <h3 className='text-2xl flex gap-1 items-center font-semibold text-white group-hover:text-white/[.8]'>
-            {project.title}
-            {project.User.plan === "expert" && (
-              <span className='text-gray-300'>
-                <RiMedalFill size={RiSize.sm} />
-              </span>
-            )}
+          <h3 className='text-2xl flex items-center font-semibold text-white group-hover:text-white/[.8]'>
+            <span className='mr-1'>{project.title}</span>
+            {project.User.plan === "expert" && <ProjectPickers choicer='expert' />}
+            {project.Likers.developers >= 50 && <ProjectPickers choicer='developer' />}
+            {project.Likers.designers >= 50 && <ProjectPickers choicer='designer' />}
           </h3>
           <p className='mt-2 text-white/[.8] truncate'>{project.subtitle}</p>
         </div>

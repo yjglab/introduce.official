@@ -16,10 +16,15 @@ export interface UserProjectType {
   grades: number;
   skills: string[];
   Likers: {
-    userId: string;
-    projectId: string;
-    createdAt: Date;
-  }[];
+    developers: number;
+    designers: number;
+    users: {
+      userId: string;
+      projectId: string;
+      createdAt: Date;
+    }[];
+  };
+
   Sections: {
     sectionId: string;
     name: string;
@@ -62,9 +67,13 @@ function generateProject() {
     },
     grades: 4.7,
     skills: generateSkills(3),
-    Likers: faker.helpers.multiple(generateLiker, {
-      count: 3,
-    }),
+    Likers: {
+      developers: randomNumber(70),
+      designers: randomNumber(70),
+      users: faker.helpers.multiple(generateLiker, {
+        count: 3,
+      }),
+    },
     Sections: faker.helpers.multiple(generateSection, {
       count: 3,
     }),
@@ -139,18 +148,22 @@ export const staticProject: UserProjectType = {
   },
   grades: 4.3,
   skills: ["React", "Nest.js", "React"],
-  Likers: [
-    {
-      userId: "dqwdqwe",
-      projectId: "qwdqwrqwdqw",
-      createdAt: new Date(),
-    },
-    {
-      userId: "dqawdwdqwe",
-      projectId: "qwdqwdqwqweqwerqwdqw",
-      createdAt: new Date(),
-    },
-  ],
+  Likers: {
+    developers: 60,
+    designers: 50,
+    users: [
+      {
+        userId: "dqwdqwe",
+        projectId: "qwdqwrqwdqw",
+        createdAt: new Date(),
+      },
+      {
+        userId: "dqawdwdqwe",
+        projectId: "qwdqwdqwqweqwerqwdqw",
+        createdAt: new Date(),
+      },
+    ],
+  },
   Sections: [
     {
       sectionId: "adwdqpwld[qwk",
