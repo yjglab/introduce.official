@@ -10,7 +10,9 @@ interface Props {
 const TechBadge: FC<Props> = ({ name }) => {
   return (
     <div className='flex w-[28px] h-full overflow-hidden bg-white dark:bg-gray-800 rounded-b-3xl shadow justify-center relative'>
-      <TechIcon name={name} />
+      <div className='absolute bottom-1.5'>
+        <TechIcon name={name} />
+      </div>
     </div>
   );
 };

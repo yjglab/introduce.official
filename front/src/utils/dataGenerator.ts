@@ -147,7 +147,7 @@ export const staticProject: UserProjectType = {
     owner: "yjglab",
   },
   grades: 4.3,
-  skills: ["React", "Nest.js", "React"],
+  skills: ["React", "Nest.js", "Firebase"],
   Likers: {
     developers: 60,
     designers: 50,
