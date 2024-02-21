@@ -1,5 +1,6 @@
 import { UserProjectType } from "@/utils/dataGenerator";
 import dateFormatter from "@/utils/dateFormatter";
+import Tag from "@app/_common/Parts/Tag";
 import TechIcon from "@app/_common/Parts/TechIcon";
 import { UserAvatar } from "@app/_common/Parts/UserAvatar";
 import { RiSize } from "@constants/styles";
@@ -95,16 +96,12 @@ const HeaderSection: FC<Props> = ({ project }) => {
 
       <div className='space-y-3'>
         {project?.skills.map((skill) => (
-          <button
-            key={skill}
-            type='button'
-            className='m-1 border dark:border-gray-700 inline-flex items-center gap-1.5 py-2 px-3 rounded-full text-sm bg-gray-100 text-gray-800 hover:bg-gray-200 dark:bg-gray-800 dark:hover:bg-gray-700 dark:text-gray-200 dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600'
-          >
+          <Tag key={skill}>
             <div className='relative'>
               <TechIcon name={skill} />
             </div>
             {skill}
-          </button>
+          </Tag>
         ))}
       </div>
     </>

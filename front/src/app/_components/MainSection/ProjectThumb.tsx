@@ -18,7 +18,7 @@ const ProjectThumb: FC<Props> = ({ project }) => {
       scroll={false}
     >
       <div className='flex absolute w-30 px-0.5 h-12 z-10 justify-end space-x-1 right-5'>
-        {project.skills.map((skill: string, index: number) => (
+        {project.skills.slice(0, 3).map((skill: string, index: number) => (
           <motion.div
             key={skill}
             initial={{ opacity: 0, y: -30 }}

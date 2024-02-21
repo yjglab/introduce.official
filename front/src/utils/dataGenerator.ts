@@ -66,7 +66,7 @@ function generateProject() {
       owner: "githubnickname",
     },
     grades: 4.7,
-    skills: generateSkills(3),
+    skills: generateSkills(6),
     Likers: {
       developers: randomNumber(70),
       designers: randomNumber(70),
